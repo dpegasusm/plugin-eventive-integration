@@ -1,0 +1,797 @@
+/* General Container Styles */
+#eventive-login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* Full width */
+}
+
+/* Eventive Login Wrapper */
+.eventive-login {
+    width: 100%; /* Make the button span full width */
+}
+.Eventive--LoginWidget--LoginDescription{
+    color:#fff;
+}
+/* Login Button Styling */
+.eventive-login a {
+    display: block; /* Full-width block-level element */
+    padding: 10px 15px;
+    font-size: 1em;
+    font-weight: bold;
+    text-align: center;
+    color: #1a202c; /* Dark readable text */
+    text-decoration: none;
+    background-color: #f8f9fa; /* Off-white background */
+    border: 1px solid #e2e8f0; /* Subtle border */
+    border-radius: 5px; /* Slightly rounded corners */
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Hover Effect for Button */
+.eventive-login a:hover {
+    background-color: #e2e8f0; /* Slightly darker on hover */
+    color: #2d3748; /* Darker text on hover */
+}
+
+/* Logged-In State Text Styling */
+.eventive-login {
+    text-align: center;
+    color: #1a202c; /* Readable dark text for logged-in state */
+    font-size: 1em;
+    padding: 10px 0;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 600px) {
+    .eventive-login a {
+        font-size: 0.9em;
+        padding: 8px 12px;
+    }
+}
+
+/* Account Container */
+#eventive-account-container {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+/* Titles for Tickets and Passes */
+#eventive-tickets-column h2,
+#eventive-passes-column h2 {
+    display: block;
+    width: 100%; /* Full width of container */
+    text-align: center; /* Center-align the title text */
+    margin-bottom: 15px;
+    font-size: 1.5em;
+    color: #959595; /* Light text for dark background */
+}
+
+/* Ticket and Pass Box Styling */
+.ticket-box, .pass-box {
+    display: flex;
+    flex-wrap: wrap; /* Allow items to wrap when space is limited */
+    align-items: center; /* Center-align content vertically */
+    justify-content: space-between; /* Distribute items evenly */
+    border: 2px solid; /* Different border colors per box */
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.6); /* Dark semi-transparent background */
+    border-radius: 8px;
+    color: #fff; /* Light text */
+    transition: transform 0.2s, box-shadow 0.2s;
+    width: 100%; /* Full width for horizontal layout */
+    margin-bottom: 15px;
+    gap: 10px; /* Space between items */
+}
+
+/* Specific Ticket Styling */
+.ticket-box {
+    border-color: #007bff; /* Blue border for tickets */
+    background-color: rgba(0, 123, 255, 0.1); /* Light blue background */
+    color: #004085; /* Darker blue text for readability */
+}
+
+/* Specific Pass Styling */
+.pass-box {
+    border-color: #28a745; /* Green border for passes */
+    background-color: rgba(40, 167, 69, 0.1); /* Light green background */
+    color: #155724; /* Darker green text for passes */
+}
+
+/* Flex Item Behavior */
+.ticket-box .ticket-title, .pass-box .pass-title {
+    flex: 1 1 100%; /* Force title to always take full width */
+    font-size: 1em;
+    font-weight: bold;
+    text-align: left;
+    margin-bottom: 5px; /* Space below title */
+}
+
+.ticket-box .ticket-details, .pass-box .pass-details {
+    flex: 2 1 calc(60% - 10px); /* Details take up 60% of the width */
+    font-size: 0.85em;
+    line-height: 1.2;
+    color: #333; /* Neutral text color */
+    text-align: left;
+}
+
+.ticket-box .view-barcode-button, .pass-box .view-barcode-button {
+    flex: 1 1 100px; /* Button has minimum size but can shrink */
+    padding: 6px 10px;
+    font-size: 12px;
+    color: #fff;
+    background-color: #212529; /* Neutral dark background for button */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    margin-top: auto; /* Push button to bottom when wrapping */
+    align-self: flex-end; /* Align button to the end */
+}
+
+.ticket-box .view-barcode-button:hover, .pass-box .view-barcode-button:hover {
+    background-color: #343a40; /* Slightly lighter on hover */
+}
+
+/* Responsive Behavior */
+@media (max-width: 600px) {
+    .ticket-box, .pass-box {
+        flex-direction: column; /* Stack all content vertically on small screens */
+        align-items: flex-start; /* Align items to the left */
+        text-align: left;
+    }
+
+    .ticket-box .ticket-details, .pass-box .pass-details {
+        flex: 1 1 100%; /* Make details take full width */
+    }
+
+    .ticket-box .view-barcode-button, .pass-box .view-barcode-button {
+        flex: 1 1 auto; /* Let the button adapt naturally */
+        width: 100%; /* Button spans the full width */
+        margin-top: 10px; /* Add spacing above when stacked */
+    }
+}
+/* Modal Styling */
+#barcode-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: none; /* Initially hidden */
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    flex-direction: column;
+    z-index: 9999;
+}
+
+#barcode-modal-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+}
+
+#barcode-modal-header h2 {
+    margin-bottom: 15px;
+    font-size: 1.2em;
+    color: #333;
+}
+
+#barcode-modal-content img {
+    max-width: 100%;
+    height: auto;
+}
+
+#close-barcode-modal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 1.5em;
+    cursor: pointer;
+    color: #333;
+}
+/* 
+
+/* SCHEDULE PAGE CSS */
+
+
+
+
+/* General Container Styling */
+.event-group {
+    margin-bottom: 16px; /* Reduced margin */
+    padding: 12px; /* Reduced padding */
+    border: 1px solid #ddd; /* Slightly lighter border */
+    border-radius: 6px; /* Reduced border radius */
+    background-color: #f5f5f5; /* Slightly darker background */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+/* Group Header Styling */
+.event-group-header {
+    margin: 0;
+    border-bottom: 2px solid #767575; /* Thinner border */
+    padding: 10px 0;
+    margin: 15px auto;
+    margin-bottom: 15px; /* Reduced spacing */
+    text-align: center;
+    max-width: 300px;
+    background-color: #222 !important;
+    font-size: 1.25em; /* Slightly smaller font size */
+    color: #eeeaea; /* Darker color for emphasis */
+    font-weight: bold;
+    padding: 8px;
+}
+
+/* Flex Container for Events */
+.event-group-items {
+    display: flex;
+    gap: 12px; /* Reduced gap */
+}
+
+/* General Event Item Styling */
+.event-item {
+    margin-bottom: 5px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #fff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+.event-item h3 {
+    font-size: 1.2em;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.event-item p {
+    font-size: 0.9em;
+    margin: 4px 0;
+    color: #555;
+}
+
+/* Films Section */
+.event-films {
+    margin-top: 12px;
+}
+
+/* Individual Film Item */
+.events-film-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px; /* Space between image and content */
+    margin-bottom: 12px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+}
+
+.events-film-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.events-film-poster {
+    width: 120px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.events-film-content {
+    flex: 1;
+}
+
+.events-film-name {
+    font-size: 1em;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 6px;
+}
+
+.events-film-details,
+.events-film-description,
+.events-film-credits {
+    font-size: 0.85em;
+    color: #555;
+    margin-bottom: 4px;
+}
+
+.events-film-details p,
+.events-film-credits p {
+    margin: 2px 0;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .events-film-item {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .events-film-poster {
+        width: 100%;
+        max-width: 200px;
+        margin-bottom: 8px;
+    }
+
+    .events-film-content {
+        text-align: center;
+    }
+}
+
+/* Film Page Details */
+/* Film Page Details */
+/* Film Page Details */
+/* Film Page Details */
+
+/* Film Details */
+#film-details-container {
+    margin: 20px auto 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+    background-color: #000;
+}
+
+#film-details-container::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.3;
+    z-index: -1;
+}
+
+.film-details, .film-description {
+    text-align: center;
+    color: #fff;
+    /* background-color: #000; */
+}
+
+.film-title {
+    font-size: 2.5em;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+.hero-section {
+    position: relative;
+    width: 100%;
+    height: 30vh;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+    padding-left: 5%;
+    padding-bottom: 2%;
+}
+
+.film-poster {
+    max-width: 75%;
+    height: auto;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+    /* position: absolute;
+    bottom: 0; */
+}
+
+.film-info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    color: #fff;
+}
+
+.film-info div, .film-tag-pill {
+    background: #555;
+    color: #fff;
+    padding: 5px 10px;
+    margin: 2px;
+    border-radius: 10px;
+    font-size: 0.8em;
+    text-align: center;
+}
+
+.film-events {
+    margin-top: 20px;
+    width: 100%;
+    background: linear-gradient(to bottom, #333, #000);
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.event-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #555;
+    border-radius: 8px;
+    background-color: #444;
+    color: #eee;
+}
+
+.event-date-time {
+    flex: 1;
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: center;
+    border-right: 2px dotted #666;
+    padding-right: 10px;
+    line-height: 1.5em;
+}
+
+.event-details {
+    flex: 2;
+    padding: 0 20px;
+    text-align: left;
+}
+/* film details css */
+
+#film-details-container {
+    margin-top: 20px;
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 20px;
+border: 1px solid #ddd;
+border-radius: 8px;
+box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
+margin: 0 auto;
+position: relative;
+overflow: hidden;
+background-color: #000; /* Slight white background to make text readable */
+}
+
+#film-details-container::before {
+content: '';
+position: absolute;
+top: 20px;
+left: 0;
+width: 100%;
+height: 100%;
+background-image: url(''); /* URL of the background image */
+background-size: cover;
+background-position: center;
+opacity: 0.3; /* Adjust this value to change the transparency */
+z-index: -1; /* Ensure the background is behind the content */
+}
+    
+    .film-details {
+        text-align: center;
+        padding: 15px;
+    }
+    
+    .film-title {
+        font-size: 2.5em;
+        font-weight: bold;
+        margin: 0;
+        margin: 20px 0;
+    }
+    
+    .film-description {
+        font-size: 1.2em;
+        color: #fff;
+        margin: 20px 10%;
+    }
+
+    .hero-section {
+position: relative;
+width: 100%;
+height: 30vh; /* Full viewport height */
+background-size: cover;
+background-position: center;
+display: flex;
+justify-content: flex-start;
+align-items: flex-end; /* Align items to the bottom */
+padding-left: 5%; /* Adjust padding as needed */
+padding-bottom: 2%; /* Adjust padding as needed */
+}
+
+.film-images {
+position: relative;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.film-poster {
+max-width: 75%; /* Adjust the max-width for the poster as needed */
+height: auto;
+box-shadow: 0 0 20px rgba(255, 255, 255, 0.7); /* Soft white outer glow */
+/* position: absolute;
+bottom: 0; */
+}
+    
+    .film-info {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        color: #fff;
+    }
+    
+    .film-info div {
+        flex: 1;
+        min-width: 100px;
+        font-size: 1.2em;
+        color: #fff;
+        background: #555;
+    }
+    
+    .film-tags {
+        margin-top: 10px;
+        font-size: 1em;
+    }
+    
+    .film-tag-pill {
+        display: inline-block;
+        padding: 5px 10px;
+        margin: 2px;
+        background-color: #666; /* Blue background */
+        color: white; /* White text */
+        border-radius: 10px; /* Rounded corners */
+        font-size: 0.8em;
+        text-align: center;
+    }
+    
+    .film-tag-pill:hover {
+        background-color: #0056b3; /* Darker blue on hover */
+    }
+    
+    .film-events {
+margin-top: 20px;
+width: 100%;
+background: linear-gradient(to bottom, #333, #000); /* Dark gradient gray background */
+padding: 20px;
+border-radius: 8px;
+}
+
+.event-box {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #555; /* Darker border color */
+border-radius: 8px;
+background-color: #444; /* Darker background color */
+color: #eee; /* Light text color */
+}
+
+.event-date-time {
+flex: 1;
+font-size: 1.5em;
+font-weight: bold;
+color: #eee; /* Light text color */
+text-align: center;
+border-right: 2px dotted #666; /* Darker border color */
+padding-right: 10px;
+line-height: 1.5em;
+}
+
+.event-date-time .date {
+font-size: 1.5em;
+}
+
+.event-details {
+flex: 2;
+padding: 0 20px;
+text-align: left;
+color: #eee; /* Light text color */
+}
+
+/* Optional: Styling for ticket buckets */
+.ticket-bucket {
+margin-top: 10px;
+color: #ddd; /* Light text color for ticket buckets */
+}
+
+/* Catalog Container */
+#catalog-film-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    padding: 20px;
+    background-color: #222; /* Dark background for the catalog */
+}
+
+/* Film Box */
+.catalog-film-box {
+    width: 275px;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent card background */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.catalog-film-box:hover {
+    transform: scale(1.03);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.7);
+}
+
+/* Film Image */
+.catalog-film-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Film Details */
+.catalog-film-details {
+    padding: 15px;
+    color: #fff; /* White text */
+    text-align: left;
+    line-height: 1.5;
+}
+
+.catalog-film-title {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #f9c74f; /* Highlighted text color */
+}
+
+.catalog-film-description {
+    font-size: 0.9em;
+    margin-bottom: 10px;
+}
+
+.catalog-film-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+/* Tag Pill */
+.catalog-film-tag-pill {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: var(--tag-color, #444); /* Use dynamic tag color if available */
+    color: white;
+    border-radius: 10px;
+    font-size: 0.8em;
+    text-align: center;
+    transition: background-color 0.2s;
+}
+
+.catalog-film-tag-pill:hover {
+    background-color: #f9c74f; /* Highlight tag on hover */
+    color: #222; /* Darker text on hover */
+}
+
+/* Details Link */
+.catalog-film-details-link a {
+    display: inline-block;
+    margin-top: 10px;
+    color: #f9c74f;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.2s;
+}
+
+.catalog-film-details-link a:hover {
+    color: #ffba08; /* Brighter highlight on hover */
+}
+
+/* Fallback Messages */
+.catalog-no-films, .catalog-error {
+    color: #f00; /* Error or empty message in red */
+    font-size: 1.2em;
+    text-align: center;
+    margin: 20px;
+}
+
+
+/* marquee slide css */
+
+.eventive-marquee-container {
+    position: relative;
+    width: 100%;
+    height: 300px; /* Adjust height as needed */
+    overflow: hidden;
+}
+
+.eventive-marquee {
+    display: flex;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.marquee-content {
+    display: flex;
+    width: 200%; /* Twice the width to ensure looping */
+    animation: scrollMarquee 60s linear infinite;
+}
+
+@keyframes scrollMarquee {
+    0% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(-50%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.poster-slide {
+    flex: 0 0 auto;
+    width: 200px;
+    height: 300px;
+    background-size: cover;
+    background-position: center;
+    margin-right: 10px;
+    transition: transform 0.3s ease;
+    position: relative;
+}
+
+.poster-slide::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 100%;
+    height: 20px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.3), transparent);
+    z-index: 1;
+    pointer-events: none;
+}
+
+.poster-slide:hover {
+    transform: scale(1.1);
+}
+
+
+/* tags css */
+
+.tag-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+.s_tag {
+    background-color: #e0e0e0;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 1em;
+    color: #333;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+.s_tag a {
+    color: inherit;
+    text-decoration: none;
+}
+.s_tag:hover {
+    background-color: #bdbdbd;
+}
+

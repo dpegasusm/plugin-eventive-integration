@@ -1,0 +1,84 @@
+/* Fundraiser Container */
+#eventive-donations-container {
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    /* max-width: 600px; */
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    animation: fadeIn 1s ease-in-out;
+}
+
+/* Header */
+#eventive-donations-container h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #0366d6;
+    margin-bottom: 20px;
+}
+
+/* Progress Bar Container */
+#eventive-donations-container .progress-bar-container {
+    position: relative;
+    width: 100%;
+    height: 30px;
+    background: linear-gradient(to right, #f0f0f0, #e0e0e0);
+    border-radius: 15px;
+    overflow: hidden;
+    margin: 20px 0;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Progress Bar */
+#eventive-donations-container .progress-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: linear-gradient(to right, #4caf50, #81c784);
+    border-radius: 15px;
+    animation: progressBarAnimation 2s ease-in-out;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Animated Numbers */
+#eventive-donations-container p {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 10px 0;
+    animation: fadeIn 1s ease-in-out;
+    color: #333;
+}
+
+/* Keyframes for Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes progressBarAnimation {
+    from {
+        width: 0%;
+    }
+    to {
+        width: var(--progress-percent);
+    }
+}
+
+/* Success Message */
+#eventive-donations-container .success {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #4caf50;
+    margin-top: 10px;
+    animation: fadeIn 1s ease-in-out;
+}

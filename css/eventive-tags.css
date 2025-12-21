@@ -1,0 +1,51 @@
+
+
+
+.tag-label {
+  display: inline-block;
+  padding: 4px 10px;
+  margin: 0 6px 6px 0;
+  font-weight: 600;
+  border-radius: 16px;
+  text-transform: uppercase;
+  background-color: #ccc;
+  color: #3f3f3f;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.tag-label a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.tag-label:hover {
+  filter: brightness(0.95);
+  cursor: pointer;
+}
+
+
+
+.eventive-tag-select {
+  display: inline-block;
+  padding: 8px 12px;
+  margin: 10px 0;
+  border-radius: 16px;
+  background-color: #f5f5f5;
+  color: #333;
+  font-weight: 600;
+  font-size: 0.875rem;
+  border: 1px solid #bbb;
+  appearance: none;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2210%22%20height%3D%226%22%20viewBox%3D%220%200%2010%206%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cpath%20d%3D%22M0%200l5%206%205-6z%22%20fill%3D%22%23333%22/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 10px 6px;
+  padding-right: 32px;
+}
+
+.eventive-tag-select:hover {
+  background-color: #e4e4e4;
+}

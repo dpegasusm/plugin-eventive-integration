@@ -1,0 +1,217 @@
+.weekly-calendar-container {
+  margin: 20px auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+/* Style for navigation arrows */
+.week-nav-button {
+    border: none;
+    background: none;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 10px;
+    color: rgb(209, 38, 17);
+    transition: color 0.3s ease;
+}
+
+.week-nav-button:hover {
+    color: rgb(180, 30, 15);
+}
+
+.week-nav-button.is-disabled { opacity: .4; cursor: not-allowed; }
+
+/* Wraps the day buttons */
+.weekly-calendar-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-grow: 1;
+  flex-wrap: wrap;
+  margin-bottom: 0;
+}
+
+.yr-day-btn {
+  border: 1px solid rgb(209, 38, 17);
+  background-color: rgb(244, 241, 241);
+  color: rgb(209, 38, 17);
+  font-family: Lato, sans-serif;
+  font-size: 14px;
+  line-height: 1.4em;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 10px 12px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background-color 450ms cubic-bezier(0.23, 1, 0.32, 1), color 200ms ease;
+}
+.yr-day-btn:hover { background-color: rgb(180, 30, 15); color: #ffffff; }
+.yr-day-btn.is-active { background-color: rgb(180, 30, 15); color: #ffffff; }
+
+/* (Deprecated in this view) .film-details / .film-poster */
+
+.events-container {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.yr-card {
+  grid-column: span 12;
+  display: flex;
+  flex-direction: column; /* stacked: media -> body -> CTA */
+  gap: 12px;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  background: #fff;
+  color: #161616;
+}
+
+.yr-card__media { width: 100%; }
+.yr-card__media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
+/* Cover mode: crop to a banner */
+.eventive-native-year-round[data-image-type="cover"] .yr-card__media img {
+  height: 180px;
+  object-fit: cover;
+}
+/* Still mode: similar to cover but slightly taller for typical stills */
+.eventive-native-year-round[data-image-type="still"] .yr-card__media img {
+  /* height: 200px; */
+  object-fit: cover;
+}
+/* Poster mode: keep aspect, no crop */
+.eventive-native-year-round[data-image-type="poster"] .yr-card__media img {
+  height: auto;
+  /* max-height: 360px; */
+  object-fit: contain;
+}
+
+.yr-card__body { align-self: stretch; }
+.yr-card__title { margin: 0 0 6px; font-size: 18px; line-height: 1.25; }
+.yr-card__meta { font-size: 14px; opacity: 0.8; margin-bottom: 6px; }
+.yr-card__desc { margin: 0 0 8px; font-size: 14px; line-height: 1.45; }
+.yr-card__links { margin-top: 6px; }
+.yr-more { font-weight: 700; text-transform: uppercase; font-size: 12px; letter-spacing: 0.02em; }
+
+.yr-card__cta { margin-top: 4px; }
+.yr-card__cta .eventive-button { width: 100%; min-height: 36px; }
+
+@media (min-width: 600px) {
+  .yr-card { grid-column: span 6; }
+}
+@media (min-width: 900px) {
+  .yr-card { grid-column: span 4; }
+}
+
+.yr-day-btn.is-disabled {
+  opacity: .45;
+  cursor: not-allowed;
+  filter: grayscale(0.3);
+}
+
+/* --- Year-Round: showtimes (compact flex buttons) --- */
+/* Container: wrap left-to-right and keep compact cells */
+.yr-card__showtimes.yr-showtimes-flex {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: stretch;
+  margin-top: 6px;
+}
+
+/* Each button cell stays small but responsive */
+.yr-showtime__btn {
+  /* min 160px, prefers ~33% of row, caps at 220px */
+  flex: 0 1 clamp(160px, 33%, 220px) !important;
+}
+
+/* Make the Eventive widget fill the cell */
+.yr-showtime__btn .eventive__universal_ticket-button__container,
+.yr-showtime__btn .eventive__ticket-button__container,
+.yr-showtime__btn .eventive__universal_ticket-button__button,
+.yr-showtime__btn .eventive__ticket-button__button,
+.yr-showtime__btn .eventive-button,
+.yr-showtime__btn .eventive__ticket-button__button button {
+  width: 100% !important;
+}
+
+/* Compact button height + readable label */
+.yr-showtime__btn .eventive__ticket-button__button button {
+  height: 34px !important;
+  min-height: 34px !important;
+  line-height: 34px !important;
+}
+
+/* Time-as-label styling with icon; keep text tight */
+.eventive__ticket-button__button button span.evt-ticket-btn {
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px;
+}
+.eventive__ticket-button__button button span.evt-ticket-btn::before {
+  content: "";
+  display: inline-block;
+  width: 14px; height: 14px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 10a2 2 0 0 0 2-2V6a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v2a2 2 0 0 0 0 4v2a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-2a2 2 0 0 0-2-2Z'/%3E%3Cpath d='M8 7h8'/%3E%3C/svg%3E") no-repeat center / 14px 14px;
+}
+
+/* (Legacy grid + row rules removed; we now use compact flex buttons only) */
+
+/* Centered message when no events exist */
+.yr-no-events {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-muted, #555);
+  padding: 60px 20px;
+  opacity: 0.85;
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 8px;
+}
+
+/* --- Loader --- */
+.yr-loading {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 60px 20px;
+  text-align: center;
+  font-size: 1rem;
+  color: var(--text-muted, #555);
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 8px;
+}
+.yr-loading svg {
+  width: 28px;
+  height: 28px;
+  stroke: var(--primary-color, #d12611);
+}
+.yr-loading span {
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}

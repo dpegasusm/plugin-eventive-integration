@@ -1,0 +1,249 @@
+/* General Admin Container Styling */
+.eventive-admin-container {
+    display: flex;
+    flex-wrap: wrap; /* Allows wrapping to the next line */
+    gap: 20px; /* Adds space between items */
+    justify-content: space-between; /* Ensures even spacing */
+    margin: 20px 20px 20px 0px;
+}
+
+
+/* Admin Box Styling */
+.eventive-admin-box {
+    flex: 1 1 calc(50% - 20px); /* Takes 50% of the container minus the gap */
+    box-sizing: border-box; /* Ensures padding and border are included in the width */
+    border: 1px solid #d0d0d0;
+    padding: 20px;
+    margin: 0; /* Ensure gap is handled by container */
+    background-color: #f5f5f5;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    font-family: Arial, sans-serif;
+}
+
+.eventive-dashboard-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.eventive-dashboard-box {
+    flex: 1 1 calc(25% - 20px); /* Makes four boxes per row */
+    background: linear-gradient(145deg, #f0f4ff, #e0e8ff);
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    color: #333;
+    font-weight: bold;
+    font-size: 18px;
+    position: relative;
+    overflow: hidden;
+}
+
+.eventive-dashboard-box strong {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.eventive-dashboard-box span.count {
+    font-size: 32px;
+    color: #2a7df3;
+    font-weight: 700;
+    display: inline-block;
+    transition: color 0.3s;
+}
+
+/* Hover effects */
+.eventive-dashboard-box:hover {
+    transform: translateY(-5px);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.eventive-dashboard-box:hover span.count {
+    color: #1e60d4;
+}
+
+
+
+/* Admin Box Header */
+.eventive-admin-box h2 {
+    color: #005f8d;
+    font-size: 1.5em;
+    margin-bottom: 15px;
+}
+
+/* Admin Box Paragraph Text */
+.eventive-admin-box p {
+    margin-bottom: 10px;
+    color: #555;
+    font-size: 1em;
+    line-height: 1.6;
+}
+
+/* Form Inputs and Selects */
+input[type="password"],
+input[type="text"],
+select {
+    width: 100%;
+    max-width: 500px;
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #d0d0d0;
+    border-radius: 6px;
+    background-color: #fff;
+    font-size: 1em;
+    color: #333;
+    transition: border-color 0.2s;
+}
+
+input[type="password"]:focus,
+input[type="text"]:focus,
+select:focus {
+    border-color: #0073aa;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 115, 170, 0.3);
+}
+
+/* Checkboxes */
+input[type="checkbox"] {
+    margin-left: 10px;
+}
+
+/* Buttons */
+button {
+    background-color: #0073aa;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+button:hover {
+    background-color: #005f8d;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Error Notices */
+.notice-error {
+    color: #e53935;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+/* Dashboard Styling */
+#eventive-dashboard {
+    padding: 20px;
+    background-color: #eaeaea;
+    border: 1px solid #d0d0d0;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+#eventive-dashboard h2 {
+    color: #333;
+    font-size: 1.2em;
+    margin-bottom: 15px;
+}
+
+#eventive-dashboard div {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    font-weight: bold;
+    color: #0073aa;
+}
+
+#eventive-dashboard div strong {
+    color: #333;
+}
+
+#eventive-dashboard p {
+    font-size: 1em;
+    color: #555;
+}
+
+/* Shadowed Metric Cards */
+.eventive-metric-card {
+    display: inline-block;
+    width: calc(50% - 10px);
+    background: #ffffff;
+    border: 1px solid #d0d0d0;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 5px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-align: center;
+}
+
+.eventive-metric-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.eventive-metric-card h3 {
+    color: #0073aa;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.eventive-metric-card span {
+    font-size: 2em;
+    color: #333;
+    font-weight: bold;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .eventive-admin-box {
+        flex: 1 1 100%; /* Full width on smaller screens */
+    }
+
+  
+    #eventive-dashboard {
+        text-align: left;
+    }
+
+    .eventive-metric-card {
+        width: 100%;
+    }
+}
+/* Eventive Loader Override Meta Box */
+#eventive_loader_override_box {
+    font-family: Arial, sans-serif;
+    padding: 0px !important;
+}
+
+#eventive_loader_override_box label {
+    font-weight: 600;
+    display: block;
+    margin-top: 15px;
+    color: #333;
+}
+
+#eventive_loader_override_box .postbox-header{
+    margin-top: 20px;
+    padding-top: 15px;
+}
+
+#eventive_loader_override {
+    width: 100%;
+    font-size: 14px;
+    background-color: #f9f9f9;
+    transition: border-color 0.2s ease;
+}
+
+#eventive_loader_override:focus {
+    border-color: #0073aa;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 115, 170, 0.3);
+}

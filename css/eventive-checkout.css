@@ -1,0 +1,51 @@
+
+
+/* Remove table borders */
+.Eventive--Checkout table,
+.Eventive--Checkout th,
+.Eventive--Checkout td {
+  border: none !important;
+}
+
+/* Table header styling */
+.Eventive--Checkout thead tr {
+  background-color: #f5f5f5 !important;
+}
+
+.Eventive--Checkout thead th {
+  color: #666 !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  padding: 12px 20px !important;
+  font-size: 12px !important;
+  text-align: left !important;
+}
+
+/* Table body styling */
+.Eventive--Checkout tbody td {
+  padding: 14px 20px !important;
+  text-align: left !important;
+  vertical-align: middle !important;
+  color: #222 !important;
+  background-color: #fff !important;
+}
+
+/* Stripe alternate rows */
+.Eventive--Checkout tbody tr:nth-child(even) td {
+  background-color: #f9f9f9 !important;
+}
+
+/* Optional: highlight row on hover */
+.Eventive--Checkout tbody tr:hover td {
+  background-color: #f0f0f0 !important;
+}
+
+/* Make quantities and prices more readable */
+.Eventive--Checkout td input[type="text"] {
+  font-size: 14px !important;
+  text-align: center !important;
+  border: none !important;
+  background-color: transparent !important;
+  width: 32px !important;
+  color: #333 !important;
+}

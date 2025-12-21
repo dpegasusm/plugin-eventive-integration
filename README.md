@@ -1,1 +1,2 @@
-# plugin-eventive-wp-connector
+# eventive-wordpress-plugin
+Eventive Wordpress Plugin Repository

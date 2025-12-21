@@ -1,0 +1,125 @@
+/* =========================================================
+   Eventive Marquee — Cleaned & Validated
+   ========================================================= */
+
+/* Wrapper and decorative overlay */
+.eventive-marquee-wrapper { position: relative; }
+.eventive-marquee-overlay {
+  position: absolute; inset: 0; z-index: 0;
+  background-size: cover; background-position: center; background-repeat: repeat;
+  opacity: 0.22; pointer-events: none; filter: saturate(0.9) contrast(1.05);
+}
+
+/* Ensure the container/content sits above overlay */
+.eventive-marquee-container { 
+  position: relative; 
+  z-index: 1; 
+  width: 100%;
+  height: 320px; /* slightly larger default */
+  overflow: hidden;
+  margin: 20px 0;
+  border-radius: 12px;
+  background: #111;
+}
+
+/* Caption bar overlaying bottom */
+.eventive-marquee-caption {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  z-index: 3; pointer-events: none;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.35) 40%, rgba(0,0,0,0.55) 100%);
+  padding: 8px 0; backdrop-filter: blur(2px);
+  min-height: 34px; line-height: 1.3;
+  overflow: hidden; /* clip scrolling text to the bar */
+  border-bottom-left-radius: 12px; /* match container radius */
+  border-bottom-right-radius: 12px;
+  /* feather the left/right edges so text fades in/out nicely */
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
+          mask-image: linear-gradient(to right, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
+}
+.eventive-marquee-caption-track {
+  white-space: nowrap; display: inline-block;
+  font-size: 0.95rem; letter-spacing: 0.02em; color: #e9f8fb;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.45);
+  will-change: transform;
+}
+
+/* Opposite-direction scroll for caption */
+@keyframes captionOppose {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+.caption-scroll { 
+  animation-name: captionOppose; 
+  animation-timing-function: linear; 
+  animation-iteration-count: infinite; 
+}
+
+/* Marquee layout */
+.eventive-marquee {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1; /* base layer above overlay */
+}
+
+.marquee-content {
+  position: relative;
+  z-index: 2; 
+  display: flex;
+  width: 200%;
+  animation: scrollMarquee 60s linear infinite;
+  will-change: transform;
+}
+
+/* Keyframe Animation for Marquee */
+@keyframes scrollMarquee {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+/* Poster Slide Styling */
+.poster-slide {
+  flex: 0 0 auto;
+  width: 210px;
+  height: 320px;
+  background-size: cover;
+  background-position: center;
+  margin-right: 12px;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  position: relative;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.poster-slide::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.3), transparent);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.poster-slide:hover {
+  transform: scale(1.08);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+  z-index: 2;
+}
+
+/* Desktop adjustments */
+@media (min-width: 1024px) {
+  .eventive-marquee-container { height: 380px; }
+  .poster-slide { width: 250px; height: 360px; }
+  .eventive-marquee-caption { padding: 10px 0; }
+  .eventive-marquee-caption-track { font-size: 1.05rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .caption-scroll { animation: none !important; }
+}
