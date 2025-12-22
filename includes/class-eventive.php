@@ -49,7 +49,7 @@ class eventive_Film {
 				'admin_notices',
 				function() {
 					echo '<div class="notice notice-warning is-dismissible">
-						<p><strong>eventive Film Plugin:</strong> Agile API Key is not set. Please set it in the <a href="' . esc_url( admin_url( 'options-general.php?page=eventive-film-settings' ) ) . '">settings page</a> to enable film schedule updates.</p>
+						<p><strong>Eventive:</strong> API Key is not set. Please set it in the <a href="' . esc_url( admin_url( 'options-general.php?page=eventive-film-settings' ) ) . '">settings page</a> to enable integration.</p>
 					</div>';
 				}
 			);

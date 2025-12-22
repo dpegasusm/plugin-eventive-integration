@@ -75,7 +75,7 @@ class Eventive_Settings {
 	 */
 	public function eventive_register_settings() {
 		// Create the Navbar section.
-		add_settings_section( 'eventive_api_section', __( 'API Settings', 'eventive' ), '__return_true', 'eventive_options' );
+		add_settings_section( 'eventive_info_section', __( 'Eventive Configuration Settings', 'eventive' ), array( $this, 'eventive_admin_options_section_info' ), 'eventive_options' );
 
 		// Add the Navbar settings.
 		register_setting( 'eventive_options', 'eventive_navbar_box_title', 'sanitize_text_field' );
@@ -86,7 +86,7 @@ class Eventive_Settings {
 			esc_html__( 'Event Secret Key', 'eventive' ),
 			array( $this, 'eventive_text_field_callback' ),
 			'eventive_options',
-			'eventive_api_section',
+			'eventive_info_section',
 			array(
 				'label_for' => 'eventive_secret_key',
 				'label'     => esc_html__( 'Title to go in the callout box on the bottom of the nav menu.', 'eventive' ),
@@ -105,13 +105,13 @@ class Eventive_Settings {
 			// add the settings field.
 			add_settings_field(
 				'eventive_event_bucket_id',
-				esc_html__( 'Event Bucket ID', 'provincetown' ),
+				esc_html__( 'Event Bucket ID', 'eventive' ),
 				array( $this, 'eventive_dropdown_callback' ),
 				'eventive_options',
-				'eventive_api_section',
+				'eventive_info_section',
 				array(
 					'label_for' => 'eventive_event_bucket_id',
-					'label'     => esc_html__( 'Text to go in the callout box on the bottom of the nav menu.', 'provincetown' ),
+					'label'     => esc_html__( 'Text to go in the callout box on the bottom of the nav menu.', 'eventive' ),
 					'default'   => '',
 					'values'    => array(), // This will be populated via JS on the front. 
 				)
@@ -128,6 +128,15 @@ class Eventive_Settings {
 		?>
 		<div class="wrap">
 			<h1><?php esc_html_e( 'Eventive Settings', 'eventive' ); ?></h1>
+			<form method="post" action="options.php" accept-charset="utf-8">
+				<?php
+				settings_fields( 'eventive_options' );
+
+				do_settings_sections( 'eventive_options' );
+
+				submit_button();
+				?>
+			</form>
 
 			<h2><?php esc_html_e( 'Sync Films with Eventive', 'eventive' ); ?></h2>
 			<p><?php esc_html_e( 'Click the buttons below to sync the respective films with Eventive.', 'eventive' ); ?></p>
@@ -141,18 +150,18 @@ class Eventive_Settings {
 				<br>
 				<br>
 			</form>
-			
-			<form method="post" action="options.php" accept-charset="utf-8">
-		<?php
-		settings_fields( 'eventive_options' );
-
-		do_settings_sections( 'eventive_options' );
-
-		submit_button();
-		?>
-			</form>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Section info callback.
+	 * 
+	 * @return void
+	 * 
+	 */
+	public function eventive_admin_options_section_info() {
+		echo esc_html__( 'Welcome organizers! Use this page to configure the Eventive plugin options below.', 'eventive' );
 	}
 
 	/**
@@ -214,7 +223,7 @@ class Eventive_Settings {
 
 		$value = get_option( $field, $default );
 
-		echo '<input type="text" name="' . esc_attr( $field ) . '" id="' . esc_attr( $field ) . '-field" value="' . esc_attr( $value ) . '"> <button type="button" class="button button-secondary upload-button" id="' . esc_attr( $field ) . '-button" name="' . esc_attr( $field ) . '">' . esc_html__( 'Choose File', 'provincetown' ) . '</button>';
+		echo '<input type="text" name="' . esc_attr( $field ) . '" id="' . esc_attr( $field ) . '-field" value="' . esc_attr( $value ) . '"> <button type="button" class="button button-secondary upload-button" id="' . esc_attr( $field ) . '-button" name="' . esc_attr( $field ) . '">' . esc_html__( 'Choose File', 'eventive' ) . '</button>';
 	}
 
 	/**
@@ -266,7 +275,7 @@ class Eventive_Settings {
 
 		// Start the dropdown.
 		echo '<select name="' . esc_attr( $field ) . '" id="' . esc_attr( $field ) . '" style="width: 100%;">';
-		echo '<option value="">' . esc_html__( 'Select an Option', 'provincetown' ) . '</option>';
+		echo '<option value="">' . esc_html__( 'Select an Option', 'eventive' ) . '</option>';
 
 		// Loop through the pages and add them as options.
 		foreach ( $values as $key => $label ) {
@@ -334,7 +343,7 @@ class Eventive_Settings {
 				'admin_notices',
 				function () use ( $label ) {
 					// Translators: %s is the label of the films synced.
-					echo '<div class="notice notice-success is-dismissible"><p>' . sprintf( esc_html__( '%s successfully synced with Eventive.', 'provincetown' ), esc_html( $label ) ) . '</p></div>';
+					echo '<div class="notice notice-success is-dismissible"><p>' . sprintf( esc_html__( '%s successfully synced with Eventive.', 'eventive' ), esc_html( $label ) ) . '</p></div>';
 				}
 			);
 		} else {
@@ -343,7 +352,7 @@ class Eventive_Settings {
 				'admin_notices',
 				function () use ( $label ) {
 					// Translators: %s is the label of the films synced.
-					echo '<div class="notice notice-warning is-dismissible"><p>' . sprintf( esc_html__( 'No %s found to sync.', 'provincetown' ), esc_html( $label ) ) . '</p></div>';
+					echo '<div class="notice notice-warning is-dismissible"><p>' . sprintf( esc_html__( 'No %s found to sync.', 'eventive' ), esc_html( $label ) ) . '</p></div>';
 				}
 			);
 		}
