@@ -1,17 +1,17 @@
 {
-	"name": "dpegasusm/plugin-eventive-wordpress-integration",
+	"name": "dpegasusm/plugin-eventive-integration",
 	"type": "package",
 	"description": "Eventive Integration for WordPress.",
 	"keywords": [
 		"WordPress",
 		"Plugins"
 	],
-	"homepage": "https://github.com/dpegasusm/plugin-eventive-wordpress-integration",
+	"homepage": "https://github.com/dpegasusm/plugin-eventive-integration",
 	"license": "GPL-2.0-or-later",
 	"authors": [
 		{
 			"name": "David Marshall",
-			"homepage": "https://github.com/dpegasusm/plugin-eventive-wordpress-integration"
+			"homepage": "https://github.com/dpegasusm/plugin-eventive-integration"
 		}
 	],
 	"require": {

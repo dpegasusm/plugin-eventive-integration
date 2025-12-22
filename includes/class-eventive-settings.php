@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Dumplings_Member_List
  */
-class Eventive_WP_Settings {
+class Eventive_Settings {
 
 	/**
 	 * Init callback for register.
@@ -43,7 +43,7 @@ class Eventive_WP_Settings {
 	 * @return void
 	 */
 	public function eventive_admin_menu() {
-		$page = add_options_page( __( 'EventiveWP', 'eventive-wp' ), __( 'EventiveWP', 'eventive-wp' ), 'manage_options', 'eventive_options', array( $this, 'eventive_options_page' ) );
+		$page = add_options_page( __( 'EventiveWP', 'eventive' ), __( 'EventiveWP', 'eventive' ), 'manage_options', 'eventive_options', array( $this, 'eventive_options_page' ) );
 	}
 
 	/**
@@ -61,9 +61,9 @@ class Eventive_WP_Settings {
 		// Enqueue your custom script here.
 		wp_enqueue_script(
 			'eventive-options-script',
-			EVENTIVE_WP_PLUGIN . 'assets/js/eventive-options.js',
+			EVENTIVE_PLUGIN . 'assets/js/eventive-options.js',
 			array( 'jquery' ),
-			EVENTIVE_WP_CURRENT_VERSION,
+			EVENTIVE_CURRENT_VERSION,
 			true
 		);
 	}
@@ -75,7 +75,7 @@ class Eventive_WP_Settings {
 	 */
 	public function eventive_register_settings() {
 		// Create the Navbar section.
-		add_settings_section( 'eventive_api_section', __( 'API Settings', 'eventive-wp' ), '__return_true', 'eventive_options' );
+		add_settings_section( 'eventive_api_section', __( 'API Settings', 'eventive' ), '__return_true', 'eventive_options' );
 
 		// Add the Navbar settings.
 		register_setting( 'eventive_options', 'eventive_navbar_box_title', 'sanitize_text_field' );
@@ -83,13 +83,13 @@ class Eventive_WP_Settings {
 		// Fields to be added to the Navbar section.
 		add_settings_field(
 			'eventive_secret_key',
-			esc_html__( 'Event Secret Key', 'eventive-wp' ),
+			esc_html__( 'Event Secret Key', 'eventive' ),
 			array( $this, 'eventive_text_field_callback' ),
 			'eventive_options',
 			'eventive_api_section',
 			array(
 				'label_for' => 'eventive_secret_key',
-				'label'     => esc_html__( 'Title to go in the callout box on the bottom of the nav menu.', 'eventive-wp' ),
+				'label'     => esc_html__( 'Title to go in the callout box on the bottom of the nav menu.', 'eventive' ),
 				'default'   => '',
 			)
 		);
@@ -127,16 +127,16 @@ class Eventive_WP_Settings {
 	public function eventive_options_page() {
 		?>
 		<div class="wrap">
-			<h1><?php esc_html_e( 'Eventive Settings', 'eventive-wp' ); ?></h1>
+			<h1><?php esc_html_e( 'Eventive Settings', 'eventive' ); ?></h1>
 
-			<h2><?php esc_html_e( 'Sync Films with Eventive', 'eventive-wp' ); ?></h2>
-			<p><?php esc_html_e( 'Click the buttons below to sync the respective films with Eventive.', 'eventive-wp' ); ?></p>
+			<h2><?php esc_html_e( 'Sync Films with Eventive', 'eventive' ); ?></h2>
+			<p><?php esc_html_e( 'Click the buttons below to sync the respective films with Eventive.', 'eventive' ); ?></p>
 
 			<!-- Festival Films Button -->
 			<form method="post" action="">
 				<?php wp_nonce_field( 'eventive_sync_events', 'eventive_sync_events_nonce' ); ?>
 				<button type="submit" name="eventive_sync_events" class="button button-primary">
-					<?php esc_html_e( 'Sync Films with Eventive', 'eventive-wp' ); ?>
+					<?php esc_html_e( 'Sync Films with Eventive', 'eventive' ); ?>
 				</button>
 				<br>
 				<br>

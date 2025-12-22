@@ -22,7 +22,7 @@ class Provincetown_Film_API {
 	 * @access public
 	 * @var string
 	 */
-	public $api_url_base = '';
+	public $api_url_base = 'https://api.eventive.org/';
 
 	/**
 	 * Endpoint for listing items.
@@ -304,7 +304,7 @@ class Provincetown_Film_API {
 	 */
 	public function init() {
 		// Instantiate the base URL for the API.
-		$this->api_url_base = esc_url_raw( 'https://prod1.agileticketing.net/api/sales.svc/json/' );
+		$this->api_url_base = esc_url_raw( $this->api_url_base );
 
 		add_action( 'init', array( $this, 'provincetown_set_api_endpoints' ) );
 
