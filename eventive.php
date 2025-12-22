@@ -37,14 +37,24 @@ define( 'EVENTIVE_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 define( 'EVENTIVE_CURRENT_VERSION', ( $plugin_data && $plugin_data['Version'] ) ? $plugin_data['Version'] : '1.0.0' );
 
 // Load the front-end functionality.
-require_once EVENTIVE_PLUGIN_PATH . 'includes/class-eventive-block.php';
-$eventive_block = new Eventive_Blocks();
-$eventive_block->init();
+require_once EVENTIVE_PLUGIN_PATH . 'includes/class-eventive.php';
+$eventive = new Eventive();
+$eventive->init();
 
-// Load the admin functionality.
-require_once EVENTIVE_PLUGIN_PATH . 'includes/class-eventive-admin.php';
-$eventive_admin = new Eventive_Admin();
-$eventive_admin->init();
+// Load the front-end functionality.
+require_once EVENTIVE_PLUGIN_PATH . 'includes/class-eventive-settings.php';
+$eventive_settings = new Eventive_Settings();
+$eventive_settings->init();
+
+// Load the front-end functionality.
+require_once EVENTIVE_PLUGIN_PATH . 'includes/class-eventive-blocks.php';
+$eventive_blocks = new Eventive_Blocks();
+$eventive_blocks->init();
+
+// Load the front-end functionality.
+require_once EVENTIVE_PLUGIN_PATH . 'includes/class-eventive-api.php';
+$eventive_api = new Eventive_API();
+$eventive_api->init();
 
 /**
  * Run on activate to setup the plugin

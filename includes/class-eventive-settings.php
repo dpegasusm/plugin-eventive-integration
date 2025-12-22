@@ -148,7 +148,9 @@ class Eventive_Settings {
 					<?php esc_html_e( 'Sync Films with Eventive', 'eventive' ); ?>
 				</button>
 				<br>
-				<br>
+				<div class='eventive-sync-progress' id='eventive-sync-events-progress' style='margin-top:10px; display:none;'>
+					<?php esc_html_e( 'Syncing films, please wait...', 'eventive' ); ?>
+				</div>
 			</form>
 		</div>
 		<?php
