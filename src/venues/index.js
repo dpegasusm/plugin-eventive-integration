@@ -25,11 +25,11 @@ import Save from './save';
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
  */
-registerBlockType( metadata.name, {
+registerBlockType(metadata.name, {
 	/**
 	 * @see ./edit.js
 	 */
 	edit: Edit,
 	save: Save,
-	icon: 'admin-users',
-} );
+	icon: 'location-alt',
+});

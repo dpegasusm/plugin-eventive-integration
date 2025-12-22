@@ -1,27 +1,98 @@
-.provincetown-agile-login,
-.provincetown-agile-account {
-  display: inline-block;
-  margin: 0 5px;
+/**
+ * Eventive Venues Block - Frontend Styles
+ *
+ * @package Eventive
+ * @since 1.0.0
+ */
+
+.wp-block-eventive-eventive-venues {
+	width: 100%;
+	max-width: 1200px;
+	margin: 0 auto;
+
+	.eventive-venues-container {
+		width: 100%;
+	}
+
+	.eventive-venue-card {
+		display: flex;
+		border: 1px solid #ddd;
+		padding: 20px;
+		margin: 15px 0;
+		border-radius: 4px;
+		background-color: #fff;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		transition: box-shadow 0.3s ease, transform 0.3s ease;
+
+		&:hover {
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+			transform: translateY(-2px);
+		}
+
+		> div:first-child {
+			flex-grow: 1;
+
+			p {
+				margin: 0;
+				line-height: 1.6;
+
+				strong {
+					font-size: 1.2em;
+					color: #333;
+					display: block;
+					margin-bottom: 8px;
+				}
+
+				span {
+					display: inline-block;
+					margin-bottom: 4px;
+				}
+			}
+		}
+
+		img {
+			max-width: 200px;
+			height: auto;
+			border-radius: 4px;
+			margin-left: 20px;
+			object-fit: cover;
+		}
+	}
+
+	.eventive-venues-loading,
+	.eventive-venues-empty {
+		padding: 20px;
+		text-align: center;
+		color: #666;
+		font-style: italic;
+	}
+
+	.eventive-venues-error {
+		padding: 15px;
+		background-color: #fef7f1;
+		border-left: 4px solid #d63638;
+		color: #d63638;
+		border-radius: 2px;
+		margin: 15px 0;
+
+		p {
+			margin: 0;
+		}
+	}
 }
 
-#provincetown-agile-login,
-#provincetown-agile-account {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 3px solid #555;
-  display: inline-block;
-  align-items: center;
-  padding: 0;
-  margin: 0;
+// Responsive design
+@media screen and (max-width: 768px) {
+	.wp-block-eventive-eventive-venues {
+		.eventive-venue-card {
+			flex-direction: column;
+
+			img {
+				margin-left: 0;
+				margin-top: 15px;
+				max-width: 100%;
+			}
+		}
+	}
 }
 
-#provincetown-agile-login .user-icon,
-#provincetown-agile-account .user-icon {
-  font-size: 28px;
-  color: #555;
-  padding: 0;
-  margin: 0;
-  margin-left: 1px;
-  margin-top: 1px;
-}

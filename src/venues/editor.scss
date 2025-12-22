@@ -1,0 +1,20 @@
+/**
+ * Eventive Venues Block - Editor Styles
+ *
+ * @package Eventive
+ * @since 1.0.0
+ */
+
+.wp-block-eventive-eventive-venues {
+	.components-placeholder {
+		min-height: 200px;
+
+		.components-placeholder__label {
+			margin-bottom: 10px;
+		}
+
+		.components-placeholder__instructions {
+			margin-bottom: 20px;
+		}
+	}
+}
