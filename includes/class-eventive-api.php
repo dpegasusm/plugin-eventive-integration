@@ -25,60 +25,94 @@ class Eventive_API {
 	public $api_url_base = 'https://api.eventive.org/';
 
 	/**
-	 * Endpoint for listing items.
+	 * The cache duration for search results.
 	 *
-	 * @access public
-	 * @var string
+	 * @var int $api_cache_duration
 	 */
-	public $api_endpoint_item_list = '';
+	private $api_cache_duration = 3600; // 1 hour.
 
 	/**
-	 * Endpoint for getting a specific item.
+	 * The App API Key in memory.
 	 *
-	 * @access public
-	 * @var string
+	 * @var int $api_secret_key
 	 */
-	public $api_endpoint_item_get = '';
+	private $api_secret_key = '';
 
 	/**
-	 * Endpoint for listing item prices.
+	 * The api bucket ID in memory.
 	 *
-	 * @access public
-	 * @var string
+	 * @var int $api_bucket_id
 	 */
-	public $api_endpoint_item_list_prices = '';
+	private $api_bucket_id = null;
 
 	/**
-	 * Endpoint for listing venues.
+	 * Endpoint for event buckets.
 	 *
 	 * @access public
 	 * @var string
 	 */
-	public $api_endpoint_venue_list = '';
+	public $api_endpoint_event_buckets = 'event_buckets';
 
 	/**
-	 * Endpoint for getting a specific venue.
+	 * Endpoint for event bucket variable endpoints.
 	 *
 	 * @access public
 	 * @var string
 	 */
-	public $api_endpoint_venue_get = '';
+	public $api_endpoint_event_bucket_endpoints = array(
+		'tags'       => array( 
+			'events',
+			'films'
+		 ),
+	);
 
 	/**
-	 * Endpoint for listing buyer types.
+	 * Endpoint for events.
 	 *
 	 * @access public
 	 * @var string
 	 */
-	public $api_endpoint_buyer_type_list = '';
+	public $api_endpoint_events = 'events';
 
 	/**
-	 * Endpoint for listing inventory groups.
+	 * Endpoint for films.
 	 *
 	 * @access public
 	 * @var string
 	 */
-	public $api_endpoint_inventory_group_list = '';
+	public $api_endpoint_films = 'films';
+
+	/**
+	 * Endpoint for item buckets.
+	 *
+	 * @access public
+	 * @var string
+	 */
+	public $api_endpoint_item_buckets = 'item_buckets';
+
+	/**
+	 * Endpoint for items.
+	 *
+	 * @access public
+	 * @var string
+	 */
+	public $api_endpoint_items = 'items';
+
+	/**
+	 * Endpoint for ledger.
+	 *
+	 * @access public
+	 * @var string
+	 */
+	public $api_endpoint_ledger = 'ledger';
+
+	/**
+	 * Endpoint for order.
+	 *
+	 * @access public
+	 * @var string
+	 */
+	public $api_endpoint_order = 'order';
 
 	/**
 	 * Endpoint for getting organization control details.
@@ -86,215 +120,31 @@ class Eventive_API {
 	 * @access public
 	 * @var string
 	 */
-	public $api_endpoint_org_control_get = '';
+	public $api_endpoint_passes = 'passes';
 
 	/**
-	 * Endpoint for listing membership access.
+	 * Endpoint for people.
 	 *
 	 * @access public
 	 * @var string
 	 */
-	public $api_endpoint_membership_list_access = '';
+	public $api_endpoint_people = 'people';
 
 	/**
-	 * Endpoint for listing member restrictions.
+	 * Endpoint for tags.
 	 *
 	 * @access public
 	 * @var string
 	 */
-	public $api_endpoint_member_restriction_list = '';
+	public $api_endpoint_tags = 'tags';
 
 	/**
-	 * Endpoint for authenticating via email.
+	 * Endpoint for tickets.
 	 *
 	 * @access public
 	 * @var string
 	 */
-	public $api_endpoint_authenticate_email = '';
-
-	/**
-	 * Endpoint for authenticating a member.
-	 *
-	 * @access public
-	 * @var string
-	 */
-	public $api_endpoint_authenticate_member = '';
-
-	/**
-	 * Endpoint for adding a customer.
-	 *
-	 * @access public
-	 * @var string
-	 */
-	public $api_endpoint_customer_add = '';
-
-	/**
-	 * Endpoint for updating a customer.
-	 *
-	 * @access public
-	 * @var string
-	 */
-	public $api_endpoint_customer_update = '';
-
-	/**
-	 * Endpoint for searching customers.
-	 *
-	 * @access public
-	 * @var string
-	 */
-	public $api_endpoint_customer_search = '';
-
-	/**
-	 * Endpoint for listing streaming customers.
-	 *
-	 * @access public
-	 * @var string
-	 */
-	public $api_endpoint_customer_list_streaming = '';
-
-	/**
-	 * Endpoint for getting streaming customer details.
-	 *
-	 * @access public
-	 * @var string
-	 */
-	public $api_endpoint_customer_get_streaming = '';
-
-	/**
-	 * Endpoint for redeeming streaming content.
-	 *
-	 * @access public
-	 * @var string
-	 */
-	public $api_endpoint_customer_redeem_streaming = '';
-
-	/**
-	 * Endpoint for listing customer event history.
-	 *
-	 * @access public
-	 * @var string
-	 */
-	public $api_endpoint_customer_list_event_history = '';
-
-	/**
-	 * Endpoint for listing customer e-delivery items.
-	 *
-	 * @access public
-	 * @var string
-	 */
-	public $api_endpoint_customer_list_edelivery = '';
-
-	/**
-	 * Endpoint for adding a web user.
-	 *
-	 * @access public
-	 * @var string
-	 */
-	public $api_endpoint_web_user_add = '';
-
-	/**
-	 * Endpoint for updating a web user.
-	 *
-	 * @access public
-	 * @var string
-	 */
-	public $api_endpoint_web_user_update = '';
-
-	/**
-	 * Endpoint for adding items to an order.
-	 *
-	 * @access public
-	 * @var string
-	 */
-	public $api_endpoint_order_add_items = '';
-
-	/**
-	 * Endpoint for deleting items from an order.
-	 *
-	 * @access public
-	 * @var string
-	 */
-	public $api_endpoint_order_delete_items = '';
-
-	/**
-	 * Endpoint for checking order status.
-	 *
-	 * @access public
-	 * @var string
-	 */
-	public $api_endpoint_order_status = '';
-
-	/**
-	 * Endpoint for updating an order.
-	 *
-	 * @access public
-	 * @var string
-	 */
-	public $api_endpoint_order_update = '';
-
-	/**
-	 * Endpoint for transferring an order.
-	 *
-	 * @access public
-	 * @var string
-	 */
-	public $api_endpoint_order_transfer = '';
-
-	/**
-	 * Endpoint for canceling an order.
-	 *
-	 * @access public
-	 * @var string
-	 */
-	public $api_endpoint_order_cancel = '';
-
-	/**
-	 * Endpoint for voiding an order.
-	 *
-	 * @access public
-	 * @var string
-	 */
-	public $api_endpoint_order_void = '';
-
-	/**
-	 * Endpoint for voiding an order.
-	 *
-	 * @access public
-	 * @var string
-	 */
-	public $api_app_key = '';
-
-	/**
-	 * Endpoint for voiding an order.
-	 *
-	 * @access public
-	 * @var string
-	 */
-	public $api_user_key = '';
-
-	/**
-	 * Endpoint for voiding an order.
-	 *
-	 * @access public
-	 * @var string
-	 */
-	public $api_corp_org_id = '';
-
-	/**
-	 * Endpoint for voiding an order.
-	 *
-	 * @access public
-	 * @var string
-	 */
-	public $api_item_org_id = '';
-
-	/**
-	 * Endpoint for voiding an order.
-	 *
-	 * @access public
-	 * @var string
-	 */
-	public $api_buyer_type_id = '';
+	public $api_endpoint_tickets = 'tickets';
 
 	/**
 	 * Init Class.
@@ -303,13 +153,36 @@ class Eventive_API {
 	 * @return void
 	 */
 	public function init() {
-		// Instantiate the base URL for the API.
-		$this->api_url_base = esc_url_raw( $this->api_url_base );
-
-		add_action( 'init', array( $this, 'eventive_set_api_endpoints' ) );
-
 		// Register our custom API endpoints.
-		add_action( 'rest_api_init', array( $this, 'register_custom_api_endpoints' ) );
+		add_action( 'rest_api_init', array( $this, 'eventive_set_api_endpoints' ) );
+
+		// Instantiate the base URL for the API.
+		$this->api_url_base = apply_filters( 'eventive_api_url_base', esc_url_raw( $this->api_url_base ) );
+
+		// Cache Duration.
+		$this->api_cache_duration = apply_filters( 'eventive_api_cache_duration', 3600 ); // 1 hour
+
+		// Get the required Query Args for the API from the options.
+		$this->api_secret_key = get_option( 'eventive_secret_key', '' );
+		$this->api_bucket_id  = get_option( 'eventive_event_bucket_id', '' );
+
+		// end here if we dont have an API key or bucket ID.
+		if ( empty( $this->api_secret_key ) || empty( $this->api_bucket_id ) ) {
+			return;
+		}
+
+		// Set the API endpoints with the mandatory query args.
+		$this->api_endpoint_event_buckets = apply_filters( 'api_endpoint_event_buckets', esc_url_raw( $this->api_endpoint_event_buckets ) );
+		$this->api_endpoint_events        = apply_filters( 'api_endpoint_events', esc_url_raw( $this->api_endpoint_events ) );
+		$this->api_endpoint_films         = apply_filters( 'api_endpoint_films', esc_url_raw( $this->api_endpoint_films ) );
+		$this->api_endpoint_item_buckets  = apply_filters( 'api_endpoint_item_buckets', esc_url_raw( $this->api_endpoint_item_buckets ) );
+		$this->api_endpoint_items         = apply_filters( 'api_endpoint_items', esc_url_raw( $this->api_endpoint_items ) );
+		$this->api_endpoint_ledger        = apply_filters( 'api_endpoint_ledger', esc_url_raw( $this->api_endpoint_ledger ) );
+		$this->api_endpoint_order         = apply_filters( 'api_endpoint_order', esc_url_raw( $this->api_endpoint_order ) );
+		$this->api_endpoint_passes        = apply_filters( 'api_endpoint_passes', esc_url_raw( $this->api_endpoint_passes ) );
+		$this->api_endpoint_people        = apply_filters( 'api_endpoint_people', esc_url_raw( $this->api_endpoint_people ) );
+		$this->api_endpoint_tags          = apply_filters( 'api_endpoint_tags', esc_url_raw( $this->api_endpoint_tags ) );
+		$this->api_endpoint_tickets       = apply_filters( 'api_endpoint_tickets', esc_url_raw( $this->api_endpoint_tickets ) );
 	}
 
 	/**
@@ -319,95 +192,233 @@ class Eventive_API {
 	 * @return void
 	 */
 	public function eventive_set_api_endpoints() {
-		// Get the required Query Args for the API from the options.
-		$api_app_key       = get_option( 'eventive_agile_api_app_key', '' );
-		$api_user_key      = get_option( 'eventive_agile_api_user_key', '' );
-		$api_corp_org_id   = get_option( 'eventive_agile_api_corp_org_id', '' );
-		$api_item_org_id   = get_option( 'eventive_agile_api_item_org_id', '' );
-		$api_buyer_type_id = intval( get_option( 'eventive_agile_api_buyer_type_id', '' ) );
+		// Get our event Buckets.
+		register_rest_route(
+			'eventive/v1',
+			'/' . $this->api_endpoint_event_buckets,
+			array(
+				'methods'  => 'GET',
+				'callback' => array( $this, 'get_api_event_buckets' ),
+				'permission_callback' => array( $this, 'check_api_nonce' ),
+				'args'                => array(
+					'bucket_id' => array(
+						'default'           => '',
+						'sanitize_callback' => 'absint',
+						'validate_callback' => function ( $param ) {
+							return is_int( $param ) && $param >= 0;
+						},
+					),
+				),
+			)
+		);
 
-		// If the user is logged in, extract the Buyer Type ID from the user's memberships.
-		if ( is_user_logged_in() ) {
-			$current_user = wp_get_current_user();
-			$customer_id  = intval( get_user_meta( $current_user->ID, 'eventive_customer_id', true ) );
+		// Events Rest Route.
+		register_rest_route(
+			'eventive/v1',
+			'/' . $this->api_endpoint_events,
+			array(
+				'methods'  => 'GET',
+				'callback' => array( $this, 'get_api_events' ),
+				'permission_callback' => array( $this, 'check_api_nonce' ),
+				'args'                => array(
+					'event_id' => array(
+						'default'           => '',
+						'sanitize_callback' => 'absint',
+						'validate_callback' => function ( $param ) {
+							return is_int( $param ) && $param >= 0;
+						},
+					),
+				),
+			)
+		);
 
-			// we also need ot get the buyer type ID as well as the membership ID.
-			$buyer_type = intval( get_user_meta( $current_user->ID, 'eventive_buyer_type', true ) );
-			$member_id  = intval( get_user_meta( $current_user->ID, 'eventive_member_id', true ) );
+		// Films Rest Route.
+		register_rest_route(
+			'eventive/v1',
+			'/' . $this->api_endpoint_films,
+			array(
+				'methods'  => 'GET',
+				'callback' => array( $this, 'get_api_films' ),
+				'permission_callback' => array( $this, 'check_api_nonce' ),
+				'args'                => array(
+					'film_id' => array(
+						'default'           => '',
+						'sanitize_callback' => 'absint',
+						'validate_callback' => function ( $param ) {
+							return is_int( $param ) && $param >= 0;
+						},
+					),
+				),
+			)
+		);
 
-			// Lets do a quick sanity check on the Buyer type to verify its in the list of allowed types.
-			$valid_buyer_types = get_option( 'eventive_agile_api_valid_buyer_type_ids', '' );
-			$valid_buyer_types = explode( ',', $valid_buyer_types );
-			$valid_buyer_types = array_map( 'trim', $valid_buyer_types );
-			$valid_buyer_types = array_map( 'intval', $valid_buyer_types );
+		// Item Buckets Rest Route.
+		register_rest_route(
+			'eventive/v1',
+			'/' . $this->api_endpoint_item_buckets,
+			array(
+				'methods'  => 'GET',
+				'callback' => array( $this, 'get_api_item_buckets' ),
+				'permission_callback' => array( $this, 'check_api_nonce' ),
+				'args'                => array(
+					'item_bucket_id' => array(
+						'default'           => '',
+						'sanitize_callback' => 'absint',
+						'validate_callback' => function ( $param ) {
+							return is_int( $param ) && $param >= 0;
+						},
+					),
+				),
+			)
+		);
 
-			// If the buyer type is not in the list of valid buyer types, set it to an empty string.
-			if ( in_array( $buyer_type, $valid_buyer_types, true ) ) {
-				$api_buyer_type_id = $buyer_type;
-			}
+		// Items Rest Route.
+		register_rest_route(
+			'eventive/v1',
+			'/' . $this->api_endpoint_items,
+			array(
+				'methods'  => 'GET',
+				'callback' => array( $this, 'get_api_items' ),
+				'permission_callback' => array( $this, 'check_api_nonce' ),
+				'args'                => array(
+					'item_id' => array(
+						'default'           => '',
+						'sanitize_callback' => 'absint',
+						'validate_callback' => function ( $param ) {
+							return is_int( $param ) && $param >= 0;
+						},
+					),
+				),
+			)
+		);
+
+		// Ledger Rest Route.
+		register_rest_route(
+			'eventive/v1',
+			'/' . $this->api_endpoint_ledger,
+			array(
+				'methods'  => 'GET',
+				'callback' => array( $this, 'get_api_ledger' ),
+				'permission_callback' => array( $this, 'check_api_nonce' ),
+			)
+		);
+
+		// Order Rest Route.
+		register_rest_route(
+			'eventive/v1',
+			'/' . $this->api_endpoint_order,
+			array(
+				'methods'  => 'GET',
+				'callback' => array( $this, 'get_api_order' ),
+				'permission_callback' => array( $this, 'check_api_nonce' ),
+				'args'                => array(
+					'order_id' => array(
+						'default'           => '',
+						'sanitize_callback' => 'absint',
+						'validate_callback' => function ( $param ) {
+							return is_int( $param ) && $param >= 0;
+						},
+					),
+				),
+			)
+		);
+
+		// Passes Rest Route.
+		register_rest_route(
+			'eventive/v1',
+			'/' . $this->api_endpoint_passes,
+			array(
+				'methods'  => 'GET',
+				'callback' => array( $this, 'get_api_passes' ),
+				'permission_callback' => array( $this, 'check_api_nonce' ),
+				'args'                => array(
+					'pass_id' => array(
+						'default'           => '',
+						'sanitize_callback' => 'absint',
+						'validate_callback' => function ( $param ) {
+							return is_int( $param ) && $param >= 0;
+						},
+					),
+				),
+			)
+		);
+
+		// People Rest Route.
+		register_rest_route(
+			'eventive/v1',
+			'/' . $this->api_endpoint_people,
+			array(
+				'methods'  => 'GET',
+				'callback' => array( $this, 'get_api_people' ),
+				'permission_callback' => array( $this, 'check_api_nonce' ),
+				'args'                => array(
+					'person_id' => array(
+						'default'           => '',
+						'sanitize_callback' => 'absint',
+						'validate_callback' => function ( $param ) {
+							return is_int( $param ) && $param >= 0;
+						},
+					),
+				),
+			)
+		);
+
+		// Tags Rest Route.
+		register_rest_route(
+			'eventive/v1',
+			'/' . $this->api_endpoint_tags,
+			array(
+				'methods'  => 'GET',
+				'callback' => array( $this, 'get_api_tags' ),
+				'permission_callback' => array( $this, 'check_api_nonce' ),
+				'args'                => array(
+					'tag_id' => array(
+						'default'           => '',
+						'sanitize_callback' => 'absint',
+						'validate_callback' => function ( $param ) {
+							return is_int( $param ) && $param >= 0;
+						},
+					),
+				),
+			)
+		);
+
+		// Tickets Rest Route.
+		register_rest_route(
+			'eventive/v1',
+			'/' . $this->api_endpoint_tickets,
+			array(
+				'methods'  => 'GET',
+				'callback' => array( $this, 'get_api_tickets' ),
+				'permission_callback' => array( $this, 'check_api_nonce' ),
+				'args'                => array(
+					'ticket_id' => array(
+						'default'           => '',
+						'sanitize_callback' => 'absint',
+						'validate_callback' => function ( $param ) {
+							return is_int( $param ) && $param >= 0;
+						},
+					),
+				),
+			)
+		);
+	}
+
+	/**
+	 * Check that this is a valid request via the nonce check parameter.
+	 *
+	 * @since 1.0.0
+	 * @param WP_REST_Request $request The request object.
+	 *
+	 * @return bool True if valid, false otherwise.
+	 */
+	public function check_api_nonce( $request ) {
+		// While we develop and check make these readable.
+		$nonce = $request->get_param( 'eventive_nonce' );
+		if ( $nonce && wp_verify_nonce( $nonce, 'eventive_api_nonce' ) ) {
+			return true;
 		}
-
-		// Set the API keys.
-		$this->api_app_key       = $api_app_key;
-		$this->api_user_key      = $api_user_key;
-		$this->api_corp_org_id   = $api_corp_org_id;
-		$this->api_item_org_id   = $api_item_org_id;
-		$this->api_buyer_type_id = $api_buyer_type_id;
-
-		// These query args are required for the API to work.
-		$required_query_args = array(
-			'appkey'    => $this->api_app_key,
-			'userkey'   => $this->api_user_key,
-			'corporgid' => $this->api_corp_org_id,
-		);
-
-		// Set the API endpoints with the mandatory query args.
-		$this->api_endpoint_item_list                   = add_query_arg( $required_query_args, $this->api_url_base . 'itemlist' );
-		$this->api_endpoint_item_get                    = add_query_arg( $required_query_args, $this->api_url_base . 'itemget' );
-		$this->api_endpoint_item_list_prices            = add_query_arg( $required_query_args, $this->api_url_base . 'itemlistprices' );
-		$this->api_endpoint_venue_list                  = add_query_arg( $required_query_args, $this->api_url_base . 'venuelist' );
-		$this->api_endpoint_venue_get                   = add_query_arg( $required_query_args, $this->api_url_base . 'venueget' );
-		$this->api_endpoint_buyer_type_list             = add_query_arg( $required_query_args, $this->api_url_base . 'buyertypelist' );
-		$this->api_endpoint_inventory_group_list        = add_query_arg( $required_query_args, $this->api_url_base . 'inventorygrouplist' );
-		$this->api_endpoint_org_control_get             = add_query_arg( $required_query_args, $this->api_url_base . 'orgcontrolget' );
-		$this->api_endpoint_membership_list_access      = add_query_arg( $required_query_args, $this->api_url_base . 'membershiplistaccess' );
-		$this->api_endpoint_member_restriction_list     = add_query_arg( $required_query_args, $this->api_url_base . 'memberrestrictionlist' );
-		$this->api_endpoint_authenticate_email          = add_query_arg( $required_query_args, $this->api_url_base . 'authenticateemail' );
-		$this->api_endpoint_authenticate_member         = add_query_arg( $required_query_args, $this->api_url_base . 'authenticatemember' );
-		$this->api_endpoint_customer_add                = add_query_arg( $required_query_args, $this->api_url_base . 'customeradd' );
-		$this->api_endpoint_customer_update             = add_query_arg( $required_query_args, $this->api_url_base . 'customerupdate' );
-		$this->api_endpoint_customer_search             = add_query_arg( $required_query_args, $this->api_url_base . 'customersearch' );
-		$this->api_endpoint_customer_list_streaming     = add_query_arg( $required_query_args, $this->api_url_base . 'customerliststreaming' );
-		$this->api_endpoint_customer_get_streaming      = add_query_arg( $required_query_args, $this->api_url_base . 'customergetstreaming' );
-		$this->api_endpoint_customer_redeem_streaming   = add_query_arg( $required_query_args, $this->api_url_base . 'customerredeemstreaming' );
-		$this->api_endpoint_customer_list_event_history = add_query_arg( $required_query_args, $this->api_url_base . 'customerlisteventhistory' );
-		$this->api_endpoint_customer_list_edelivery     = add_query_arg( $required_query_args, $this->api_url_base . 'customerlistedelivery' );
-		$this->api_endpoint_web_user_add                = add_query_arg( $required_query_args, $this->api_url_base . 'webuseradd' );
-		$this->api_endpoint_web_user_update             = add_query_arg( $required_query_args, $this->api_url_base . 'webuserupdate' );
-		$this->api_endpoint_order_add_items             = add_query_arg( $required_query_args, $this->api_url_base . 'orderadditems' );
-		$this->api_endpoint_order_delete_items          = add_query_arg( $required_query_args, $this->api_url_base . 'orderdeleteitems' );
-		$this->api_endpoint_order_status                = add_query_arg( $required_query_args, $this->api_url_base . 'orderstatus' );
-		$this->api_endpoint_order_update                = add_query_arg( $required_query_args, $this->api_url_base . 'orderupdate' );
-		$this->api_endpoint_order_transfer              = add_query_arg( $required_query_args, $this->api_url_base . 'ordertransfer' );
-		$this->api_endpoint_order_cancel                = add_query_arg( $required_query_args, $this->api_url_base . 'ordercancel' );
-		$this->api_endpoint_order_void                  = add_query_arg( $required_query_args, $this->api_url_base . 'ordervoid' );
-
-		// Add the required Query Args to the URL.
-		$buyer_query_args = array(
-			'eventorgid' => $this->api_item_org_id,
-		);
-
-		$this->api_endpoint_item_list        = add_query_arg( $buyer_query_args, $this->api_endpoint_item_list );
-		$this->api_endpoint_item_list_prices = add_query_arg( $buyer_query_args, $this->api_endpoint_item_list_prices );
-
-		// Buyer Type ID is required for the item get endpoint.
-		$buyer_type = array(
-			'buyertypeid' => $this->api_buyer_type_id,
-		);
-
-		$this->api_endpoint_item_list_prices = add_query_arg( $buyer_type, $this->api_endpoint_item_list_prices );
-		$this->api_endpoint_item_get         = add_query_arg( $buyer_type, $this->api_endpoint_item_get );
-		$this->api_endpoint_order_add_items  = add_query_arg( $buyer_type, $this->api_endpoint_order_add_items );
+		return false;
 	}
 
 	/**
@@ -498,5 +509,159 @@ class Eventive_API {
 
 		// Return the Response body as decoded JSON.
 		return $data;
+	}
+
+	/**
+	 * Get API Buckets
+	 * 
+	 * @access public
+	 * @return void
+	 */
+	public function get_api_event_buckets() {
+		// Build the endpoint URL.
+		$endpoint = esc_url_raw( $this->api_url_base . $this->api_endpoint_event_buckets );
+
+		// Make the API call.
+		$response = $this->eventive_make_api_call( $endpoint );
+		return rest_ensure_response( $response );
+	}
+
+	/**
+	 * Get API Events
+	 * 
+	 * @access public
+	 * @return void
+	 */
+	public function get_api_events() {
+		// Build the endpoint URL.
+		$endpoint = esc_url_raw( $this->api_url_base . $this->api_endpoint_events );
+		// Make the API call.
+		$response = $this->eventive_make_api_call( $endpoint );
+		return rest_ensure_response( $response );
+	}
+
+	/**
+	 * Get API Films
+	 * 
+	 * @access public
+	 * @return void
+	 */	public function get_api_films() {
+		// Build the endpoint URL.
+		$endpoint = esc_url_raw( $this->api_url_base . $this->api_endpoint_films );
+		// Make the API call.
+		$response = $this->eventive_make_api_call( $endpoint );
+		return rest_ensure_response( $response );
+	}
+
+	/**
+	 * Get API Item Buckets
+	 * 
+	 * @access public
+	 * @return void
+	 */
+	public function get_api_item_buckets() {
+		// Build the endpoint URL.
+		$endpoint = esc_url_raw( $this->api_url_base . $this->api_endpoint_item_buckets );
+		// Make the API call.
+		$response = $this->eventive_make_api_call( $endpoint );
+		return rest_ensure_response( $response );
+	}
+
+	/**
+	 * Get API Items
+	 * 
+	 * @access public
+	 * @return void
+	 */
+	public function get_api_items() {
+		// Build the endpoint URL.
+		$endpoint = esc_url_raw( $this->api_url_base . $this->api_endpoint_items );
+		// Make the API call.
+		$response = $this->eventive_make_api_call( $endpoint );
+		return rest_ensure_response( $response );
+	}
+
+	/**
+	 * Get API Ledger
+	 * 
+	 * @access public
+	 * @return void
+	 */
+	public function get_api_ledger() {
+		// Build the endpoint URL.
+		$endpoint = esc_url_raw( $this->api_url_base . $this->api_endpoint_ledger );
+		// Make the API call.
+		$response = $this->eventive_make_api_call( $endpoint );
+		return rest_ensure_response( $response );
+	}
+
+	/**
+	 * Get API Order
+	 * 
+	 * @access public
+	 * @return void
+	 */	
+	public function get_api_order() {
+		// Build the endpoint URL.
+		$endpoint = esc_url_raw( $this->api_url_base . $this->api_endpoint_order );
+		// Make the API call.
+		$response = $this->eventive_make_api_call( $endpoint );
+		return rest_ensure_response( $response );
+	}
+
+	/**
+	 * Get API Passes
+	 * 
+	 * @access public
+	 * @return void
+	 */
+	public function get_api_passes() {
+		// Build the endpoint URL.
+		$endpoint = esc_url_raw( $this->api_url_base . $this->api_endpoint_passes );
+		// Make the API call.
+		$response = $this->eventive_make_api_call( $endpoint );
+		return rest_ensure_response( $response );
+	}
+
+	/**
+	 * Get API People
+	 * 
+	 * @access public
+	 * @return void
+	 */
+	public function get_api_people() {
+		// Build the endpoint URL.
+		$endpoint = esc_url_raw( $this->api_url_base . $this->api_endpoint_people );
+		// Make the API call.
+		$response = $this->eventive_make_api_call( $endpoint );
+		return rest_ensure_response( $response );
+	}
+
+	/**
+	 * Get API Tags
+	 * 
+	 * @access public
+	 * @return void
+	 */
+	public function get_api_tags() {
+		// Build the endpoint URL.
+		$endpoint = esc_url_raw( $this->api_url_base . $this->api_endpoint_tags );
+		// Make the API call.
+		$response = $this->eventive_make_api_call( $endpoint );
+		return rest_ensure_response( $response );
+	}
+
+	/**
+	 * Get API Tickets
+	 * 
+	 * @access public
+	 * @return void
+	 */
+	public function get_api_tickets() {
+		// Build the endpoint URL.
+		$endpoint = esc_url_raw( $this->api_url_base . $this->api_endpoint_tickets );
+		// Make the API call.
+		$response = $this->eventive_make_api_call( $endpoint );
+		return rest_ensure_response( $response );
 	}
 }

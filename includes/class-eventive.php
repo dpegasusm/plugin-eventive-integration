@@ -34,10 +34,12 @@ class Eventive {
 	 * @return void
 	 */
 	public function eventive_admin_init() {
-		// Check if we have the API key set.
-		$api_key = get_option( 'eventive_festival_agile_api_key', '' );
+		// Get the API secret key and bucket ID.
+		$this->api_secret_key = get_option( 'eventive_secret_key', '' );
+		$this->api_bucket_id  = get_option( 'eventive_event_bucket_id', '' );
 
-		if ( empty( $api_key ) ) {
+		// Display a notice if we dont have an API key or bucket ID.
+		if ( empty( $this->api_secret_key ) || empty( $this->api_bucket_id ) ) {
 			add_action(
 				'admin_notices',
 				function () {
