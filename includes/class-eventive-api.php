@@ -377,6 +377,7 @@ class Eventive_API {
 				'permission_callback' => array( $this, 'check_api_nonce' ),
 				'args'                => array(
 					'person_id' => array(
+						'required'          => true,
 						'default'           => '',
 						'sanitize_callback' => 'absint',
 						'validate_callback' => function ( $param ) {
