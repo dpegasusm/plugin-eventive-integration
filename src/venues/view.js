@@ -103,17 +103,12 @@ const VenuesContainer = () => {
 	const [ error, setError ] = useState( null );
 
 	useEffect( () => {
-		const loadVenues = () => {
-			if ( ! window.Eventive ) {
-				setError( 'Eventive API is not initialized.' );
-				setLoading( false );
-				return;
-			}
-
-			const handleEventiveReady = () => {
-				// Get API credentials from localized script data
+		const loadVenues = async () => {
+			try {
+				// Get event bucket, endpoints and nonce from localized data
 				const eventBucket = window.EventiveBlockData?.eventBucket || '';
-				const apiKey = window.EventiveBlockData?.apiKey || '';
+				const endpoints = window.EventiveBlockData?.apiEndpoints || {};
+				const nonce = window.EventiveBlockData?.eventNonce || '';
 
 				if ( ! eventBucket ) {
 					setError( 'Event bucket not configured.' );
@@ -121,41 +116,24 @@ const VenuesContainer = () => {
 					return;
 				}
 
-				const apiPath = `event_buckets/${ encodeURIComponent(
-					eventBucket
-				) }/venues`;
-				const headers = apiKey ? { 'x-api-key': apiKey } : {};
-
-				window.Eventive.request( {
+				// Fetch venues from WordPress REST API
+				const data = await wp.apiFetch( {
+					path: `/eventive/v1/${ endpoints.event_buckets }?bucket_id=${ eventBucket }&endpoint=venues&eventive_nonce=${ nonce }`,
 					method: 'GET',
-					path: apiPath,
-					headers,
-				} )
-					.then( ( response ) => {
-						console.log( 'Venues response:', response );
-						if ( response && Array.isArray( response.venues ) ) {
-							setVenues( response.venues );
-						} else {
-							setError( 'No venues found.' );
-						}
-						setLoading( false );
-					} )
-					.catch( ( err ) => {
-						console.error( 'Error fetching venues:', err );
-						setError(
-							`Error fetching venues: ${
-								err.message || 'Unknown error'
-							}`
-						);
-						setLoading( false );
-					} );
-			};
+				} );
 
-			// Check if Eventive is ready
-			if ( window.Eventive.ready ) {
-				handleEventiveReady();
-			} else {
-				window.Eventive.on( 'ready', handleEventiveReady );
+				if ( data && Array.isArray( data.venues ) ) {
+					setVenues( data.venues );
+				} else {
+					setError( 'No venues found.' );
+				}
+				setLoading( false );
+			} catch ( err ) {
+				console.error( 'Error fetching venues:', err );
+				setError(
+					`Error fetching venues: ${ err.message || 'Unknown error' }`
+				);
+				setLoading( false );
 			}
 		};
 

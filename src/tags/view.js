@@ -203,50 +203,39 @@ const TagsContainer = ( { view, display, hideEmpty, excludeTags } ) => {
 	useEffect( () => {
 		const loadTags = async () => {
 			try {
-				// Get event bucket from localized data
+				// Get event bucket and endpoints from localized data
 				const eventBucket = window.EventiveBlockData?.eventBucket || '';
+				const endpoints = window.EventiveBlockData?.apiEndpoints || {};
+				const nonce = window.EventiveBlockData?.eventNonce || '';
+
 				if ( ! eventBucket ) {
 					setError( 'Event bucket not configured.' );
 					setLoading( false );
 					return;
 				}
 
-				// Get REST API URL and nonce from localized data
-				const restUrl =
-					window.EventiveBlockData?.restUrl ||
-					'/wp-json/eventive/v1/';
-				const nonce = window.EventiveBlockData?.restNonce || '';
+				// Fetch tags from WordPress REST API using wp.apiFetch
+				const tagsData = await wp.apiFetch( {
+					path: `/eventive/v1/${ endpoints.event_buckets }?bucket_id=${ eventBucket }&endpoint=tags&eventive_nonce=${ nonce }`,
+					method: 'GET',
+				} );
 
-				// Fetch tags from WordPress REST API
-				const tagsResponse = await fetch(
-					`${ restUrl }event_buckets?bucket_id=${ eventBucket }&endpoint=tags&eventive_nonce=${ nonce }`
-				);
-
-				if ( ! tagsResponse.ok ) {
-					throw new Error( 'Failed to fetch tags' );
-				}
-
-				const tagsData = await tagsResponse.json();
 				const tagsList = tagsData?.tags || [];
 
 				// If display is limited to films or events, fetch and filter
 				let allowed = null;
 				if ( display === 'films' ) {
-					const filmsResponse = await fetch(
-						`${ restUrl }event_buckets?bucket_id=${ eventBucket }&endpoint=films&eventive_nonce=${ nonce }`
-					);
-					if ( filmsResponse.ok ) {
-						const filmsData = await filmsResponse.json();
-						allowed = collectTagIds( filmsData );
-					}
+					const filmsData = await wp.apiFetch( {
+						path: `/eventive/v1/${ endpoints.event_buckets }?bucket_id=${ eventBucket }&endpoint=films&eventive_nonce=${ nonce }`,
+						method: 'GET',
+					} );
+					allowed = collectTagIds( filmsData );
 				} else if ( display === 'events' ) {
-					const eventsResponse = await fetch(
-						`${ restUrl }event_buckets?bucket_id=${ eventBucket }&endpoint=events&eventive_nonce=${ nonce }`
-					);
-					if ( eventsResponse.ok ) {
-						const eventsData = await eventsResponse.json();
-						allowed = collectTagIds( eventsData );
-					}
+					const eventsData = await wp.apiFetch( {
+						path: `/eventive/v1/${ endpoints.event_buckets }?bucket_id=${ eventBucket }&endpoint=events&eventive_nonce=${ nonce }`,
+						method: 'GET',
+					} );
+					allowed = collectTagIds( eventsData );
 				}
 
 				setAllowedTagIds( allowed );

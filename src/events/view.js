@@ -31,54 +31,56 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			window.eventiveOptions?.filmSyncEnabled || false;
 
 		// Initialize the events display
-		if ( window.Eventive && window.Eventive.on ) {
-			window.Eventive.on( 'ready', async function () {
-				try {
-					const response = await window.Eventive.request( {
-						method: 'GET',
-						path: `event_buckets/${ eventBucket }/events`,
-						qs: {
-							upcoming_only: true,
-							...( tagId && { 'tag-id': tagId } ),
-							...( venueId && { 'venue-id': venueId } ),
-						},
-					} );
+		const fetchAndRenderEvents = async () => {
+			try {
+				const endpoints = window.EventiveBlockData?.apiEndpoints || {};
+				const nonce = window.EventiveBlockData?.eventNonce || '';
 
-					const events = ( response?.events || [] ).filter(
-						( event ) => ! event.is_virtual
-					);
+				const queryParams = new URLSearchParams( {
+					bucket_id: eventBucket,
+					endpoint: 'events',
+					upcoming_only: 'true',
+					eventive_nonce: nonce,
+					...( tagId && { 'tag-id': tagId } ),
+					...( venueId && { 'venue-id': venueId } ),
+				} );
 
-					renderEvents( block, events, {
-						imageMode,
-						showDescription,
-						showFilter,
-						filmDetailBaseURL,
-						prettyPermalinks,
-						filmSyncEnabled,
-					} );
+				const response = await wp.apiFetch( {
+					path: `/eventive/v1/${ endpoints.event_buckets }?${ queryParams }`,
+					method: 'GET',
+				} );
 
-					// Rebuild Eventive buttons
-					if ( window.Eventive.rebuild ) {
-						window.Eventive.rebuild();
-					}
-				} catch ( error ) {
-					console.error( 'Error fetching events:', error );
-					block.innerHTML =
-						'<p class="error-message">Failed to load events.</p>';
+				const events = ( response?.events || [] ).filter(
+					( event ) => ! event.is_virtual
+				);
+
+				renderEvents( block, events, {
+					imageMode,
+					showDescription,
+					showFilter,
+					filmDetailBaseURL,
+					prettyPermalinks,
+					filmSyncEnabled,
+				} );
+
+				// Rebuild Eventive buttons (if Eventive is loaded for cart/tickets)
+				if ( window.Eventive?.rebuild ) {
+					window.Eventive.rebuild();
 				}
-			} );
-		} else {
-			block.innerHTML =
-				'<p class="error-message">Eventive API is not loaded.</p>';
-		}
-	} );
+			} catch ( error ) {
+				console.error( 'Error fetching events:', error );
+				block.innerHTML =
+					'<p class="error-message">Failed to load events.</p>';
+			}
+		};
 
-	/**
-	 * Render events into the block
-	 * @param container
-	 * @param events
-	 * @param options
-	 */
+		fetchAndRenderEvents();
+	} ); /**
+						 * Render events into the block
+						 * @param container
+						 * @param events
+						 * @param options
+						 */
 	function renderEvents( container, events, options ) {
 		if ( ! events.length ) {
 			container.innerHTML =

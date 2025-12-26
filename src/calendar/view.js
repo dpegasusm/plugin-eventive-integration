@@ -56,41 +56,25 @@ function EventiveCalendar() {
 			return;
 		}
 
-		const fetchEvents = () => {
-			if ( ! window.Eventive || ! window.Eventive.request ) {
-				return;
-			}
+		const fetchEvents = async () => {
+			try {
+				const endpoints = window.EventiveBlockData?.apiEndpoints || {};
+				const nonce = window.EventiveBlockData?.eventNonce || '';
 
-			window.Eventive.request( {
-				method: 'GET',
-				path: `event_buckets/${ eventBucket }/events?upcoming_only=true`,
-			} )
-				.then( ( response ) => {
-					setEvents( response.events || [] );
-					setIsLoading( false );
-				} )
-				.catch( ( error ) => {
-					console.error( 'Error fetching events:', error );
-					setIsLoading( false );
+				const response = await wp.apiFetch( {
+					path: `/eventive/v1/${ endpoints.event_buckets }?bucket_id=${ eventBucket }&endpoint=events&upcoming_only=true&eventive_nonce=${ nonce }`,
+					method: 'GET',
 				} );
+
+				setEvents( response.events || [] );
+				setIsLoading( false );
+			} catch ( error ) {
+				console.error( 'Error fetching events:', error );
+				setIsLoading( false );
+			}
 		};
 
-		if ( window.Eventive && window.Eventive.ready ) {
-			window.Eventive.ready( fetchEvents );
-		} else if ( window.Eventive && window.Eventive.on ) {
-			window.Eventive.on( 'ready', fetchEvents );
-		} else {
-			let attempts = 0;
-			const poll = setInterval( () => {
-				if ( window.Eventive && window.Eventive.request ) {
-					fetchEvents();
-					clearInterval( poll );
-				} else if ( ++attempts > 50 ) {
-					setIsLoading( false );
-					clearInterval( poll );
-				}
-			}, 100 );
-		}
+		fetchEvents();
 	}, [ eventBucket ] );
 
 	const generateCalendar = () => {

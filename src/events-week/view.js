@@ -52,10 +52,12 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 	async function fetchAllEvents( eventBucket, apiKey ) {
 		try {
-			const response = await window.Eventive.request( {
+			const endpoints = window.EventiveBlockData?.apiEndpoints || {};
+			const nonce = window.EventiveBlockData?.eventNonce || '';
+
+			const response = await wp.apiFetch( {
+				path: `/eventive/v1/${ endpoints.event_buckets }?bucket_id=${ eventBucket }&endpoint=events&upcoming_only=true&eventive_nonce=${ nonce }`,
 				method: 'GET',
-				path: `event_buckets/${ eventBucket }/events?upcoming_only=true`,
-				headers: { 'x-api-key': apiKey },
 			} );
 			return response.events || [];
 		} catch ( error ) {

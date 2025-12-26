@@ -163,10 +163,10 @@ class Eventive_Blocks {
 
 		// Prepare data to pass to view scripts.
 		$script_data = array(
-			'apiBase'        => $api_base,
-			'apiEndpoints'   => $api_endpoints,
-			'eventBucket'    => $event_bucket,
-			'eventive_nonce' => wp_create_nonce( 'eventive_api_nonce' ),
+			'apiBase'      => $api_base,
+			'apiEndpoints' => $api_endpoints,
+			'eventBucket'  => $event_bucket,
+			'eventNonce'   => wp_create_nonce( 'eventive_api_nonce' ),
 		);
 
 		// List of blocks with view scripts.
@@ -195,6 +195,9 @@ class Eventive_Blocks {
 		// Localize each view script.
 		foreach ( $blocks_with_views as $script_handle ) {
 			if ( wp_script_is( $script_handle, 'registered' ) ) {
+				// Add the WP REST API script as a dependency.
+				wp_enqueue_script( 'wp-api' );
+
 				wp_localize_script(
 					$script_handle,
 					'EventiveBlockData',

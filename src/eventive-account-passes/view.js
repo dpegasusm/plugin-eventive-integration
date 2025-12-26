@@ -50,10 +50,12 @@ function AccountPassesApp() {
 
 	const fetchPasses = async () => {
 		try {
-			const resp = await window.Eventive.request( {
+			const endpoints = window.EventiveBlockData?.apiEndpoints || {};
+			const nonce = window.EventiveBlockData?.eventNonce || '';
+
+			const resp = await wp.apiFetch( {
+				path: `/eventive/v1/${ endpoints.passes }?self=true&eventive_nonce=${ nonce }`,
 				method: 'GET',
-				path: 'people/self/passes',
-				authenticatePerson: true,
 			} );
 
 			const list = ( resp && ( resp.passes || resp ) ) || [];

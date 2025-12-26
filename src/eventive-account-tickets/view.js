@@ -48,10 +48,12 @@ function AccountTicketsApp() {
 
 	const fetchTickets = async () => {
 		try {
-			const resp = await window.Eventive.request( {
+			const endpoints = window.EventiveBlockData?.apiEndpoints || {};
+			const nonce = window.EventiveBlockData?.eventNonce || '';
+
+			const resp = await wp.apiFetch( {
+				path: `/eventive/v1/${ endpoints.tickets }?self=true&eventive_nonce=${ nonce }`,
 				method: 'GET',
-				path: 'people/self/tickets',
-				authenticatePerson: true,
 			} );
 
 			const list = ( resp && ( resp.tickets || resp ) ) || [];

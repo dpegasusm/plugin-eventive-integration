@@ -146,17 +146,18 @@ function AccountDetailsApp() {
 				setIsLoggedIn( loggedIn );
 
 				if ( loggedIn ) {
-					const resp = await window.Eventive.request( {
+					const endpoints =
+						window.EventiveBlockData?.apiEndpoints || {};
+					const nonce = window.EventiveBlockData?.eventNonce || '';
+
+					const resp = await wp.apiFetch( {
+						path: `/eventive/v1/${ endpoints.people }?self=true&eventive_nonce=${ nonce }`,
 						method: 'GET',
-						path: 'people/self',
-						authenticatePerson: true,
 					} );
 					const person = resp && ( resp.person || resp );
 					window.eventivePersonId = person && person.id;
 					const normalized = normalizePerson( person || {} );
-					setDetails( normalized );
-
-					// Render buttons if available
+					setDetails( normalized ); // Render buttons if available
 					if ( window.Eventive.renderButtons ) {
 						setTimeout(
 							() => window.Eventive.renderButtons(),
@@ -196,27 +197,16 @@ function AccountDetailsApp() {
 				return;
 			}
 
-			const wpApiSettings = window.wpApiSettings || {
-				root: '/',
-				nonce: '',
-			};
-			const url = `${ wpApiSettings.root }eventive/v1/person/${ personId }`;
+			const endpoints = window.EventiveBlockData?.apiEndpoints || {};
+			const nonce = window.EventiveBlockData?.eventNonce || '';
 			const payload = {};
 			payload[ key ] = editValue;
 
-			const res = await fetch( url, {
+			await wp.apiFetch( {
+				path: `/eventive/v1/${ endpoints.people }/${ personId }?eventive_nonce=${ nonce }`,
 				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					'X-WP-Nonce': wpApiSettings.nonce || '',
-				},
-				body: JSON.stringify( payload ),
+				data: payload,
 			} );
-
-			if ( ! res.ok ) {
-				alert( 'Failed to update. Server error.' );
-				return;
-			}
 
 			// Update local state
 			setDetails( { ...details, [ key ]: editValue } );
@@ -235,25 +225,16 @@ function AccountDetailsApp() {
 				return;
 			}
 
-			const wpApiSettings = window.wpApiSettings || {
-				root: '/',
-				nonce: '',
-			};
-			const url = `${ wpApiSettings.root }eventive/v1/person/${ personId }`;
+			const endpoints = window.EventiveBlockData?.apiEndpoints || {};
+			const nonce = window.EventiveBlockData?.eventNonce || '';
 			const payload = { sms_tickets_enabled: checked };
 
-			const res = await fetch( url, {
+			await wp.apiFetch( {
+				path: `/eventive/v1/${ endpoints.people }/${ personId }?eventive_nonce=${ nonce }`,
 				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					'X-WP-Nonce': wpApiSettings.nonce || '',
-				},
-				body: JSON.stringify( payload ),
+				data: payload,
 			} );
-
-			if ( res.ok ) {
-				setDetails( { ...details, sms_tickets_enabled: checked } );
-			}
+			setDetails( { ...details, sms_tickets_enabled: checked } );
 		} catch ( err ) {
 			console.error( 'Error updating SMS setting:', err );
 		}

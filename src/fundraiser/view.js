@@ -27,20 +27,20 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			return;
 		}
 
-		// Construct API call
-		const apiUrl = `/wp-json/eventive/v1/donations?start_time=${ encodeURIComponent(
-			startDate
-		) }&end_time=${ encodeURIComponent( endDate ) }&type=PAYMENT`;
+		// Construct API call with nonce
+		const endpoints = window.EventiveBlockData?.apiEndpoints || {};
+		const nonce = window.EventiveBlockData?.eventNonce || '';
 
-		fetch( apiUrl )
-			.then( ( response ) => {
-				if ( ! response.ok ) {
-					throw new Error(
-						`HTTP error! status: ${ response.status }`
-					);
-				}
-				return response.json();
-			} )
+		wp.apiFetch( {
+			path: `/eventive/v1/${
+				endpoints.ledger || 'ledger'
+			}?start_time=${ encodeURIComponent(
+				startDate
+			) }&end_time=${ encodeURIComponent(
+				endDate
+			) }&type=PAYMENT&eventive_nonce=${ nonce }`,
+			method: 'GET',
+		} )
 			.then( ( data ) => {
 				const donationsContainer = block.querySelector(
 					'#eventive-donations-container'
