@@ -1,0 +1,178 @@
+/**
+ * Eventive Events List Block - Frontend Styles
+ * Based on events-list.css
+ */
+
+.wp-block-eventive-events-list {
+	margin: 20px 0;
+
+	/* General Styling for Events List */
+	.event-list-item {
+		display: flex;
+		flex-direction: row;
+		align-items: stretch;
+		justify-content: space-between;
+		border-radius: 8px;
+		padding: 1.5em;
+		margin-bottom: 1.5em;
+		gap: 10px;
+		position: relative;
+		border: 1px solid var(--border-color, #e0e0e0);
+		background: #fff;
+		transition: box-shadow 0.3s ease;
+
+		&:hover {
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+		}
+	}
+
+	/* Event Labels */
+	.event-label {
+		display: inline-block;
+		padding: 4px 10px;
+		margin: 0 6px 6px 0;
+		font-weight: 600;
+		border-radius: 16px;
+		text-transform: uppercase;
+		background-color: #ccc;
+		color: #3f3f3f;
+		transition: background-color 0.3s ease, color 0.3s ease;
+	}
+
+	.event-list-name.entry-title {
+		font-size: 1.2em;
+		font-weight: 700;
+		margin-bottom: 0.5em;
+		color: var(--theme-primary-text-color, #111);
+	}
+
+	.event-list-time {
+		font-size: 1em;
+		font-weight: 500;
+		color: var(--theme-secondary-text-color, #333);
+		margin: 0.4em 0;
+	}
+
+	.event-list-venue {
+		font-size: 0.9em;
+		color: #666;
+		margin: 0.4em 0;
+	}
+
+	.event-list-description {
+		font-size: 0.95em;
+		color: #555;
+		line-height: 1.6;
+		margin: 0.8em 0;
+	}
+
+	.event-list-image {
+		flex-shrink: 0;
+		margin-right: 1em;
+
+		img {
+			width: 150px;
+			height: auto;
+			border-radius: 6px;
+			object-fit: cover;
+		}
+	}
+
+	/* Grid view */
+	&[data-view='grid'] {
+		.event-schedule-list {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+			gap: 20px;
+		}
+
+		.event-list-item {
+			flex-direction: column;
+
+			.event-list-image {
+				margin-right: 0;
+				margin-bottom: 1em;
+				width: 100%;
+
+				img {
+					width: 100%;
+					max-width: none;
+				}
+			}
+		}
+	}
+
+	/* Filter UI */
+	.event-filter-container {
+		margin-bottom: 20px;
+		padding: 15px;
+		background: var(--background-color-muted, #f9f9f9);
+		border-radius: 8px;
+		border: 1px solid var(--border-color, #ddd);
+
+		.filter-title {
+			font-weight: 600;
+			margin-bottom: 10px;
+		}
+
+		.tag-pills {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px;
+
+			.tag-pill {
+				padding: 6px 12px;
+				border-radius: 16px;
+				border: 2px solid #ddd;
+				background: #fff;
+				cursor: pointer;
+				transition: all 0.3s ease;
+				font-size: 0.9em;
+
+				&:hover {
+					border-color: var(--primary-color, #0073aa);
+				}
+
+				&.active {
+					background: var(--primary-color, #0073aa);
+					color: #fff;
+					border-color: var(--primary-color, #0073aa);
+				}
+			}
+		}
+	}
+
+	/* Loading and error states */
+	.loading-message,
+	.error-message,
+	.no-events {
+		text-align: center;
+		padding: 20px;
+		color: #666;
+		font-style: italic;
+	}
+
+	/* Responsive adjustments */
+	@media (max-width: 768px) {
+		.event-list-item {
+			flex-direction: column;
+
+			.event-list-image {
+				margin-right: 0;
+				margin-bottom: 1em;
+				width: 100%;
+
+				img {
+					width: 100%;
+					max-width: 300px;
+				}
+			}
+		}
+
+		&[data-view='grid'] {
+			.event-schedule-list {
+				grid-template-columns: 1fr;
+			}
+		}
+	}
+}

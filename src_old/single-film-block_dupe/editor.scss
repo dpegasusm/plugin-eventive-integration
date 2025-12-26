@@ -1,0 +1,33 @@
+/**
+ * Single Film Block (Selector) - Editor Styles
+ */
+
+.wp-block-eventive-single-film-block {
+	.eventive-block-placeholder {
+		background: #f9f9f9;
+		border: 2px dashed #ddd;
+		padding: 2rem;
+		text-align: center;
+		border-radius: 4px;
+
+		h3 {
+			margin-top: 0;
+			color: #333;
+		}
+
+		.shortcode-preview {
+			font-family: monospace;
+			background: #fff;
+			padding: 1rem;
+			border: 1px solid #ddd;
+			border-radius: 4px;
+			margin: 1rem 0;
+			color: #333;
+		}
+
+		.error {
+			color: #d63638;
+			font-weight: 600;
+		}
+	}
+}

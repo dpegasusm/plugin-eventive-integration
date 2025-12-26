@@ -1,0 +1,10 @@
+/**
+ * Eventive Events Block - Editor Styles
+ */
+
+.wp-block-eventive-events {
+	// Editor-specific styles
+	.block-editor-block-list__block & {
+		min-height: 100px;
+	}
+}

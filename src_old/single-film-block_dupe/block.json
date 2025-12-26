@@ -1,0 +1,28 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "eventive/single-film-block",
+    "version": "0.1.0",
+    "title": "Single Film Block (Selector)",
+    "category": "eventive",
+    "description": "Select and display a film or event with dropdown selectors.",
+    "textdomain": "eventive",
+    "attributes": {
+        "type": {
+            "type": "string",
+            "default": "film"
+        },
+        "id": {
+            "type": "string",
+            "default": ""
+        }
+    },
+    "supports": {
+        "html": false,
+        "align": true
+    },
+    "viewScript": "file:./view.js",
+    "editorScript": "file:./index.js",
+    "editorStyle": "file:./index.css",
+    "style": "file:./style-index.css"
+}

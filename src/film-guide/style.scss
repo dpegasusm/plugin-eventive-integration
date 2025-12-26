@@ -1,0 +1,84 @@
+/**
+ * Film Guide Block - Frontend Styles
+ */
+@import '../film-guide/eventive-film-guide.css';
+
+.wp-block-eventive-film-guide {
+	width: 100%;
+	padding: 2rem 1rem;
+}
+
+.eventive-film-guide-header {
+	margin-bottom: 2rem;
+}
+
+.eventive-film-guide-header-row {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 1rem;
+	margin-bottom: 1rem;
+}
+
+.eventive-film-guide-search {
+	flex: 1;
+	min-width: 250px;
+
+	input[type="search"] {
+		width: 100%;
+		padding: 0.5rem;
+		border: 1px solid #ddd;
+		border-radius: 4px;
+		font-size: 1rem;
+	}
+}
+
+.eventive-film-guide-controls {
+	display: flex;
+	gap: 1rem;
+
+	label {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	select {
+		padding: 0.5rem;
+		border: 1px solid #ddd;
+		border-radius: 4px;
+	}
+}
+
+.catalog-film-container-wrapper {
+	width: 100%;
+}
+
+.catalog-film-container {
+	width: 100%;
+
+	&.grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+		gap: 1.5rem;
+	}
+
+	&.list {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+	}
+}
+
+.screen-reader-text {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border-width: 0;
+}

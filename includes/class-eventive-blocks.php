@@ -169,6 +169,23 @@ class Eventive_Blocks {
 
 		// List of blocks with view scripts.
 		$blocks_with_views = array(
+			'eventive-eventive-account-view-script',
+			'eventive-eventive-account-details-view-script',
+			'eventive-eventive-calendar-view-script',
+			'eventive-eventive-carousel-view-script',
+			'eventive-eventive-eventive-account-passes-view-script',
+			'eventive-eventive-eventive-account-tickets-view-script',
+			'eventive-eventive-eventive-cart-view-script',
+			'eventive-eventive-eventive-login-view-script',
+			'eventive-eventive-eventive-native-year-round-view-script',
+			'eventive-eventive-events-view-script',
+			'eventive-eventive-events-list-view-script',
+			'eventive-eventive-events-week-view-script',
+			'eventive-eventive-film-details-view-script',
+			'eventive-eventive-film-guide-view-script',
+			'eventive-eventive-fundraiser-view-script',
+			'eventive-eventive-marquee-view-script',
+			'eventive-eventive-single-film-view-script',
 			'eventive-eventive-tags-view-script',
 			'eventive-eventive-venues-view-script',
 		);

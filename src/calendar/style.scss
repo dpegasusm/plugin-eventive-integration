@@ -1,0 +1,187 @@
+/**
+ * Eventive Calendar Block - Frontend Styles
+ */
+
+.wp-block-eventive-eventive-calendar {
+	.eventive-calendar-container {
+		margin: 20px 0;
+
+		.calendar-controls {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin-bottom: 20px;
+
+			button {
+				padding: 8px 16px;
+				background: #0073aa;
+				color: #fff;
+				border: none;
+				border-radius: 4px;
+				cursor: pointer;
+				font-size: 14px;
+
+				&:hover {
+					background: #005a87;
+				}
+			}
+
+			h2 {
+				margin: 0;
+				font-size: 24px;
+			}
+		}
+
+		.eventive-cal-table {
+			width: 100%;
+			border-collapse: collapse;
+			background: #fff;
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+			th {
+				background: #f5f5f5;
+				padding: 10px;
+				text-align: center;
+				font-weight: 600;
+				border: 1px solid #ddd;
+			}
+
+			td {
+				border: 1px solid #ddd;
+				padding: 8px;
+				vertical-align: top;
+				height: 100px;
+				position: relative;
+
+				&.empty {
+					background: #fafafa;
+				}
+
+				&.eventive-cal-day {
+					background: #fff;
+
+					> div {
+						font-weight: 600;
+						margin-bottom: 4px;
+					}
+
+					.event-name {
+						font-size: 11px;
+						padding: 2px 4px;
+						margin: 2px 0;
+						border-radius: 3px;
+						cursor: pointer;
+						font-weight: normal;
+
+						&:hover {
+							opacity: 0.8;
+						}
+					}
+				}
+			}
+		}
+
+		.modal {
+			display: none;
+			position: fixed;
+			z-index: 1000;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			overflow: auto;
+			background-color: rgba(0, 0, 0, 0.4);
+
+			.modal-content {
+				background-color: #fff;
+				margin: 5% auto;
+				padding: 20px;
+				border: 1px solid #888;
+				width: 80%;
+				max-width: 800px;
+				border-radius: 8px;
+				position: relative;
+
+				.close {
+					color: #aaa;
+					float: right;
+					font-size: 28px;
+					font-weight: bold;
+					cursor: pointer;
+
+					&:hover,
+					&:focus {
+						color: #000;
+					}
+				}
+
+				.event-details {
+					display: grid;
+					grid-template-columns: 1fr auto;
+					gap: 20px;
+
+					.details-left {
+						h2 {
+							margin-top: 0;
+						}
+
+						.venue-tag {
+							display: inline-block;
+							padding: 4px 8px;
+							border-radius: 4px;
+							font-weight: 600;
+						}
+
+						.tags {
+							display: flex;
+							flex-wrap: wrap;
+							gap: 8px;
+							margin-top: 12px;
+
+							.tag-button {
+								padding: 4px 12px;
+								border: none;
+								border-radius: 4px;
+								font-size: 12px;
+								cursor: pointer;
+							}
+						}
+					}
+
+					.films-container {
+						grid-column: 1 / -1;
+						margin-top: 20px;
+
+						.film-card {
+							display: grid;
+							grid-template-columns: 1fr auto;
+							gap: 20px;
+							padding: 20px;
+							background: #f9f9f9;
+							border-radius: 8px;
+							margin-bottom: 16px;
+
+							.film-poster {
+								img {
+									max-width: 200px;
+									height: auto;
+									border-radius: 4px;
+								}
+							}
+
+							h3 {
+								margin-top: 0;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	.eventive-calendar-loading {
+		text-align: center;
+		padding: 40px;
+		color: #666;
+	}
+}
