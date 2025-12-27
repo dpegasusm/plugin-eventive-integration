@@ -577,6 +577,9 @@ class Eventive_API {
 		// Merge the default arguments with the provided arguments.
 		$args = wp_parse_args( $args, $default_args );
 
+		// Add the API Key to the headers.
+		$args['headers']['x-api-key'] = $this->api_secret_key;
+
 		// Set the request body.
 		if ( ! empty( $response_body ) ) {
 			$args['body'] = $response_body;
@@ -618,30 +621,23 @@ class Eventive_API {
 			);
 		}
 
-		// Parse the API response body.
-		$response_body = wp_remote_retrieve_body( $response );
-		$data          = json_decode( $response_body, true );
+		// If we got back a non-200 response, return an error.
+		$response_code = wp_remote_retrieve_response_code( $response );
 
-		// If we get a code in the response, we should assume an error and process it as such.
-		// Don't show the user the error code, but log it for debugging.
-		if ( isset( $data['Code'] ) && ! empty( $data['Code'] ) ) {
-			if ( 1050 === $data['Code'] ) {
-				// This is an invalid cart. We need to pass this back and clear it.
-				// This is a special case where we need to clear the cart and return the data as-is.
-				return new WP_REST_Response( $data, 200 );
-			}
-
-			// Return a WP_Error object.
+		// Check for non-200 response codes.
+		if ( 200 !== $response_code ) {
 			return new WP_Error(
-				'api_error_code_' . $data['Code'],
-				'An error occurred while processing your request: ' . $data['Message'],
+				'api_request_failed',
+				'API request returned an error. Response code: ' . $response_code,
 				array(
-					'status'       => 400,
-					'code'         => $data['Code'],
-					'api_message'  => $data['Message'],
+					'status' => $response_code,
 				)
 			);
 		}
+
+		// Parse the API response body.
+		$response_body = wp_remote_retrieve_body( $response );
+		$data          = json_decode( $response_body, true );
 
 		// Cache the successful response for GET requests.
 		if ( 'GET' === $args['method'] ) {
