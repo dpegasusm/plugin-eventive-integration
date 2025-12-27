@@ -488,7 +488,7 @@ class Eventive_API {
 	 * @param array  $args          Optional. Arguments for the API call.
 	 * @return array|WP_Error The response from the API or a WP_Error object on failure.
 	 */
-	public function eventive_make_api_call( $endpoint, $response_body = '', $args = array() ) {
+	public function eventive_make_api_call( $endpoint, $response_body = '', $args = array(), $uid = '' ) {
 		// Set the default arguments for the API call.
 		$default_args = array(
 			'method'      => 'GET',
@@ -577,11 +577,16 @@ class Eventive_API {
 	 * @return void
 	 */
 	public function get_api_event_buckets() {
-		// Build the endpoint URL.
+		// Prepare the endpoint URL.
 		$endpoint = esc_url_raw( $this->api_url_base . $this->api_endpoint_event_buckets );
 
+		// Prepare other parameters.
+		$response_body = '';
+		$args = array();
+		$uid = '';
+		
 		// Make the API call.
-		$response = $this->eventive_make_api_call( $endpoint );
+		$response = $this->eventive_make_api_call( $endpoint, $response_body, $args, $uid );
 		return rest_ensure_response( $response );
 	}
 
