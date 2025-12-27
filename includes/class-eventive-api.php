@@ -560,7 +560,7 @@ class Eventive_API {
 	 * @param string $api_url       The API endpoint to call.
 	 * @param string $response_body Optional. The response body to send with the request.
 	 * @param array  $args          Optional. Arguments for the API call.
-	 * @return array|WP_Error The response from the API or a WP_Error object on failure.
+	 * @return WP_REST_Response|WP_Error The REST response or a WP_Error object on failure.
 	 */
 	public function eventive_make_api_call( $api_url, $response_body = '', $args = array() ) {
 		// Set the default arguments for the API call.
@@ -589,7 +589,7 @@ class Eventive_API {
 		if ( 'GET' === $args['method'] ) {
 			$cached_data = get_transient( $cache_key );
 			if ( false !== $cached_data ) {
-				return $cached_data;
+				return new WP_REST_Response( $cached_data, 200 );
 			}
 		}
 
@@ -600,7 +600,6 @@ class Eventive_API {
 				'Invalid API URL.',
 				array(
 					'status' => 400,
-					'code'   => 0010,
 				)
 			);
 		}
@@ -615,7 +614,6 @@ class Eventive_API {
 				'Failed to fetch data from the API: ' . $response->get_error_message(),
 				array(
 					'status' => 400,
-					'code'   => 0020,
 				)
 			);
 		}
@@ -629,13 +627,9 @@ class Eventive_API {
 		if ( isset( $data['Code'] ) && ! empty( $data['Code'] ) ) {
 			if ( 1050 === $data['Code'] ) {
 				// This is an invalid cart. We need to pass this back and clear it.
-				// This is a special case where we need to clear the cart and return an error.
-				return $data;
+				// This is a special case where we need to clear the cart and return the data as-is.
+				return new WP_REST_Response( $data, 200 );
 			}
-
-			// Log the error code for debugging.
-			error_log( 'API Call: ' . $api_url ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-			error_log( 'API Error Code: ' . $data['Code'] . ' :: ' . $data['Message'] ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 
 			// Return a WP_Error object.
 			return new WP_Error(
@@ -654,8 +648,8 @@ class Eventive_API {
 			set_transient( $cache_key, $data, $this->api_cache_duration );
 		}
 
-		// Return the Response body as decoded JSON.
-		return $data;
+		// Return the Response as a WP_REST_Response.
+		return new WP_REST_Response( $data, 200 );
 	}
 
 	/**
@@ -698,13 +692,7 @@ class Eventive_API {
 		$args          = array();
 
 		// Make the API call.
-		$response = $this->eventive_make_api_call( esc_url_raw( $api_url ), $response_body, $args );
-		
-		if ( is_wp_error( $response ) ) {
-			return $response;
-		}
-		
-		return new WP_REST_Response( $response, 200 );
+		return $this->eventive_make_api_call( esc_url_raw( $api_url ), $response_body, $args );
 	}
 
 	/**
@@ -731,13 +719,7 @@ class Eventive_API {
 		$args          = array();
 
 		// Make the API call.
-		$response = $this->eventive_make_api_call( esc_url_raw( $api_url ), $response_body, $args );
-		
-		if ( is_wp_error( $response ) ) {
-			return $response;
-		}
-		
-		return new WP_REST_Response( $response, 200 );
+		return $this->eventive_make_api_call( esc_url_raw( $api_url ), $response_body, $args );
 	}
 
 	/**
@@ -764,13 +746,7 @@ class Eventive_API {
 		$args          = array();
 
 		// Make the API call.
-		$response = $this->eventive_make_api_call( esc_url_raw( $api_url ), $response_body, $args );
-		
-		if ( is_wp_error( $response ) ) {
-			return $response;
-		}
-		
-		return new WP_REST_Response( $response, 200 );
+		return $this->eventive_make_api_call( esc_url_raw( $api_url ), $response_body, $args );
 	}
 
 	/**
@@ -797,13 +773,7 @@ class Eventive_API {
 		$args          = array();
 
 		// Make the API call.
-		$response = $this->eventive_make_api_call( esc_url_raw( $api_url ), $response_body, $args );
-		
-		if ( is_wp_error( $response ) ) {
-			return $response;
-		}
-		
-		return new WP_REST_Response( $response, 200 );
+		return $this->eventive_make_api_call( esc_url_raw( $api_url ), $response_body, $args );
 	}
 
 	/**
@@ -830,13 +800,7 @@ class Eventive_API {
 		$args          = array();
 
 		// Make the API call.
-		$response = $this->eventive_make_api_call( esc_url_raw( $api_url ), $response_body, $args );
-		
-		if ( is_wp_error( $response ) ) {
-			return $response;
-		}
-		
-		return new WP_REST_Response( $response, 200 );
+		return $this->eventive_make_api_call( esc_url_raw( $api_url ), $response_body, $args );
 	}
 
 	/**
@@ -855,13 +819,7 @@ class Eventive_API {
 		$args          = array();
 
 		// Make the API call.
-		$response = $this->eventive_make_api_call( esc_url_raw( $api_url ), $response_body, $args );
-		
-		if ( is_wp_error( $response ) ) {
-			return $response;
-		}
-		
-		return new WP_REST_Response( $response, 200 );
+		return $this->eventive_make_api_call( esc_url_raw( $api_url ), $response_body, $args );
 	}
 
 	/**
@@ -888,13 +846,7 @@ class Eventive_API {
 		$args          = array();
 
 		// Make the API call.
-		$response = $this->eventive_make_api_call( esc_url_raw( $api_url ), $response_body, $args );
-		
-		if ( is_wp_error( $response ) ) {
-			return $response;
-		}
-		
-		return new WP_REST_Response( $response, 200 );
+		return $this->eventive_make_api_call( esc_url_raw( $api_url ), $response_body, $args );
 	}
 
 	/**
@@ -921,13 +873,7 @@ class Eventive_API {
 		$args          = array();
 
 		// Make the API call.
-		$response = $this->eventive_make_api_call( esc_url_raw( $api_url ), $response_body, $args );
-		
-		if ( is_wp_error( $response ) ) {
-			return $response;
-		}
-		
-		return new WP_REST_Response( $response, 200 );
+		return $this->eventive_make_api_call( esc_url_raw( $api_url ), $response_body, $args );
 	}
 
 	/**
@@ -954,13 +900,7 @@ class Eventive_API {
 		$args          = array();
 
 		// Make the API call.
-		$response = $this->eventive_make_api_call( esc_url_raw( $api_url ), $response_body, $args );
-		
-		if ( is_wp_error( $response ) ) {
-			return $response;
-		}
-		
-		return new WP_REST_Response( $response, 200 );
+		return $this->eventive_make_api_call( esc_url_raw( $api_url ), $response_body, $args );
 	}
 
 	/**
@@ -987,13 +927,7 @@ class Eventive_API {
 		$args          = array();
 
 		// Make the API call.
-		$response = $this->eventive_make_api_call( esc_url_raw( $api_url ), $response_body, $args );
-		
-		if ( is_wp_error( $response ) ) {
-			return $response;
-		}
-		
-		return new WP_REST_Response( $response, 200 );
+		return $this->eventive_make_api_call( esc_url_raw( $api_url ), $response_body, $args );
 	}
 
 	/**
@@ -1020,12 +954,6 @@ class Eventive_API {
 		$args          = array();
 
 		// Make the API call.
-		$response = $this->eventive_make_api_call( esc_url_raw( $api_url ), $response_body, $args );
-		
-		if ( is_wp_error( $response ) ) {
-			return $response;
-		}
-		
-		return new WP_REST_Response( $response, 200 );
+		return $this->eventive_make_api_call( esc_url_raw( $api_url ), $response_body, $args );
 	}
 }
