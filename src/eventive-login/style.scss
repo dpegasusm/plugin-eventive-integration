@@ -2,13 +2,6 @@
  * Eventive Login Block - Frontend Styles
  */
 
-:root {
-	--primary-color: #007bff;
-	--font-family-base: Arial, sans-serif;
-	--font-size-base: 1rem;
-	--text-color: #333;
-}
-
 .wp-block-eventive-login {
 	font-family: var(--font-family-base);
 	margin: 20px;
@@ -138,7 +131,7 @@
 					color: #fff;
 
 					&:hover {
-						background: darken(#007bff, 10%);
+						background: #007bff;
 					}
 				}
 
@@ -147,7 +140,7 @@
 					color: #fff;
 
 					&:hover {
-						background: darken(#6c757d, 10%);
+						background: #5a6268;
 					}
 				}
 			}

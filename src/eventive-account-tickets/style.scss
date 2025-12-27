@@ -2,13 +2,6 @@
  * Eventive Account Tickets Block - Frontend Styles
  */
 
-:root {
-	--primary-color: #0366d6;
-	--border-color: #e2e4e8;
-	--text-color: #222;
-	--card-bg: #fff;
-}
-
 .wp-block-eventive-account-tickets {
 	.eventive-login-container {
 		min-height: 100px;
@@ -105,7 +98,7 @@
 		transition: background 0.2s;
 
 		&:hover {
-			background: darken(#0366d6, 10%);
+			background: #0366d6;
 		}
 	}
 

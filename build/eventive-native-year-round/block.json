@@ -1,0 +1,36 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "eventive/native-year-round",
+  "version": "0.1.0",
+  "title": "Eventive Native Year-Round",
+  "category": "eventive",
+  "description": "Display year-round Eventive events with weekly navigation.",
+  "textdomain": "eventive",
+  "attributes": {
+    "image": {
+      "type": "string",
+      "default": "poster"
+    },
+    "description": {
+      "type": "boolean",
+      "default": true
+    },
+    "venue": {
+      "type": "boolean",
+      "default": true
+    },
+    "details": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": true
+  },
+  "viewScript": "file:./view.js",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

@@ -2,12 +2,6 @@
  * Eventive Cart Block - Frontend Styles
  */
 
-:root {
-	--primary-color: #0073e6;
-	--border-color: #ddd;
-	--card-bg: #f9f9f9;
-}
-
 .wp-block-eventive-cart {
 	.eventive-cart-container {
 		padding: 20px;
@@ -47,7 +41,7 @@
 			text-decoration: none;
 
 			&:hover {
-				background-color: darken(#0073e6, 10%);
+				background-color: #0073e6;
 			}
 		}
 
@@ -61,7 +55,7 @@
 			display: inline-block;
 
 			&:hover {
-				background-color: darken(#0073e6, 10%);
+				background-color: #0073e6;
 			}
 		}
 

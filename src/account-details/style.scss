@@ -2,13 +2,6 @@
  * Eventive Account Details Block - Frontend Styles
  */
 
-:root {
-	--primary-color: #0366d6;
-	--border-color: #e2e4e8;
-	--text-color: #222;
-	--card-bg: #fff;
-}
-
 .wp-block-eventive-account-details {
 	background: var(--card-bg);
 	border: 1px solid var(--border-color);
@@ -130,7 +123,7 @@
 		color: #fff;
 
 		&:hover {
-			background: darken(#0366d6, 10%);
+			background: #0366d6;
 		}
 	}
 
@@ -139,7 +132,7 @@
 		color: #fff;
 
 		&:hover {
-			background: darken(#28a745, 10%);
+			background: #218838;
 		}
 	}
 
@@ -148,7 +141,7 @@
 		color: #fff;
 
 		&:hover {
-			background: darken(#6c757d, 10%);
+			background: #5a6268;
 		}
 	}
 
