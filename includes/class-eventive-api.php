@@ -499,7 +499,7 @@ class Eventive_API {
 	/**
 	 * Validate the endpoint parameter for event buckets.
 	 *
-	 * @param string $param The endpoint parameter to validate.
+	 * @param string $param The event bucket endpoint parameter to validate.
 	 * @return bool True if valid, false otherwise.
 	 */
 	public function validate_event_bucket_endpoint( $param ) {
@@ -538,7 +538,7 @@ class Eventive_API {
 	 * Validate the endpoint parameter for tickets.
 	 *
 	 * @access public
-	 * @param string $param The endpoint parameter to validate.
+	 * @param string $param The ticket endpoint parameter to validate.
 	 * @return bool True if valid, false otherwise.
 	 */
 	public function validate_ticket_endpoint( $param ) {
@@ -557,7 +557,7 @@ class Eventive_API {
 	/**
 	 * Make an API call to the specified endpoint.
 	 *
-	 * @param string $endpoint      The API endpoint to call.
+	 * @param string $api_url       The API endpoint to call.
 	 * @param string $response_body Optional. The response body to send with the request.
 	 * @param array  $args          Optional. Arguments for the API call.
 	 * @return array|WP_Error The response from the API or a WP_Error object on failure.
@@ -586,7 +586,7 @@ class Eventive_API {
 		$cache_key = 'eventive_api_' . md5( $api_url . wp_json_encode( $args ) );
 
 		// Check if we have cached data for GET requests.
-		if ( 'GET' === $args['method'] && ! empty( $uid ) ) {
+		if ( 'GET' === $args['method'] ) {
 			$cached_data = get_transient( $cache_key );
 			if ( false !== $cached_data ) {
 				return $cached_data;
@@ -595,15 +595,14 @@ class Eventive_API {
 
 		// Validate the API URL.
 		if ( ! wp_http_validate_url( $api_url ) ) {
-			wp_send_json_error(
+			return new WP_Error(
+				'invalid_api_url',
+				'Invalid API URL.',
 				array(
-					'level'   => 'Error',
-					'code'    => 0010,
-					'message' => 'Invalid API URL.',
-				),
-				400
+					'status' => 400,
+					'code'   => 0010,
+				)
 			);
-			wp_die();
 		}
 
 		// Make the API request.
@@ -611,15 +610,14 @@ class Eventive_API {
 
 		// Check for errors in the API response.
 		if ( is_wp_error( $response ) ) {
-			wp_send_json_error(
+			return new WP_Error(
+				'api_request_failed',
+				'Failed to fetch data from the API: ' . $response->get_error_message(),
 				array(
-					'level'   => 'Error',
-					'code'    => 0020,
-					'message' => 'Failed to fetch data from the API.',
-				),
-				400
+					'status' => 400,
+					'code'   => 0020,
+				)
 			);
-			wp_die();
 		}
 
 		// Parse the API response body.
@@ -630,7 +628,7 @@ class Eventive_API {
 		// Don't show the user the error code, but log it for debugging.
 		if ( isset( $data['Code'] ) && ! empty( $data['Code'] ) ) {
 			if ( 1050 === $data['Code'] ) {
-				// This is an invlid cart. We need to pass this back and clear it.
+				// This is an invalid cart. We need to pass this back and clear it.
 				// This is a special case where we need to clear the cart and return an error.
 				return $data;
 			}
@@ -639,16 +637,16 @@ class Eventive_API {
 			error_log( 'API Call: ' . $api_url ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 			error_log( 'API Error Code: ' . $data['Code'] . ' :: ' . $data['Message'] ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 
-			// Send a JSON error response.
-			wp_send_json_error(
+			// Return a WP_Error object.
+			return new WP_Error(
+				'api_error_code_' . $data['Code'],
+				'An error occurred while processing your request: ' . $data['Message'],
 				array(
-					'level'   => 'Error',
-					'code'    => 'Error Code: ' . $data['Code'],
-					'message' => 'An error occured while processing your request: ' . $data['Message'],
-				),
-				400
+					'status'       => 400,
+					'code'         => $data['Code'],
+					'api_message'  => $data['Message'],
+				)
 			);
-			wp_die();
 		}
 
 		// Cache the successful response for GET requests.
@@ -664,6 +662,7 @@ class Eventive_API {
 	 * Get API Buckets
 	 *
 	 * @access public
+	 * @param string $request The request object to extract our data from.
 	 * @return void
 	 */
 	public function get_api_event_buckets( $request ) {
@@ -700,13 +699,19 @@ class Eventive_API {
 
 		// Make the API call.
 		$response = $this->eventive_make_api_call( esc_url_raw( $api_url ), $response_body, $args );
-		return rest_ensure_response( $response );
+		
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
+		
+		return new WP_REST_Response( $response, 200 );
 	}
 
 	/**
 	 * Get API Events
 	 *
 	 * @access public
+	 * @param string $request The request object to extract our data from.
 	 * @return void
 	 */
 	public function get_api_events( $request ) {
@@ -727,13 +732,19 @@ class Eventive_API {
 
 		// Make the API call.
 		$response = $this->eventive_make_api_call( esc_url_raw( $api_url ), $response_body, $args );
-		return rest_ensure_response( $response );
+		
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
+		
+		return new WP_REST_Response( $response, 200 );
 	}
 
 	/**
 	 * Get API Films
 	 *
 	 * @access public
+	 * @param string $request The request object to extract our data from.
 	 * @return void
 	 */
 	public function get_api_films( $request ) {
@@ -754,13 +765,19 @@ class Eventive_API {
 
 		// Make the API call.
 		$response = $this->eventive_make_api_call( esc_url_raw( $api_url ), $response_body, $args );
-		return rest_ensure_response( $response );
+		
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
+		
+		return new WP_REST_Response( $response, 200 );
 	}
 
 	/**
 	 * Get API Item Buckets
 	 *
 	 * @access public
+	 * @param string $request The request object to extract our data from.
 	 * @return void
 	 */
 	public function get_api_item_buckets( $request ) {
@@ -781,13 +798,19 @@ class Eventive_API {
 
 		// Make the API call.
 		$response = $this->eventive_make_api_call( esc_url_raw( $api_url ), $response_body, $args );
-		return rest_ensure_response( $response );
+		
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
+		
+		return new WP_REST_Response( $response, 200 );
 	}
 
 	/**
 	 * Get API Items
 	 *
 	 * @access public
+	 * @param string $request The request object to extract our data from.
 	 * @return void
 	 */
 	public function get_api_items( $request ) {
@@ -808,13 +831,19 @@ class Eventive_API {
 
 		// Make the API call.
 		$response = $this->eventive_make_api_call( esc_url_raw( $api_url ), $response_body, $args );
-		return rest_ensure_response( $response );
+		
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
+		
+		return new WP_REST_Response( $response, 200 );
 	}
 
 	/**
 	 * Get API Ledger
 	 *
 	 * @access public
+	 * @param string $request The request object to extract our data from.
 	 * @return void
 	 */
 	public function get_api_ledger( $request ) {
@@ -827,13 +856,19 @@ class Eventive_API {
 
 		// Make the API call.
 		$response = $this->eventive_make_api_call( esc_url_raw( $api_url ), $response_body, $args );
-		return rest_ensure_response( $response );
+		
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
+		
+		return new WP_REST_Response( $response, 200 );
 	}
 
 	/**
 	 * Get API Order
 	 *
 	 * @access public
+	 * @param string $request The request object to extract our data from.
 	 * @return void
 	 */
 	public function get_api_order( $request ) {
@@ -854,13 +889,19 @@ class Eventive_API {
 
 		// Make the API call.
 		$response = $this->eventive_make_api_call( esc_url_raw( $api_url ), $response_body, $args );
-		return rest_ensure_response( $response );
+		
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
+		
+		return new WP_REST_Response( $response, 200 );
 	}
 
 	/**
 	 * Get API Passes
 	 *
 	 * @access public
+	 * @param string $request The request object to extract our data from.
 	 * @return void
 	 */
 	public function get_api_passes( $request ) {
@@ -881,13 +922,19 @@ class Eventive_API {
 
 		// Make the API call.
 		$response = $this->eventive_make_api_call( esc_url_raw( $api_url ), $response_body, $args );
-		return rest_ensure_response( $response );
+		
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
+		
+		return new WP_REST_Response( $response, 200 );
 	}
 
 	/**
 	 * Get API People
 	 *
 	 * @access public
+	 * @param string $request The request object to extract our data from.
 	 * @return void
 	 */
 	public function get_api_people( $request ) {
@@ -908,13 +955,19 @@ class Eventive_API {
 
 		// Make the API call.
 		$response = $this->eventive_make_api_call( esc_url_raw( $api_url ), $response_body, $args );
-		return rest_ensure_response( $response );
+		
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
+		
+		return new WP_REST_Response( $response, 200 );
 	}
 
 	/**
 	 * Get API Tags
 	 *
 	 * @access public
+	 * @param string $request The request object to extract our data from.
 	 * @return void
 	 */
 	public function get_api_tags( $request ) {
@@ -935,13 +988,19 @@ class Eventive_API {
 
 		// Make the API call.
 		$response = $this->eventive_make_api_call( esc_url_raw( $api_url ), $response_body, $args );
-		return rest_ensure_response( $response );
+		
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
+		
+		return new WP_REST_Response( $response, 200 );
 	}
 
 	/**
 	 * Get API Tickets
 	 *
 	 * @access public
+	 * @param string $request The request object to extract our data from.
 	 * @return void
 	 */
 	public function get_api_tickets( $request ) {
@@ -962,6 +1021,11 @@ class Eventive_API {
 
 		// Make the API call.
 		$response = $this->eventive_make_api_call( esc_url_raw( $api_url ), $response_body, $args );
-		return rest_ensure_response( $response );
+		
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
+		
+		return new WP_REST_Response( $response, 200 );
 	}
 }
