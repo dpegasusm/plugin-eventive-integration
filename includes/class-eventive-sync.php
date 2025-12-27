@@ -31,6 +31,9 @@ class Eventive_Sync {
 
 		// Hook our sync function to the cron.
 		add_action( 'eventive_sync_events_cron', array( $this, 'sync_eventive_events_with_wordpress' ) );
+
+		// Register AJAX handler for syncing events.
+		add_action( 'wp_ajax_sync_eventive_events', array( $this, 'sync_eventive_events_with_wordpress' ) );
 	}
 
 	/**

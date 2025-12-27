@@ -33,9 +33,6 @@ class Eventive_Settings {
 		// Register the actual settings.
 		add_action( 'admin_init', array( $this, 'eventive_register_settings' ) );
 
-		// Register AJAX handler for syncing events.
-		add_action( 'wp_ajax_sync_eventive_events', array( $eventive_sync, 'sync_eventive_events_with_wordpress' ) );
-
 		// Enqueue scripts for the Eventive options page.
 		add_action( 'admin_enqueue_scripts', array( $this, 'eventive_enqueue_admin_scripts' ) );
 	}
