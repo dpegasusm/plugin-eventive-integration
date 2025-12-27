@@ -653,7 +653,7 @@ class Eventive_API {
 	 *
 	 * @access public
 	 * @param string $request The request object to extract our data from.
-	 * @return void
+	 * @return WP_REST_Response|WP_Error The REST response or a WP_Error object on failure.
 	 */
 	public function get_api_event_buckets( $request ) {
 		// Prepare the endpoint URL.
@@ -696,7 +696,7 @@ class Eventive_API {
 	 *
 	 * @access public
 	 * @param string $request The request object to extract our data from.
-	 * @return void
+	 * @return WP_REST_Response|WP_Error The REST response or a WP_Error object on failure.
 	 */
 	public function get_api_events( $request ) {
 		// Build the endpoint URL.
@@ -723,7 +723,7 @@ class Eventive_API {
 	 *
 	 * @access public
 	 * @param string $request The request object to extract our data from.
-	 * @return void
+	 * @return WP_REST_Response|WP_Error The REST response or a WP_Error object on failure.
 	 */
 	public function get_api_films( $request ) {
 		// Build the endpoint URL.
@@ -750,7 +750,7 @@ class Eventive_API {
 	 *
 	 * @access public
 	 * @param string $request The request object to extract our data from.
-	 * @return void
+	 * @return WP_REST_Response|WP_Error The REST response or a WP_Error object on failure.
 	 */
 	public function get_api_item_buckets( $request ) {
 		// Build the endpoint URL.
@@ -777,7 +777,7 @@ class Eventive_API {
 	 *
 	 * @access public
 	 * @param string $request The request object to extract our data from.
-	 * @return void
+	 * @return WP_REST_Response|WP_Error The REST response or a WP_Error object on failure.
 	 */
 	public function get_api_items( $request ) {
 		// Build the endpoint URL.
@@ -804,7 +804,7 @@ class Eventive_API {
 	 *
 	 * @access public
 	 * @param string $request The request object to extract our data from.
-	 * @return void
+	 * @return WP_REST_Response|WP_Error The REST response or a WP_Error object on failure.
 	 */
 	public function get_api_ledger( $request ) {
 		// Build the endpoint URL.
@@ -823,7 +823,7 @@ class Eventive_API {
 	 *
 	 * @access public
 	 * @param string $request The request object to extract our data from.
-	 * @return void
+	 * @return WP_REST_Response|WP_Error The REST response or a WP_Error object on failure.
 	 */
 	public function get_api_order( $request ) {
 		// Build the endpoint URL.
@@ -850,7 +850,7 @@ class Eventive_API {
 	 *
 	 * @access public
 	 * @param string $request The request object to extract our data from.
-	 * @return void
+	 * @return WP_REST_Response|WP_Error The REST response or a WP_Error object on failure.
 	 */
 	public function get_api_passes( $request ) {
 		// Build the endpoint URL.
@@ -877,7 +877,7 @@ class Eventive_API {
 	 *
 	 * @access public
 	 * @param string $request The request object to extract our data from.
-	 * @return void
+	 * @return WP_REST_Response|WP_Error The REST response or a WP_Error object on failure.
 	 */
 	public function get_api_people( $request ) {
 		// Build the endpoint URL.
@@ -904,7 +904,7 @@ class Eventive_API {
 	 *
 	 * @access public
 	 * @param string $request The request object to extract our data from.
-	 * @return void
+	 * @return WP_REST_Response|WP_Error The REST response or a WP_Error object on failure.
 	 */
 	public function get_api_tags( $request ) {
 		// Build the endpoint URL.
@@ -931,7 +931,7 @@ class Eventive_API {
 	 *
 	 * @access public
 	 * @param string $request The request object to extract our data from.
-	 * @return void
+	 * @return WP_REST_Response|WP_Error The REST response or a WP_Error object on failure.
 	 */
 	public function get_api_tickets( $request ) {
 		// Build the endpoint URL.

@@ -54,7 +54,7 @@ $eventive_settings = new Eventive_Settings();
 $eventive_settings->init();
 
 // Check for the API key before loading any functionalty that uses API functionality.
-$api_key    = get_option( 'eventive_secret_key', '' );
+$api_key = get_option( 'eventive_secret_key', '' );
 
 // Only load the rest of the plugin if we have an API key.
 if ( ! empty( $api_key ) ) {

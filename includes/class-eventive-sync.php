@@ -42,6 +42,9 @@ class Eventive_Sync {
 	 * @return void
 	 */
 	public function sync_eventive_events_with_wordpress() {
+		// Use the global API instance.
+		global $eventive_api;
+
 		// Verify nonce.
 		if ( ! isset( $_POST['eventive_sync_events_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['eventive_sync_events_nonce'] ) ), 'eventive_sync_events' ) ) {
 			wp_send_json_error( array( 'message' => 'Security verification failed.' ), 403 );
@@ -64,33 +67,29 @@ class Eventive_Sync {
 			return;
 		}
 
-		// Fetch events from Eventive API.
-		$url = "https://api.eventive.org/event_buckets/$event_bucket/events";
+		// Create a mock request object for the API call.
+		$request = new WP_REST_Request( 'GET', '/eventive/v1/event_buckets' );
+		$request->set_param( 'bucket_id', $event_bucket );
+		$request->set_param( 'eventive_nonce', wp_create_nonce( 'eventive_api_nonce' ) );
 
-		$response = wp_remote_get(
-			$url,
-			array(
-				'headers' => array(
-					'Authorization' => "Bearer $api_key",
-				),
-				'timeout' => 30,
-			)
-		);
+		// Fetch events from Eventive API using the API class.
+		$response = $eventive_api->get_api_event_buckets( $request );
 
+		// Check if response is a WP_Error.
 		if ( is_wp_error( $response ) ) {
 			wp_send_json_error( array( 'message' => 'Failed to fetch events from Eventive: ' . $response->get_error_message() ), 500 );
 			return;
 		}
 
-		$body   = wp_remote_retrieve_body( $response );
-		$events = json_decode( $body, true );
+		// Get the data from the WP_REST_Response.
+		$events_data = $response->get_data();
 
-		if ( empty( $events['events'] ) ) {
+		if ( empty( $events_data['events'] ) ) {
 			wp_send_json_error( array( 'message' => 'No events found in the Eventive API response.' ), 404 );
 			return;
 		}
 
-		$events        = $events['events'];
+		$events        = $events_data['events'];
 		$synced_count  = 0;
 		$updated_count = 0;
 		$created_count = 0;
