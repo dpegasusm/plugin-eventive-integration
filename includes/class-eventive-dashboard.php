@@ -110,6 +110,9 @@ class Eventive_Dashboard {
 	 * @return void
 	 */
 	public function ajax_get_dashboard_data() {
+		// Use the global API instance.
+		global $eventive_api;
+
 		// Verify nonce.
 		check_ajax_referer( 'eventive_dashboard_nonce', 'nonce' );
 
@@ -124,11 +127,10 @@ class Eventive_Dashboard {
 
 		// Get API credentials.
 		$options         = get_option( 'eventive_admin_options_option_name', array() );
-		$api_key         = $options['your_eventive_secret_key_2'] ?? '';
 		$event_bucket_id = $options['your_eventive_event_bucket_1'] ?? '';
 
 		// Check if credentials are set.
-		if ( empty( $api_key ) || empty( $event_bucket_id ) ) {
+		if ( empty( $event_bucket_id ) ) {
 			wp_send_json_error(
 				array( 'message' => __( 'Eventive API credentials are not configured. Please update your settings.', 'eventive' ) ),
 				400
@@ -136,22 +138,15 @@ class Eventive_Dashboard {
 			return;
 		}
 
-		// Prepare API request.
+		// Prepare API request URL.
 		$api_url = add_query_arg(
 			'event_bucket',
 			$event_bucket_id,
 			'https://api.eventive.org/charts/overview'
 		);
 
-		$response = wp_remote_get(
-			$api_url,
-			array(
-				'headers' => array(
-					'X-API-KEY' => $api_key,
-				),
-				'timeout' => 15,
-			)
-		);
+		// Make the API call using the global API object.
+		$response = $eventive_api->eventive_make_api_call( $api_url );
 
 		// Check for errors.
 		if ( is_wp_error( $response ) ) {
@@ -162,9 +157,8 @@ class Eventive_Dashboard {
 			return;
 		}
 
-		// Parse response.
-		$body = wp_remote_retrieve_body( $response );
-		$data = json_decode( $body, true );
+		// Get data from WP_REST_Response.
+		$data = $response->get_data();
 
 		if ( json_last_error() !== JSON_ERROR_NONE || empty( $data ) ) {
 			wp_send_json_error(
