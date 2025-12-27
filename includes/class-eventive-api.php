@@ -48,18 +48,18 @@ class Eventive_API {
 	/**
 	 * Endpoint for event buckets.
 	 *
-	 * @access public
+	 * @access private
 	 * @var string
 	 */
-	public $api_endpoint_event_buckets = 'event_buckets';
+	private $api_endpoint_event_buckets = 'event_buckets';
 
 	/**
 	 * Endpoint for event bucket variable endpoints.
 	 *
-	 * @access public
+	 * @access private
 	 * @var string
 	 */
-	public $api_endpoint_event_bucket_endpoints = array(
+	private $api_endpoint_event_bucket_endpoints = array(
 		'tags',
 		'active',
 	);
@@ -67,93 +67,103 @@ class Eventive_API {
 	/**
 	 * Endpoint for event tag buckets.
 	 *
-	 * @access public
+	 * @access private
 	 * @var string
 	 */
-	public $api_endpoint_event_bucket_tags = array(
+	private $api_endpoint_event_bucket_tags = array(
 		'events',
 		'films',
 	);
 
 	/**
-	 * Endpoint for events.
+	 * Endpoint for event bucket addons.
 	 *
-	 * @access public
+	 * @access private
 	 * @var string
 	 */
-	public $api_endpoint_events = 'events';
+	private $api_endpoint_ticket_addons = array(
+		'transfer-history',
+	);
+
+	/**
+	 * Endpoint for events.
+	 *
+	 * @access private
+	 * @var string
+	 */
+	private $api_endpoint_events = 'events';
 
 	/**
 	 * Endpoint for films.
 	 *
-	 * @access public
+	 * @access private
 	 * @var string
 	 */
-	public $api_endpoint_films = 'films';
+	private $api_endpoint_films = 'films';
 
 	/**
 	 * Endpoint for item buckets.
 	 *
-	 * @access public
+	 * @access private
 	 * @var string
 	 */
-	public $api_endpoint_item_buckets = 'item_buckets';
+	private $api_endpoint_item_buckets = 'item_buckets';
 
 	/**
 	 * Endpoint for items.
 	 *
-	 * @access public
+	 * @access private
 	 * @var string
 	 */
-	public $api_endpoint_items = 'items';
+	private $api_endpoint_items = 'items';
 
 	/**
 	 * Endpoint for ledger.
 	 *
-	 * @access public
+	 * @access private
 	 * @var string
 	 */
-	public $api_endpoint_ledger = 'ledger';
+	private $api_endpoint_ledger = 'ledger';
 
 	/**
 	 * Endpoint for order.
 	 *
-	 * @access public
+	 * @access private
 	 * @var string
 	 */
-	public $api_endpoint_order = 'order';
+	private $api_endpoint_order = 'order';
 
 	/**
 	 * Endpoint for getting organization control details.
 	 *
-	 * @access public
+	 * @access private
 	 * @var string
 	 */
-	public $api_endpoint_passes = 'passes';
+	private $api_endpoint_passes = 'passes';
 
 	/**
 	 * Endpoint for people.
 	 *
-	 * @access public
+	 * @access private
 	 * @var string
 	 */
-	public $api_endpoint_people = 'people';
+	private $api_endpoint_people = 'people';
 
 	/**
 	 * Endpoint for tags.
 	 *
-	 * @access public
+	 * @access private
 	 * @var string
 	 */
-	public $api_endpoint_tags = 'tags';
+	private $api_endpoint_tags = 'tags';
 
 	/**
 	 * Endpoint for tickets.
 	 *
-	 * @access public
+	 * @access private
 	 * @var string
 	 */
-	public $api_endpoint_tickets = 'tickets';
+	private $api_endpoint_tickets = 'tickets';
 
 	/**
 	 * Init Class.
@@ -459,6 +469,11 @@ class Eventive_API {
 							return is_int( $param ) && $param >= 0;
 						},
 					),
+					'endpoint'  => array(
+						'default'           => '',
+						'sanitize_callback' => 'sanitize_text_field',
+						'validate_callback' => array( $this, 'validate_ticket_endpoint' ),
+					),
 				),
 			)
 		);
@@ -516,6 +531,26 @@ class Eventive_API {
 		}
 
 		// Invalid tag point.
+		return false;
+	}
+
+	/**
+	 * Validate the endpoint parameter for tickets.
+	 *
+	 * @access public
+	 * @param string $param The endpoint parameter to validate.
+	 * @return bool True if valid, false otherwise.
+	 */
+	public function validate_ticket_endpoint( $param ) {
+		// Get the valid endpoints.
+		$valid_endpoints = $this->api_endpoint_ticket_addons;
+
+		// Check if the parameter is valid against the keys in the valid array.
+		if ( in_array( $param, $valid_endpoints, true ) ) {
+			return true;
+		}
+
+		// Invalid endpoint.
 		return false;
 	}
 
