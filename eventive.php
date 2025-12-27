@@ -53,28 +53,34 @@ require_once EVENTIVE_PLUGIN_PATH . 'includes/class-eventive-settings.php';
 $eventive_settings = new Eventive_Settings();
 $eventive_settings->init();
 
-// Load the event sync functionality.
-require_once EVENTIVE_PLUGIN_PATH . 'includes/class-eventive-sync.php';
-$eventive_sync = new Eventive_Sync();
-$eventive_sync->init();
+// Check for the API key before loading any functionalty that uses API functionality.
+$api_key    = get_option( 'eventive_secret_key', '' );
 
-// Load the admin dashboard widget only in admin.
-if ( is_admin() ) {
-	// Load the admin settings page.
-	require_once EVENTIVE_PLUGIN_PATH . 'admin/class-eventive-dashboard.php';
-	$eventive_dashboard = new Eventive_Dashboard();
-	$eventive_dashboard->init();
+// Only load the rest of the plugin if we have an API key.
+if ( ! empty( $api_key ) ) {
+	// Load the event sync functionality.
+	require_once EVENTIVE_PLUGIN_PATH . 'includes/class-eventive-sync.php';
+	$eventive_sync = new Eventive_Sync();
+	$eventive_sync->init();
+
+	// Load the admin dashboard widget only in admin.
+	if ( is_admin() ) {
+		// Load the admin settings page.
+		require_once EVENTIVE_PLUGIN_PATH . 'admin/class-eventive-dashboard.php';
+		$eventive_dashboard = new Eventive_Dashboard();
+		$eventive_dashboard->init();
+	}
+
+	// Load the front-end blocks functionality.
+	require_once EVENTIVE_PLUGIN_PATH . 'includes/class-eventive-blocks.php';
+	$eventive_blocks = new Eventive_Blocks();
+	$eventive_blocks->init();
+
+	// Load the API functionality.
+	require_once EVENTIVE_PLUGIN_PATH . 'includes/class-eventive-api.php';
+	$eventive_api = new Eventive_API();
+	$eventive_api->init();
 }
-
-// Load the front-end blocks functionality.
-require_once EVENTIVE_PLUGIN_PATH . 'includes/class-eventive-blocks.php';
-$eventive_blocks = new Eventive_Blocks();
-$eventive_blocks->init();
-
-// Load the API functionality.
-require_once EVENTIVE_PLUGIN_PATH . 'includes/class-eventive-api.php';
-$eventive_api = new Eventive_API();
-$eventive_api->init();
 
 /**
  * Run on activate to setup the plugin.
