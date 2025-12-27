@@ -262,9 +262,7 @@ class Eventive_API {
 					'endpoint'  => array(
 						'default'           => '',
 						'sanitize_callback' => 'sanitize_text_field',
-						'validate_callback' => function ( $param ) {
-							return is_string( $param );
-						},
+						'validate_callback' => array( $this, 'validate_event_bucket_endpoint' ),
 					),
 				),
 			)
@@ -481,6 +479,25 @@ class Eventive_API {
 	}
 
 	/**
+	 * Validate the endpoint parameter for event buckets.
+	 * 
+	 * @param string $param The endpoint parameter to validate.
+	 * @return bool True if valid, false otherwise.
+	 */
+	public function validate_event_bucket_endpoint( $param ) {
+		// Get the valid endpoints.
+		$valid_endpoints = $this->api_endpoint_event_bucket_endpoints;
+
+		// Check if the parameter is valid.
+		if ( in_array( $param, $valid_endpoints, true ) ) {
+			return true;
+		}
+
+		// Invalid endpoint.
+		return false;
+	}
+
+	/**
 	 * Make an API call to the specified endpoint.
 	 *
 	 * @param string $endpoint      The API endpoint to call.
@@ -569,7 +586,7 @@ class Eventive_API {
 			wp_send_json_error(
 				array(
 					'level'   => 'Error',
-					'code'    => 'Agile Code: ' . $data['Code'],
+					'code'    => 'Error Code: ' . $data['Code'],
 					'message' => 'An error occured while processing your request: ' . $data['Message'],
 				),
 				400
@@ -603,8 +620,7 @@ class Eventive_API {
 
 		// Modify the endpoint based on parameters.
 		switch ( $endpoint ) {
-			case 'events':
-			case 'films':
+			case 'tags':
 				if ( ! empty( $tag_id ) ) {
 					$api_url .= '/tags/' . absint( $tag_id ) . '/' . $endpoint;
 				}
@@ -613,9 +629,6 @@ class Eventive_API {
 				$api_url = $this->api_endpoint_event_buckets_active;
 				break;
 			default:
-				if ( ! empty( $bucket_id ) ) {
-					$api_url .= '/' . absint( $bucket_id );
-				}
 				break;
 		}
 
@@ -638,6 +651,14 @@ class Eventive_API {
 		// Build the endpoint URL.
 		$api_url = esc_url_raw( $this->api_url_base . $this->api_endpoint_events );
 
+		// get the parameters.
+		$event_id = $request->get_param( 'event_id' );
+
+		// Modify the endpoint based on parameters.
+		if ( ! empty( $event_id ) && is_int( $event_id ) && absint( $event_id ) > 0 ) {
+			$api_url .= '/' . absint( $event_id );
+		}
+
 		// Prepare other parameters.
 		$response_body = '';
 		$args          = array();
@@ -656,6 +677,14 @@ class Eventive_API {
 	public function get_api_films( $request ) {
 		// Build the endpoint URL.
 		$api_url = esc_url_raw( $this->api_url_base . $this->api_endpoint_films );
+
+		// Get the parameters.
+		$film_id = $request->get_param( 'film_id' );
+
+		// Modify the endpoint based on parameters.
+		if ( ! empty( $film_id ) && is_int( $film_id ) && absint( $film_id ) > 0 ) {
+			$api_url .= '/' . absint( $film_id );
+		}
 
 		// Prepare other parameters.
 		$response_body = '';
@@ -676,6 +705,14 @@ class Eventive_API {
 		// Build the endpoint URL.
 		$api_url = esc_url_raw( $this->api_url_base . $this->api_endpoint_item_buckets );
 
+		// Get the parameters.
+		$item_bucket_id = $request->get_param( 'item_bucket_id' );
+
+		// Modify the endpoint based on parameters.
+		if ( ! empty( $item_bucket_id ) && is_int( $item_bucket_id ) && absint( $item_bucket_id ) > 0 ) {
+			$api_url .= '/' . absint( $item_bucket_id );
+		}
+
 		// Prepare other parameters.
 		$response_body = '';
 		$args          = array();
@@ -694,6 +731,14 @@ class Eventive_API {
 	public function get_api_items( $request ) {
 		// Build the endpoint URL.
 		$api_url = esc_url_raw( $this->api_url_base . $this->api_endpoint_items );
+
+		// Get the parameters.
+		$item_id = $request->get_param( 'item_id' );
+
+		// Modify the endpoint based on parameters.
+		if ( ! empty( $item_id ) && is_int( $item_id ) && absint( $item_id ) > 0 ) {
+			$api_url .= '/' . absint( $item_id );
+		}
 
 		// Prepare other parameters.
 		$response_body = '';
@@ -733,6 +778,14 @@ class Eventive_API {
 		// Build the endpoint URL.
 		$api_url = esc_url_raw( $this->api_url_base . $this->api_endpoint_order );
 
+		// Get the parameters.
+		$order_id = $request->get_param( 'order_id' );
+
+		// Modify the endpoint based on parameters.
+		if ( ! empty( $order_id ) && is_int( $order_id ) && absint( $order_id ) > 0 ) {
+			$api_url .= '/' . absint( $order_id );
+		}
+
 		// Prepare other parameters.
 		$response_body = '';
 		$args          = array();
@@ -751,6 +804,14 @@ class Eventive_API {
 	public function get_api_passes( $request ) {
 		// Build the endpoint URL.
 		$api_url = esc_url_raw( $this->api_url_base . $this->api_endpoint_passes );
+
+		// Get the parameters.
+		$pass_id = $request->get_param( 'pass_id' );
+
+		// Modify the endpoint based on parameters.
+		if ( ! empty( $pass_id ) && is_int( $pass_id ) && absint( $pass_id ) > 0 ) {
+			$api_url .= '/' . absint( $pass_id );
+		}
 
 		// Prepare other parameters.
 		$response_body = '';
@@ -771,6 +832,14 @@ class Eventive_API {
 		// Build the endpoint URL.
 		$api_url = esc_url_raw( $this->api_url_base . $this->api_endpoint_people );
 
+		// Get the parameters.
+		$person_id = $request->get_param( 'person_id' );
+
+		// Modify the endpoint based on parameters.
+		if ( ! empty( $person_id ) && is_int( $person_id ) && absint( $person_id ) > 0 ) {
+			$api_url .= '/' . absint( $person_id );
+		}
+
 		// Prepare other parameters.
 		$response_body = '';
 		$args          = array();
@@ -790,6 +859,14 @@ class Eventive_API {
 		// Build the endpoint URL.
 		$api_url = esc_url_raw( $this->api_url_base . $this->api_endpoint_tags );
 
+		// Get the parameters.
+		$tag_id = $request->get_param( 'tag_id' );
+
+		// Modify the endpoint based on parameters.
+		if ( ! empty( $tag_id ) && is_int( $tag_id ) && absint( $tag_id ) > 0 ) {
+			$api_url .= '/' . absint( $tag_id );
+		}
+
 		// Prepare other parameters.
 		$response_body = '';
 		$args          = array();
@@ -808,6 +885,14 @@ class Eventive_API {
 	public function get_api_tickets( $request ) {
 		// Build the endpoint URL.
 		$api_url = esc_url_raw( $this->api_url_base . $this->api_endpoint_tickets );
+
+		// Get the parameters.
+		$ticket_id = $request->get_param( 'ticket_id' );
+
+		// Modify the endpoint based on parameters.
+		if ( ! empty( $ticket_id ) && is_int( $ticket_id ) && absint( $ticket_id ) > 0 ) {
+			$api_url .= '/' . absint( $ticket_id );
+		}
 
 		// Prepare other parameters.
 		$response_body = '';
