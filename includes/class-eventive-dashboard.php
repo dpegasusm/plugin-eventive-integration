@@ -75,7 +75,7 @@ class Eventive_Dashboard {
 		wp_enqueue_script(
 			'eventive-dashboard-script',
 			EVENTIVE_PLUGIN . 'assets/js/eventive-dashboard.js',
-			array( 'jquery', 'wp-api-fetch' ),
+			array( 'jquery', 'wp-api' ),
 			EVENTIVE_CURRENT_VERSION,
 			true
 		);

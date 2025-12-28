@@ -53,6 +53,9 @@ class Eventive_Settings {
 	 * @return void
 	 */
 	public function eventive_enqueue_admin_scripts( $hook ) {
+		// Global the API object.
+		global $eventive_api;
+
 		// Only load on the Eventive options page.
 		if ( 'settings_page_eventive_options' !== $hook ) {
 			return;
@@ -62,7 +65,7 @@ class Eventive_Settings {
 		wp_enqueue_script(
 			'eventive-settings-script',
 			EVENTIVE_PLUGIN . 'assets/js/eventive-settings.js',
-			array( 'jquery', 'wp-api' ),
+			array( 'jquery' ),
 			EVENTIVE_CURRENT_VERSION,
 			true
 		);
