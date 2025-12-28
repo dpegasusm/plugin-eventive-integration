@@ -68,7 +68,7 @@ class Eventive_Settings {
 		wp_enqueue_script(
 			'eventive-settings-script',
 			EVENTIVE_PLUGIN . 'assets/js/eventive-settings.js',
-			array( 'jquery', 'wp-api-fetch' ),
+			array( 'jquery' ),
 			EVENTIVE_CURRENT_VERSION,
 			true
 		);

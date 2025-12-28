@@ -29,15 +29,25 @@ jQuery( document ).ready( function ( $ ) {
 			'<option value="">Loading buckets...</option>'
 		);
 
-		// Fetch buckets using WordPress REST API
-		wp.apiFetch( {
-			path: '/eventive/v1/event_buckets?eventive_nonce=' + EventiveData.eventNonce + '&bucket_refresh=true',
+		// Fetch buckets using native fetch API
+		const apiUrl = EventiveData.restUrl + '/event_buckets?eventive_nonce=' + EventiveData.eventNonce;
+
+		fetch( apiUrl, {
 			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+			},
 		} )
 			.then( function ( response ) {
+				if ( ! response.ok ) {
+					throw new Error( 'HTTP error ' + response.status );
+				}
+				return response.json();
+			} )
+			.then( function ( data ) {
 				// Response from WP REST API
-				if ( response && response.event_buckets && response.event_buckets.length > 0 ) {
-					populateBucketDropdown( response.event_buckets );
+				if ( data && data.event_buckets && data.event_buckets.length > 0 ) {
+					populateBucketDropdown( data.event_buckets );
 				} else {
 					disableBucketDropdown( 'No buckets found' );
 				}
