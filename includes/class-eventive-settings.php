@@ -62,9 +62,19 @@ class Eventive_Settings {
 		wp_enqueue_script(
 			'eventive-settings-script',
 			EVENTIVE_PLUGIN . 'assets/js/eventive-settings.js',
-			array( 'jquery' ),
+			array( 'jquery', 'wp-api' ),
 			EVENTIVE_CURRENT_VERSION,
 			true
+		);
+
+		// Prepare data to pass to view scripts.
+		$localization = $eventive_api->get_api_localization_data();
+
+		// Localize script with API data.
+		wp_localize_script(
+			'eventive-settings-script',
+			'EventiveData',
+			$localization
 		);
 	}
 

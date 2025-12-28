@@ -66,7 +66,7 @@
 		}
 
 		// Check if EventiveData is available.
-		if ( typeof EventiveData === 'undefined' || ! EventiveData.defaultBucket ) {
+		if ( typeof EventiveData === 'undefined' || ! EventiveData.apiKey || ! EventiveData.apiBase ) {
 			$container.html( `
 				<div class="eventive-error">
 					<strong>Error:</strong> Eventive API credentials are not configured. Please update your settings.
@@ -76,7 +76,7 @@
 		}
 
 		// Build the API URL for charts/overview.
-		const apiUrl = `https://api.eventive.org/charts/overview?event_bucket=${ EventiveData.defaultBucket }`;
+		const apiUrl = `${ EventiveData.apiBase }charts/overview?event_bucket=${ EventiveData.defaultBucket }`;
 
 		// Make the API call using wp.apiFetch with custom URL.
 		wp.apiFetch( {

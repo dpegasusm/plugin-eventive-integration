@@ -80,22 +80,14 @@ class Eventive_Dashboard {
 			true
 		);
 
-		// Get API credentials from options.
-		$options      = get_option( 'eventive_admin_options_option_name', array() );
-		$api_key      = $options['your_eventive_secret_key_2'] ?? '';
-		$event_bucket = $options['your_eventive_event_bucket_1'] ?? '';
-
 		// Prepare data to pass to view scripts.
-		$script_data = array(
-			'apiKey'        => $api_key,
-			'defaultBucket' => $event_bucket,
-		);
+		$localization = $eventive_api->get_api_localization_data();
 
 		// Localize script with API data.
 		wp_localize_script(
 			'eventive-dashboard-script',
 			'EventiveData',
-			$script_data
+			$localization
 		);
 	}
 

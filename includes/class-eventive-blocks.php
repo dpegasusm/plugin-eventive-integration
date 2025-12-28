@@ -156,20 +156,8 @@ class Eventive_Blocks {
 		// Global the API class.
 		global $eventive_api;
 
-		// Get the event bucket from options.
-		$api_base      = $eventive_api->get_api_base();
-		$api_key	   = $eventive_api->get_api_key();
-		$event_bucket  = $eventive_api->get_default_bucket_id();
-		$api_endpoints = $eventive_api->get_api_endpoints();
-
 		// Prepare data to pass to view scripts.
-		$script_data = array(
-			'apiBase'       => $api_base,
-			'apiKey'        => $api_key,
-			'apiEndpoints'  => $api_endpoints,
-			'defaultBucket' => $event_bucket,
-			'eventNonce'    => wp_create_nonce( 'eventive_api_nonce' ),
-		);
+		$localization = $eventive_api->get_api_localization_data();
 
 		// List of blocks with view scripts.
 		$blocks_with_views = array(
@@ -203,7 +191,7 @@ class Eventive_Blocks {
 				wp_localize_script(
 					$script_handle,
 					'EventiveData',
-					$script_data
+					$localization
 				);
 			}
 		}

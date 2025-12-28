@@ -255,6 +255,22 @@ class Eventive_API {
 	}
 
 	/**
+	 * Return the localization data all in one place.
+	 * 
+	 * @access public
+	 * @return array The localization data.
+	 */
+	public function get_api_localization_data() {
+		return array(
+			'apiBase'       => $this->get_api_base(),
+			'apiKey'        => $this->get_api_key(),
+			'apiEndpoints'  => $this->get_api_endpoints(),
+			'defaultBucket' => $this->get_api_default_bucket_id(),
+			'eventNonce'    => wp_create_nonce( 'eventive_api_nonce' ),
+		);
+	}
+
+	/**
 	 * Set the API endpoints.
 	 *
 	 * @access public
