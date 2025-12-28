@@ -41,9 +41,9 @@ class Eventive_API {
 	/**
 	 * The api bucket ID in memory.
 	 *
-	 * @var int $api_bucket_id
+	 * @var int $api_default_bucket_id
 	 */
-	private $api_bucket_id = null;
+	private $api_default_bucket_id = 0;
 
 	/**
 	 * Endpoint for event buckets.
@@ -183,12 +183,7 @@ class Eventive_API {
 
 		// Get the required Query Args for the API from the options.
 		$this->api_secret_key = get_option( 'eventive_secret_key', '' );
-		$this->api_bucket_id  = get_option( 'eventive_event_bucket_id', '' );
-
-		// end here if we dont have an API key or bucket ID.
-		if ( empty( $this->api_secret_key ) || empty( $this->api_bucket_id ) ) {
-			return;
-		}
+		$this->api_default_bucket_id  = get_option( 'eventive_default_bucket_id', '' );
 
 		// Set the API endpoints with the mandatory query args.
 		$this->api_endpoint_event_buckets = apply_filters( 'api_endpoint_event_buckets', esc_attr( $this->api_endpoint_event_buckets ) );
@@ -212,7 +207,29 @@ class Eventive_API {
 	 * @return string The API base endpoint URL.
 	 */
 	public function get_api_base() {
-		return rest_url( 'eventive/v1/' );
+		return $this->api_url_base;
+	}
+
+	/**
+	 * Get the API secret key.
+	 * Helper function to get the API secret key.
+	 *
+	 * @access public
+	 * @return string The API secret key.
+	 */
+	public function get_api_key() {
+		return $this->api_secret_key;
+	}
+
+	/**
+	 * Get the API bucket ID.
+	 * Helper function to get the API bucket ID.
+	 *
+	 * @access public
+	 * @return string The API bucket ID.
+	 */
+	public function get_api_default_bucket_id() {
+		return $this->api_default_bucket_id;
 	}
 
 	/**

@@ -65,114 +65,117 @@
 			return;
 		}
 
-		$.ajax( {
-			url: eventiveDashboard.ajaxUrl,
-			type: 'POST',
-			data: {
-				action: 'eventive_dashboard_data',
-				nonce: eventiveDashboard.nonce,
+		// Check if EventiveData is available.
+		if ( typeof EventiveData === 'undefined' || ! EventiveData.defaultBucket ) {
+			$container.html( `
+				<div class="eventive-error">
+					<strong>Error:</strong> Eventive API credentials are not configured. Please update your settings.
+				</div>
+			` );
+			return;
+		}
+
+		// Build the API URL for charts/overview.
+		const apiUrl = `https://api.eventive.org/charts/overview?event_bucket=${ EventiveData.defaultBucket }`;
+
+		// Make the API call using wp.apiFetch with custom URL.
+		wp.apiFetch( {
+			url: apiUrl,
+			method: 'GET',
+			headers: {
+				'X-API-KEY': EventiveData.apiKey,
 			},
-			success( response ) {
-				if ( response.success ) {
-					const data = response.data;
+		} )
+			.then( ( data ) => {
+				// Extract and format data.
+				const totalVolume = data.total_volume ? ( data.total_volume / 100 ).toFixed( 2 ) : '0.00';
+				const totalNetVolume = data.total_net_volume ? ( data.total_net_volume / 100 ).toFixed( 2 ) : '0.00';
+				const totalPaidCount = data.total_paid_count ? parseInt( data.total_paid_count, 10 ) : 0;
 
-					// Build the dashboard HTML.
-					const html = `
-						<div class="eventive-dashboard-container">
-							<div class="eventive-dashboard-box">
-								<strong>Total Volume</strong>
-								<div class="count" data-count="${ data.totalVolume }">$0</div>
-							</div>
-							<div class="eventive-dashboard-box">
-								<strong>Net Volume</strong>
-								<div class="count" data-count="${ data.totalNetVolume }">$0</div>
-							</div>
-							<div class="eventive-dashboard-box">
-								<strong>Paid Transactions</strong>
-								<div class="count" data-count="${ data.totalPaidCount }">0</div>
-							</div>
+				// Build the dashboard HTML.
+				const html = `
+					<div class="eventive-dashboard-container">
+						<div class="eventive-dashboard-box">
+							<strong>Total Volume</strong>
+							<div class="count" data-count="${ totalVolume }">$0</div>
 						</div>
-						<p style="text-align: center; margin-top: 15px;">
-							<a href="https://admin.eventive.org/" target="_blank" rel="noopener noreferrer" class="button button-primary">
-								View Full Eventive Dashboard
-							</a>
-						</p>
-					`;
+						<div class="eventive-dashboard-box">
+							<strong>Net Volume</strong>
+							<div class="count" data-count="${ totalNetVolume }">$0</div>
+						</div>
+						<div class="eventive-dashboard-box">
+							<strong>Paid Transactions</strong>
+							<div class="count" data-count="${ totalPaidCount }">0</div>
+						</div>
+					</div>
+					<p style="text-align: center; margin-top: 15px;">
+						<a href="https://admin.eventive.org/" target="_blank" rel="noopener noreferrer" class="button button-primary">
+							View Full Eventive Dashboard
+						</a>
+					</p>
+				`;
 
-					$container.html( html );
+				$container.html( html );
 
-					// Animate the counts.
-					$container
-						.find( '.eventive-dashboard-box .count' )
-						.each( function () {
-							const $this = $( this );
-							const endValue = parseFloat(
-								$this.attr( 'data-count' )
-							);
-							const isCurrency = $this
-								.parent()
-								.find( 'strong' )
-								.text()
-								.includes( 'Volume' );
+				// Animate the counts.
+				$container
+					.find( '.eventive-dashboard-box .count' )
+					.each( function () {
+						const $this = $( this );
+						const endValue = parseFloat(
+							$this.attr( 'data-count' )
+						);
+						const isCurrency = $this
+							.parent()
+						.find( 'strong' )
+						.text()
+						.includes( 'Volume' );
 
-							if ( isCurrency ) {
-								// Animate currency values.
-								let startTime = null;
-								const duration = 1500;
-								const element = this;
+					if ( isCurrency ) {
+						// Animate currency values.
+						let startTime = null;
+						const duration = 1500;
+						const element = this;
 
-								function animateCurrency( currentTime ) {
-									if ( ! startTime ) {
-										startTime = currentTime;
-									}
-
-									const progress = Math.min(
-										( currentTime - startTime ) / duration,
-										1
-									);
-									const currentValue = progress * endValue;
-									element.textContent =
-										formatCurrency( currentValue );
-
-									if ( progress < 1 ) {
-										requestAnimationFrame(
-											animateCurrency
-										);
-									}
-								}
-
-								requestAnimationFrame( animateCurrency );
-							} else {
-								// Animate regular counts.
-								animateCount( this, 0, endValue, 1500 );
+						function animateCurrency( currentTime ) {
+							if ( ! startTime ) {
+								startTime = currentTime;
 							}
-						} );
-				} else {
-					const errorMessage =
-						response.data && response.data.message
-							? response.data.message
-							: 'Unknown error occurred.';
 
-					$container.html( `
-						<div class="eventive-error">
-							<strong>Error:</strong> ${ errorMessage }
-						</div>
-					` );
-				}
-			},
-			error( xhr, status, error ) {
-				console.error( 'Eventive Dashboard Error:', status, error );
+							const progress = Math.min(
+								( currentTime - startTime ) / duration,
+								1
+							);
+							const currentValue = progress * endValue;
+							element.textContent =
+								formatCurrency( currentValue );
+
+							if ( progress < 1 ) {
+								requestAnimationFrame(
+									animateCurrency
+								);
+							}
+						}
+
+						requestAnimationFrame( animateCurrency );
+					} else {
+						// Animate regular counts.
+						animateCount( this, 0, endValue, 1500 );
+					}
+				} );
+			} )
+			.catch( ( error ) => {
+				console.error( 'Eventive Dashboard Error:', error );
+
+				const errorMessage = error.message || 'Unable to load dashboard data. Please try again later.';
 
 				$container.html( `
 					<div class="eventive-error">
-						<strong>Connection Error:</strong> Unable to load dashboard data. Please try again later.
+						<strong>Connection Error:</strong> ${ errorMessage }
 					</div>
 				` );
-			},
-		} );
-	}
-
-	// Initialize when document is ready.
+			} );
+	}	// Initialize when document is ready.
 	$( document ).ready( function () {
 		// Load dashboard data when the page loads.
 		loadDashboardData();

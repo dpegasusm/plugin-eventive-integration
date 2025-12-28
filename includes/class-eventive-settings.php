@@ -95,17 +95,17 @@ class Eventive_Settings {
 		);
 
 		// Add the Event Bucket ID field.
-		register_setting( 'eventive_options', 'eventive_event_bucket_id', 'sanitize_text_field' );
+		register_setting( 'eventive_options', 'eventive_default_bucket_id', 'sanitize_text_field' );
 
 		// add the settings field.
 		add_settings_field(
-			'eventive_event_bucket_id',
+			'eventive_default_bucket_id',
 			esc_html__( 'Event Default Bucket ID', 'eventive' ),
 			array( $this, 'eventive_dropdown_callback' ),
 			'eventive_options',
 			'eventive_info_section',
 			array(
-				'label_for' => 'eventive_event_bucket_id',
+				'label_for' => 'eventive_default_bucket_id',
 				'label'     => esc_html__( 'Default bucket to use inside eventive. This can be overridden on a page by page basis.', 'eventive' ),
 				'default'   => '',
 				'values'    => array(), // This will be populated via JS on the front.

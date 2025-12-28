@@ -157,16 +157,18 @@ class Eventive_Blocks {
 		global $eventive_api;
 
 		// Get the event bucket from options.
-		$event_bucket  = get_option( 'eventive_event_bucket', '' );
 		$api_base      = $eventive_api->get_api_base();
+		$api_key	   = $eventive_api->get_api_key();
+		$event_bucket  = $eventive_api->get_default_bucket_id();
 		$api_endpoints = $eventive_api->get_api_endpoints();
 
 		// Prepare data to pass to view scripts.
 		$script_data = array(
-			'apiBase'      => $api_base,
-			'apiEndpoints' => $api_endpoints,
-			'eventBucket'  => $event_bucket,
-			'eventNonce'   => wp_create_nonce( 'eventive_api_nonce' ),
+			'apiBase'       => $api_base,
+			'apiKey'        => $api_key,
+			'apiEndpoints'  => $api_endpoints,
+			'defaultBucket' => $event_bucket,
+			'eventNonce'    => wp_create_nonce( 'eventive_api_nonce' ),
 		);
 
 		// List of blocks with view scripts.
@@ -200,7 +202,7 @@ class Eventive_Blocks {
 
 				wp_localize_script(
 					$script_handle,
-					'EventiveBlockData',
+					'EventiveData',
 					$script_data
 				);
 			}

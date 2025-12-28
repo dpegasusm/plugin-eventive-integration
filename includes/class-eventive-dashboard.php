@@ -24,9 +24,6 @@ class Eventive_Dashboard {
 	 * @return void
 	 */
 	public function init() {
-		// Register the AJAX handler.
-		add_action( 'wp_ajax_eventive_dashboard_data', array( $this, 'ajax_get_dashboard_data' ) );
-
 		// Add dashboard widget.
 		add_action( 'wp_dashboard_setup', array( $this, 'register_dashboard_widget' ) );
 
@@ -63,6 +60,9 @@ class Eventive_Dashboard {
 			return;
 		}
 
+		// Use the global API instance.
+		global $eventive_api;
+
 		// Enqueue the dashboard stylesheet.
 		wp_enqueue_style(
 			'eventive-dashboard-style',
@@ -71,23 +71,31 @@ class Eventive_Dashboard {
 			EVENTIVE_CURRENT_VERSION
 		);
 
-		// Enqueue the dashboard script.
+		// Enqueue the dashboard script with wp-api-fetch dependency.
 		wp_enqueue_script(
 			'eventive-dashboard-script',
 			EVENTIVE_PLUGIN . 'assets/js/eventive-dashboard.js',
-			array( 'jquery' ),
+			array( 'jquery', 'wp-api-fetch' ),
 			EVENTIVE_CURRENT_VERSION,
 			true
 		);
 
-		// Localize script with AJAX URL.
+		// Get API credentials from options.
+		$options      = get_option( 'eventive_admin_options_option_name', array() );
+		$api_key      = $options['your_eventive_secret_key_2'] ?? '';
+		$event_bucket = $options['your_eventive_event_bucket_1'] ?? '';
+
+		// Prepare data to pass to view scripts.
+		$script_data = array(
+			'apiKey'        => $api_key,
+			'defaultBucket' => $event_bucket,
+		);
+
+		// Localize script with API data.
 		wp_localize_script(
 			'eventive-dashboard-script',
-			'eventiveDashboard',
-			array(
-				'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-				'nonce'   => wp_create_nonce( 'eventive_dashboard_nonce' ),
-			)
+			'EventiveData',
+			$script_data
 		);
 	}
 
@@ -102,84 +110,5 @@ class Eventive_Dashboard {
 			<p class="eventive-loading"><?php esc_html_e( 'Loading dashboard data...', 'eventive' ); ?></p>
 		</div>
 		<?php
-	}
-
-	/**
-	 * AJAX handler to get dashboard data.
-	 *
-	 * @return void
-	 */
-	public function ajax_get_dashboard_data() {
-		// Use the global API instance.
-		global $eventive_api;
-
-		// Verify nonce.
-		check_ajax_referer( 'eventive_dashboard_nonce', 'nonce' );
-
-		// Check user permissions.
-		if ( ! current_user_can( 'read' ) ) {
-			wp_send_json_error(
-				array( 'message' => __( 'You do not have permission to view this data.', 'eventive' ) ),
-				403
-			);
-			return;
-		}
-
-		// Get API credentials.
-		$options         = get_option( 'eventive_admin_options_option_name', array() );
-		$event_bucket_id = $options['your_eventive_event_bucket_1'] ?? '';
-
-		// Check if credentials are set.
-		if ( empty( $event_bucket_id ) ) {
-			wp_send_json_error(
-				array( 'message' => __( 'Eventive API credentials are not configured. Please update your settings.', 'eventive' ) ),
-				400
-			);
-			return;
-		}
-
-		// Prepare API request URL.
-		$api_url = add_query_arg(
-			'event_bucket',
-			$event_bucket_id,
-			'https://api.eventive.org/charts/overview'
-		);
-
-		// Make the API call using the global API object.
-		$response = $eventive_api->eventive_make_api_call( $api_url );
-
-		// Check for errors.
-		if ( is_wp_error( $response ) ) {
-			wp_send_json_error(
-				array( 'message' => __( 'Failed to fetch dashboard data from Eventive.', 'eventive' ) ),
-				500
-			);
-			return;
-		}
-
-		// Get data from WP_REST_Response.
-		$data = $response->get_data();
-
-		if ( json_last_error() !== JSON_ERROR_NONE || empty( $data ) ) {
-			wp_send_json_error(
-				array( 'message' => __( 'Invalid response from Eventive API.', 'eventive' ) ),
-				500
-			);
-			return;
-		}
-
-		// Extract and format data.
-		$total_volume     = isset( $data['total_volume'] ) ? round( $data['total_volume'] / 100, 2 ) : 0;
-		$total_net_volume = isset( $data['total_net_volume'] ) ? round( $data['total_net_volume'] / 100, 2 ) : 0;
-		$total_paid_count = isset( $data['total_paid_count'] ) ? absint( $data['total_paid_count'] ) : 0;
-
-		// Send success response.
-		wp_send_json_success(
-			array(
-				'totalVolume'    => $total_volume,
-				'totalNetVolume' => $total_net_volume,
-				'totalPaidCount' => $total_paid_count,
-			)
-		);
 	}
 }

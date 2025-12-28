@@ -36,10 +36,10 @@ class Eventive {
 	public function eventive_admin_init() {
 		// Get the API secret key and bucket ID.
 		$this->api_secret_key = get_option( 'eventive_secret_key', '' );
-		$this->api_bucket_id  = get_option( 'eventive_event_bucket_id', '' );
+		$this->api_default_bucket_id  = get_option( 'eventive_default_bucket_id', '' );
 
 		// Display a notice if we dont have an API key or bucket ID.
-		if ( empty( $this->api_secret_key ) || empty( $this->api_bucket_id ) ) {
+		if ( empty( $this->api_secret_key ) || empty( $this->api_default_bucket_id ) ) {
 			add_action(
 				'admin_notices',
 				function () {
