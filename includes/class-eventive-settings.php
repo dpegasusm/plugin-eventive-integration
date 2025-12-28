@@ -68,7 +68,7 @@ class Eventive_Settings {
 		wp_enqueue_script(
 			'eventive-settings-script',
 			EVENTIVE_PLUGIN . 'assets/js/eventive-settings.js',
-			array( 'jquery' ),
+			array( 'jquery', 'wp-api-fetch' ),
 			EVENTIVE_CURRENT_VERSION,
 			true
 		);
@@ -365,11 +365,11 @@ class Eventive_Settings {
 	 * Update the loader URL when the bucket ID changes.
 	 *
 	 * @param string $option_name The name of the option being saved.
-	 * @param string $new_value   The new value being saved.
+	 * @param string $bucket_id   The new bucket ID being saved.
 	 * @return void
 	 */
 	public function eventive_sync_update_loader_url_on_bucket_change( $option_name, $bucket_id ) {
-		// At this point the list of bickets is stored in the option 'eventive_buckets_list'.
+		// At this point the list of buckets is stored in the option 'eventive_buckets_list'.
 		$buckets_list = get_option( 'eventive_buckets_list', array() );
 
 		// Check that we have buckets.
@@ -378,14 +378,17 @@ class Eventive_Settings {
 		}
 
 		// Get the loader url for our bucket from the list of buckets that match the bucket we are looking at.
-		foreach ( $buckets as $bucket ) {
+		foreach ( $buckets_list as $bucket ) {
 			$id = $bucket['id'] ?? '';
 			if ( $id === $bucket_id ) {
 				$root = $bucket['urls']['root'] ?? '';
-				$loader_url = untrailingslashit( $root ) . '/loader.js';
-				// Update the loader URL option.
-				update_option( 'eventive_default_bucket_root_url', esc_url_raw( $loader_url ) );
-			} 
+				if ( ! empty( $root ) ) {
+					$loader_url = untrailingslashit( $root ) . '/loader.js';
+					// Update the loader URL option.
+					update_option( 'eventive_default_bucket_root_url', esc_url_raw( $loader_url ) );
+					break;
+				}
+			}
 		}
 	}
 }
