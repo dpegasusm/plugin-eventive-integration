@@ -307,12 +307,12 @@ class Eventive_API {
 					),
 					'endpoint'  => array(
 						'default'           => '',
-						'sanitize_callback' => 'sanitize_html_class',
+						'sanitize_callback' => 'sanitize_text_field',
 						'validate_callback' => array( $this, 'validate_event_bucket_endpoint' ),
 					),
 					'tag_point' => array(
 						'default'           => '',
-						'sanitize_callback' => 'sanitize_html_class',
+						'sanitize_callback' => 'sanitize_text_field',
 						'validate_callback' => array( $this, 'validate_event_bucket_tag_point' ),
 					),
 				),
