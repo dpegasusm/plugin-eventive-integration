@@ -297,26 +297,22 @@ class Eventive_API {
 				'args'                => array(
 					'bucket_id' => array(
 						'default'           => '',
-						'sanitize_callback' => 'sanitize_text_field',
-						'validate_callback' => function ( $param ) {
-							return is_int( $param ) && $param >= 0;
-						},
+						'sanitize_callback' => array( $this, 'sanitize_eventive_id' ),
+						'validate_callback' => array( $this, 'validate_eventive_id' ),
 					),
 					'tag_id'    => array(
 						'default'           => '',
-						'sanitize_callback' => 'sanitize_text_field',
-						'validate_callback' => function ( $param ) {
-							return is_int( $param ) && $param >= 0;
-						},
+						'sanitize_callback' => array( $this, 'sanitize_eventive_id' ),
+						'validate_callback' => array( $this, 'validate_eventive_id' ),
 					),
 					'endpoint'  => array(
 						'default'           => '',
-						'sanitize_callback' => 'sanitize_text_field',
+						'sanitize_callback' => 'sanitize_html_class',
 						'validate_callback' => array( $this, 'validate_event_bucket_endpoint' ),
 					),
 					'tag_point' => array(
 						'default'           => '',
-						'sanitize_callback' => 'sanitize_text_field',
+						'sanitize_callback' => 'sanitize_html_class',
 						'validate_callback' => array( $this, 'validate_event_bucket_tag_point' ),
 					),
 				),
@@ -335,10 +331,8 @@ class Eventive_API {
 					'event_bucket' => array(
 						'required'          => true,
 						'default'           => '',
-						'sanitize_callback' => 'sanitize_text_field',
-						'validate_callback' => function ( $param ) {
-							return is_string( $param ) && strlen( $param ) > 0;
-						},
+						'sanitize_callback' => array( $this, 'sanitize_eventive_id' ),
+						'validate_callback' => array( $this, 'validate_eventive_id' ),
 					),
 				),
 			)
@@ -556,6 +550,43 @@ class Eventive_API {
 		if ( $nonce && wp_verify_nonce( $nonce, 'eventive_api_nonce' ) ) {
 			return true;
 		}
+		return false;
+	}
+
+	/**
+	 * Sanitize the Eventive ID parameter.
+	 * 
+	 * @param string $param The Eventive ID parameter to sanitize.
+	 * @return string The sanitized Eventive ID.
+	 */
+	public function sanitize_eventive_id( $param ) {
+		// Empty is ok.
+		if ( empty( $param ) ) {
+			return '';
+		}
+
+		// Sanitize to lowercase letters and numbers only.
+		return preg_replace( '/[^a-z0-9]/', '', $param );
+	}
+
+	/**
+	 * Validate the Eventive ID parameter.
+	 *
+	 * @param string $param The Eventive ID parameter to validate.
+	 * @return bool True if valid, false otherwise.
+	 */
+	public function validate_eventive_id( $param ) {
+		// Empty is ok.
+		if ( empty( $param ) ) {
+			return true;
+		}
+
+		// Check if the parameter contains only lowercase letters and numbers.
+		if ( preg_match( '/^[a-z0-9]+$/', $param ) ) {
+			return true;
+		}
+
+		// Invalid Eventive ID.
 		return false;
 	}
 
