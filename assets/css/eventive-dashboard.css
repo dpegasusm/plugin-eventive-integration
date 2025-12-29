@@ -1,0 +1,110 @@
+/**
+ * Eventive Dashboard Widget Styles
+ *
+ * @package Eventive
+ * @since 1.0.0
+ */
+
+/* Dashboard Widget Container */
+#eventive_dashboard_widget .eventive-dashboard-container {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 15px;
+	margin-bottom: 15px;
+}
+
+/* Individual Metric Boxes */
+#eventive_dashboard_widget .eventive-dashboard-box {
+	flex: 1;
+	min-width: 150px;
+	padding: 15px;
+	background: #f8f9fa;
+	border-radius: 4px;
+	text-align: center;
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#eventive_dashboard_widget .eventive-dashboard-box:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+#eventive_dashboard_widget .eventive-dashboard-box strong {
+	display: block;
+	margin-bottom: 8px;
+	color: #646970;
+	font-size: 12px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+#eventive_dashboard_widget .eventive-dashboard-box .count {
+	font-size: 24px;
+	font-weight: 600;
+	color: #1d2327;
+	line-height: 1.2;
+}
+
+/* Button Styling */
+#eventive_dashboard_widget .button-primary {
+	margin-top: 10px;
+}
+
+/* Loading State */
+#eventive_dashboard_widget .eventive-loading {
+	text-align: center;
+	padding: 20px;
+	color: #646970;
+	font-style: italic;
+}
+
+/* Error State */
+#eventive_dashboard_widget .eventive-error {
+	padding: 10px 15px;
+	background: #fef7f1;
+	border-left: 4px solid #d63638;
+	color: #d63638;
+	border-radius: 2px;
+	margin-bottom: 10px;
+}
+
+#eventive_dashboard_widget .eventive-error strong {
+	display: block;
+	margin-bottom: 5px;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 782px) {
+	#eventive_dashboard_widget .eventive-dashboard-container {
+		flex-direction: column;
+	}
+	
+	#eventive_dashboard_widget .eventive-dashboard-box {
+		min-width: 100%;
+	}
+}
+
+/* Animation for count updates */
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+#eventive_dashboard_widget .eventive-dashboard-box {
+	animation: fadeIn 0.3s ease-out;
+}
+
+#eventive_dashboard_widget .eventive-dashboard-box:nth-child(2) {
+	animation-delay: 0.1s;
+}
+
+#eventive_dashboard_widget .eventive-dashboard-box:nth-child(3) {
+	animation-delay: 0.2s;
+}

@@ -1,0 +1,72 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "eventive/film-guide",
+    "version": "0.1.0",
+    "title": "Eventive Film Guide",
+    "category": "eventive",
+    "description": "Display a responsive grid or list of films with filtering, search, and tag options.",
+    "textdomain": "eventive",
+    "attributes": {
+        "tagName": {
+            "type": "string",
+            "default": ""
+        },
+        "excludeTag": {
+            "type": "string",
+            "default": ""
+        },
+        "filmId": {
+            "type": "string",
+            "default": ""
+        },
+        "showEvents": {
+            "type": "boolean",
+            "default": true
+        },
+        "showFilter": {
+            "type": "boolean",
+            "default": false
+        },
+        "image": {
+            "type": "string",
+            "default": "poster"
+        },
+        "view": {
+            "type": "string",
+            "default": "grid"
+        },
+        "showTags": {
+            "type": "boolean",
+            "default": false
+        },
+        "showDescription": {
+            "type": "boolean",
+            "default": false
+        },
+        "showDetails": {
+            "type": "boolean",
+            "default": false
+        },
+        "yearRound": {
+            "type": "boolean",
+            "default": false
+        },
+        "search": {
+            "type": "boolean",
+            "default": false
+        },
+        "showViewSwitcher": {
+            "type": "boolean",
+            "default": true
+        }
+    },
+    "supports": {
+        "html": false,
+        "align": true
+    },
+    "viewScript": "file:./view.js",
+    "editorScript": "file:./index.js",
+    "editorStyle": "file:./index.css",
+    "style": "file:./style-index.css"
+}

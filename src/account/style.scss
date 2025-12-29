@@ -1,0 +1,54 @@
+/**
+ * Eventive Account Block - Frontend Styles
+ */
+
+.wp-block-eventive-eventive-account {
+	.eventive-account-container {
+		margin: 20px 0;
+
+		.account-actions {
+			display: flex;
+			justify-content: flex-end;
+			margin-bottom: 12px;
+
+			.eventive-logout-link {
+				text-decoration: underline;
+				font-weight: 600;
+				cursor: pointer;
+
+				&:hover {
+					opacity: 0.8;
+				}
+			}
+		}
+
+		.top-section {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 20px;
+			margin-bottom: 20px;
+
+			@media (max-width: 768px) {
+				grid-template-columns: 1fr;
+			}
+
+			.account-details,
+			.account-passes {
+				background: #f9f9f9;
+				padding: 20px;
+				border-radius: 4px;
+			}
+		}
+
+		.account-tickets {
+			background: #f9f9f9;
+			padding: 20px;
+			border-radius: 4px;
+		}
+
+		.eventive-login-placeholder {
+			margin-top: 20px;
+			text-align: center;
+		}
+	}
+}

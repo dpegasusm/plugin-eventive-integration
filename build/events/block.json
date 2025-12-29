@@ -1,0 +1,48 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "eventive/events",
+  "version": "0.1.0",
+  "title": "Eventive Events",
+  "category": "eventive",
+  "description": "Display upcoming Eventive events with filtering options.",
+  "textdomain": "eventive",
+  "attributes": {
+    "tagId": {
+      "type": "string",
+      "default": ""
+    },
+    "venueId": {
+      "type": "string",
+      "default": ""
+    },
+    "image": {
+      "type": "string",
+      "default": "poster"
+    },
+    "description": {
+      "type": "boolean",
+      "default": true
+    },
+    "showFilter": {
+      "type": "boolean",
+      "default": false
+    },
+    "eventId": {
+      "type": "string",
+      "default": ""
+    },
+    "filmsBase": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": true
+  },
+  "viewScript": "file:./view.js",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

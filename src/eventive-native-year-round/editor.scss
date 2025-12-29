@@ -1,0 +1,10 @@
+/**
+ * Eventive Native Year-Round Block - Editor Styles
+ */
+
+.wp-block-eventive-native-year-round {
+	// Editor-specific styles
+	.block-editor-block-list__block & {
+		min-height: 100px;
+	}
+}

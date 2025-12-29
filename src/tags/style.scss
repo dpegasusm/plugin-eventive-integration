@@ -1,0 +1,118 @@
+/**
+ * Eventive Tags Block - Frontend Styles
+ *
+ * @package Eventive
+ * @since 1.0.0
+ */
+
+.wp-block-eventive-eventive-tags {
+	width: 100%;
+	margin: 20px 0;
+
+	.eventive-tags-loading,
+	.eventive-tags-error,
+	.eventive-tags-empty {
+		padding: 20px;
+		text-align: center;
+		border-radius: 4px;
+	}
+
+	.eventive-tags-error {
+		background-color: #fef7f1;
+		border-left: 4px solid #d63638;
+		color: #d63638;
+	}
+
+	.eventive-tags-pills {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 10px;
+		align-items: center;
+
+		.tag-label {
+			display: inline-block;
+			padding: 8px 16px;
+			border-radius: 20px;
+			font-size: 14px;
+			font-weight: 500;
+			text-decoration: none;
+			transition: all 0.2s ease;
+			cursor: pointer;
+
+			a {
+				text-decoration: none;
+				color: inherit;
+
+				&:hover,
+				&:focus {
+					text-decoration: none;
+				}
+			}
+
+			&:hover {
+				transform: translateY(-1px);
+				box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+			}
+
+			&.is-active {
+				font-weight: 700;
+				box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+			}
+		}
+	}
+
+	.eventive-tags-dropdown {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		padding: 15px;
+		background-color: #f8f8f8;
+		border-radius: 4px;
+
+		span {
+			font-weight: 600;
+			font-size: 14px;
+			color: #333;
+		}
+
+		.eventive-tag-select {
+			padding: 10px 15px;
+			font-size: 14px;
+			border: 1px solid #ddd;
+			border-radius: 4px;
+			background-color: #fff;
+			cursor: pointer;
+			transition: border-color 0.2s ease;
+
+			&:hover,
+			&:focus {
+				border-color: #2271b1;
+				outline: none;
+			}
+		}
+	}
+}
+
+// Responsive design
+@media screen and (max-width: 768px) {
+	.wp-block-eventive-eventive-tags {
+		.eventive-tags-pills {
+			gap: 8px;
+
+			.tag-label {
+				padding: 6px 12px;
+				font-size: 13px;
+			}
+		}
+
+		.eventive-tags-dropdown {
+			padding: 12px;
+
+			.eventive-tag-select {
+				font-size: 13px;
+			}
+		}
+	}
+}
+
+

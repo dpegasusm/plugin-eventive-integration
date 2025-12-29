@@ -1,0 +1,10 @@
+/**
+ * Eventive Film Details Block - Editor Styles
+ */
+
+.wp-block-eventive-film-details {
+	// Editor-specific styles
+	.block-editor-block-list__block & {
+		min-height: 100px;
+	}
+}

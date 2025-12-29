@@ -1,0 +1,201 @@
+/**
+ * Eventive Account Passes Block - Frontend Styles
+ */
+
+.wp-block-eventive-account-passes {
+	.eventive-login-container {
+		min-height: 100px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.loader {
+		border: 4px solid #f3f3f3;
+		border-top: 4px solid var(--primary-color);
+		border-radius: 50%;
+		width: 36px;
+		height: 36px;
+		animation: spin 1s linear infinite;
+	}
+
+	@keyframes spin {
+		0% {
+			transform: rotate(0deg);
+		}
+		100% {
+			transform: rotate(360deg);
+		}
+	}
+
+	.eventive-notice {
+		background: #f8fafc;
+		border: 1px solid var(--border-color);
+		color: var(--text-color);
+		padding: 12px 16px;
+		border-radius: 8px;
+		text-align: center;
+	}
+
+	.eventive-passes-list {
+		h2 {
+			margin: 0 0 16px 0;
+			font-size: 1.5rem;
+			color: var(--primary-color);
+		}
+	}
+
+	.eventive-passes-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+		gap: 16px;
+	}
+
+	.eventive-pass-card {
+		background: var(--card-bg);
+		border: 1px solid var(--border-color);
+		border-radius: 8px;
+		padding: 16px;
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+		transition: box-shadow 0.2s;
+
+		&:hover {
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+		}
+
+		&__body {
+			margin-bottom: 12px;
+		}
+
+		&__title {
+			font-size: 1.1rem;
+			font-weight: 600;
+			color: var(--text-color);
+			margin-bottom: 8px;
+		}
+
+		&__meta {
+			font-size: 0.9rem;
+			color: #666;
+		}
+
+		&__actions {
+			display: flex;
+			gap: 8px;
+		}
+	}
+
+	.eventive-pass-btn {
+		padding: 8px 16px;
+		border: none;
+		border-radius: 5px;
+		cursor: pointer;
+		font-size: 14px;
+		transition: background 0.2s;
+
+		&--primary {
+			background: var(--primary-color);
+			color: #fff;
+
+			&:hover {
+				background: #0366d6;
+			}
+		}
+
+		&--secondary {
+			background: #6c757d;
+			color: #fff;
+
+			&:hover {
+				background: #5a6268;
+			}
+		}
+	}
+
+	.eventive-edit-pass-modal,
+	.eventive-show-pass-barcode-modal {
+		display: flex;
+		position: fixed;
+		inset: 0;
+		align-items: center;
+		justify-content: center;
+		background: rgba(0, 0, 0, 0.4);
+		z-index: 9999;
+	}
+
+	.edit-pass-modal-content,
+	.show-pass-barcode-modal-content {
+		background: #fff;
+		max-width: 640px;
+		width: 95%;
+		padding: 20px;
+		border-radius: 8px;
+		position: relative;
+
+		h3 {
+			margin-top: 0;
+			margin-bottom: 16px;
+		}
+
+		.modal-close-btn {
+			position: absolute;
+			right: 12px;
+			top: 10px;
+			font-size: 22px;
+			line-height: 1;
+			background: none;
+			border: none;
+			cursor: pointer;
+		}
+
+		.form-group {
+			margin-bottom: 16px;
+
+			label {
+				display: block;
+				margin-bottom: 6px;
+				font-weight: 600;
+			}
+
+			input {
+				width: 100%;
+				padding: 8px;
+				border: 1px solid var(--border-color);
+				border-radius: 4px;
+			}
+		}
+
+		.pass-submit-row-button {
+			background: #28a745;
+			color: #fff;
+			padding: 10px 20px;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+
+			&:hover {
+				background: #218838;
+			}
+		}
+	}
+
+	.show-pass-barcode-modal-content {
+		text-align: center;
+		max-width: 520px;
+
+		.barcode-meta {
+			margin-bottom: 10px;
+			font-size: 14px;
+			opacity: 0.8;
+		}
+
+		.barcode-img {
+			max-width: 320px;
+			width: 100%;
+			height: auto;
+			border: 1px solid #eee;
+			border-radius: 8px;
+			padding: 12px;
+		}
+	}
+}

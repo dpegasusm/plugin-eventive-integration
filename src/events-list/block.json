@@ -1,0 +1,76 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "eventive/events-list",
+    "version": "0.1.0",
+    "title": "Eventive Events List",
+    "category": "eventive",
+    "description": "Display a list of Eventive events with advanced filtering options.",
+    "textdomain": "eventive",
+    "attributes": {
+        "limit": {
+            "type": "number",
+            "default": 10
+        },
+        "tagId": {
+            "type": "string",
+            "default": ""
+        },
+        "excludeTags": {
+            "type": "string",
+            "default": ""
+        },
+        "venueId": {
+            "type": "string",
+            "default": ""
+        },
+        "eventDescription": {
+            "type": "boolean",
+            "default": true
+        },
+        "shortDescription": {
+            "type": "boolean",
+            "default": true
+        },
+        "image": {
+            "type": "string",
+            "default": "cover"
+        },
+        "virtual": {
+            "type": "boolean",
+            "default": true
+        },
+        "showFilter": {
+            "type": "boolean",
+            "default": true
+        },
+        "view": {
+            "type": "string",
+            "default": "list"
+        },
+        "showUndated": {
+            "type": "boolean",
+            "default": true
+        },
+        "includePast": {
+            "type": "boolean",
+            "default": false
+        },
+        "startDate": {
+            "type": "string",
+            "default": ""
+        },
+        "endDate": {
+            "type": "string",
+            "default": ""
+        }
+    },
+    "supports": {
+        "html": false,
+        "align": true
+    },
+    "viewScript": "file:./view.js",
+    "editorScript": "file:./index.js",
+    "editorStyle": "file:./index.css",
+    "style": "file:./style-index.css"
+}

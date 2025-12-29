@@ -1,0 +1,27 @@
+/**
+ * Fundraiser Block - Editor Styles
+ */
+
+.wp-block-eventive-fundraiser {
+	.eventive-block-placeholder {
+		background: #f9f9f9;
+		border: 2px dashed #ddd;
+		padding: 2rem;
+		text-align: center;
+		border-radius: 4px;
+
+		h3 {
+			margin-top: 0;
+			color: #333;
+		}
+
+		p {
+			color: #666;
+			margin: 0.5rem 0;
+		}
+
+		strong {
+			color: #333;
+		}
+	}
+}
