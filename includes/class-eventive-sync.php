@@ -179,7 +179,7 @@ class Eventive_Sync {
 		// Extract film data.
 		$film_id          = sanitize_text_field( $film['id'] );
 		$film_name        = ! empty( $film['name'] ) ? sanitize_text_field( $film['name'] ) : 'Untitled Film';
-		$film_description = ! empty( $film['description'] ) ? wp_kses_post( $film['description'] ) : '';
+		$film_description = ! empty( $film['description'] ) ? '<!-- wp:paragraph --><p>' . wp_kses_post( $film['description'] ) . '</p><!-- /wp:paragraph -->' : '';
 		$visibility       = ! empty( $film['visibility'] ) ? sanitize_text_field( $film['visibility'] ) : 'hidden';
 		$post_status      = ( 'published' === $visibility ) ? 'publish' : 'draft';
 
