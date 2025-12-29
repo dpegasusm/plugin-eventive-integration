@@ -403,13 +403,13 @@ document.addEventListener( 'DOMContentLoaded', () => {
 				params.append( 'start_time_lte', new Date( e ).toISOString() );
 				params.append( 'include_past_events', 'true' );
 				params.append( 'include', 'film,films,program_item' );
-				params.append( 'eventive_nonce', nonce );
 
-				const response = await wp.apiFetch( {
-					path: `/eventive/v1/${
-						endpoints.event_buckets
-					}/${ eventBucket }/events?${ params.toString() }`,
+				let path = `event_buckets/${ eventBucket }/events?${ params.toString() }`;
+
+				const response = await window.Eventive.request( {
 					method: 'GET',
+					path,
+					authenticatePerson: false,
 				} );
 
 				let events =
@@ -454,7 +454,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 				eventsByDay = byDay;
 				weekCache[ wkKey ] = byDay;
 			} catch ( error ) {
-				console.error( 'Error fetching week events:', error );
+				console.error( '[eventive-native-year-round] Error fetching week events:', error );
 				eventsByDay = {};
 			}
 		};

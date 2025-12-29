@@ -99,26 +99,37 @@ function EventiveCarousel( { limit, showDescription } ) {
 			return;
 		}
 
-		const fetchEvents = async () => {
-			try {
-				const endpoints = window.EventiveBlockData?.apiEndpoints || {};
-				const nonce = window.EventiveBlockData?.eventNonce || '';
-
-				const response = await wp.apiFetch( {
-					path: `/eventive/v1/${ endpoints.event_buckets }?bucket_id=${ eventBucket }&endpoint=events&upcoming_only=true&eventive_nonce=${ nonce }`,
-					method: 'GET',
+		const fetchEvents = () => {
+			window.Eventive.request( {
+				method: 'GET',
+				path: `event_buckets/${ eventBucket }/events`,
+				authenticatePerson: false,
+			} )
+				.then( ( response ) => {
+					const eventList = response.events || [];
+					setEvents( eventList.slice( 0, limit ) );
+					setIsLoading( false );
+				} )
+				.catch( ( error ) => {
+					console.error( '[eventive-carousel] Error fetching events:', error );
+					setIsLoading( false );
 				} );
-
-				const eventList = response.events || [];
-				setEvents( eventList.slice( 0, limit ) );
-				setIsLoading( false );
-			} catch ( error ) {
-				console.error( 'Error fetching events:', error );
-				setIsLoading( false );
-			}
 		};
 
-		fetchEvents();
+		if ( window.Eventive && window.Eventive._ready ) {
+			fetchEvents();
+		} else if ( window.Eventive && typeof window.Eventive.on === 'function' ) {
+			window.Eventive.on( 'ready', fetchEvents );
+		} else {
+			setTimeout( () => {
+				if ( window.Eventive && typeof window.Eventive.request === 'function' ) {
+					fetchEvents();
+				} else {
+					console.error( '[eventive-carousel] Eventive API not available' );
+					setIsLoading( false );
+				}
+			}, 1000 );
+		}
 	}, [ eventBucket, limit ] );
 
 	// Auto-advance slides

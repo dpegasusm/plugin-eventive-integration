@@ -146,13 +146,10 @@ function AccountDetailsApp() {
 				setIsLoggedIn( loggedIn );
 
 				if ( loggedIn ) {
-					const endpoints =
-						window.EventiveBlockData?.apiEndpoints || {};
-					const nonce = window.EventiveBlockData?.eventNonce || '';
-
-					const resp = await wp.apiFetch( {
-						path: `/eventive/v1/${ endpoints.people }?self=true&eventive_nonce=${ nonce }`,
+					const resp = await window.Eventive.request( {
 						method: 'GET',
+						path: 'people?self=true',
+						authenticatePerson: true,
 					} );
 					const person = resp && ( resp.person || resp );
 					window.eventivePersonId = person && person.id;
@@ -166,7 +163,7 @@ function AccountDetailsApp() {
 					}
 				}
 			} catch ( error ) {
-				console.error( 'Error fetching account details:', error );
+				console.error( '[eventive-account-details] Error fetching account details:', error );
 			} finally {
 				setIsLoading( false );
 			}
@@ -197,14 +194,13 @@ function AccountDetailsApp() {
 				return;
 			}
 
-			const endpoints = window.EventiveBlockData?.apiEndpoints || {};
-			const nonce = window.EventiveBlockData?.eventNonce || '';
 			const payload = {};
 			payload[ key ] = editValue;
 
-			await wp.apiFetch( {
-				path: `/eventive/v1/${ endpoints.people }/${ personId }?eventive_nonce=${ nonce }`,
+			await window.Eventive.request( {
 				method: 'POST',
+				path: `people/${ personId }`,
+				authenticatePerson: true,
 				data: payload,
 			} );
 
@@ -213,7 +209,7 @@ function AccountDetailsApp() {
 			setEditingKey( null );
 			setEditValue( '' );
 		} catch ( err ) {
-			console.error( 'Error submitting update:', err );
+			console.error( '[eventive-account-details] Error submitting update:', err );
 			alert( 'Failed to save changes. Please try again.' );
 		}
 	};
@@ -225,18 +221,17 @@ function AccountDetailsApp() {
 				return;
 			}
 
-			const endpoints = window.EventiveBlockData?.apiEndpoints || {};
-			const nonce = window.EventiveBlockData?.eventNonce || '';
 			const payload = { sms_tickets_enabled: checked };
 
-			await wp.apiFetch( {
-				path: `/eventive/v1/${ endpoints.people }/${ personId }?eventive_nonce=${ nonce }`,
+			await window.Eventive.request( {
 				method: 'POST',
+				path: `people/${ personId }`,
+				authenticatePerson: true,
 				data: payload,
 			} );
 			setDetails( { ...details, sms_tickets_enabled: checked } );
 		} catch ( err ) {
-			console.error( 'Error updating SMS setting:', err );
+			console.error( '[eventive-account-details] Error updating SMS setting:', err );
 		}
 	};
 

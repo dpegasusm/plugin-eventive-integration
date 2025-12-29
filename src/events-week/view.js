@@ -51,19 +51,16 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	}
 
 	async function fetchAllEvents( eventBucket, apiKey ) {
-		try {
-			const endpoints = window.EventiveBlockData?.apiEndpoints || {};
-			const nonce = window.EventiveBlockData?.eventNonce || '';
-
-			const response = await wp.apiFetch( {
-				path: `/eventive/v1/${ endpoints.event_buckets }?bucket_id=${ eventBucket }&endpoint=events&upcoming_only=true&eventive_nonce=${ nonce }`,
-				method: 'GET',
+		return window.Eventive.request( {
+			method: 'GET',
+			path: `event_buckets/${ eventBucket }/events`,
+			authenticatePerson: false,
+		} )
+			.then( ( response ) => response.events || [] )
+			.catch( ( error ) => {
+				console.error( '[eventive-events-week] Error fetching all events:', error );
+				return [];
 			} );
-			return response.events || [];
-		} catch ( error ) {
-			console.error( 'Error fetching all events:', error );
-			return [];
-		}
 	}
 
 	function getStartOfWeek( date ) {

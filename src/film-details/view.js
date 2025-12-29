@@ -278,23 +278,23 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		};
 
 		// Fetch and render events
-		const fetchEvents = async () => {
+		const fetchEvents = () => {
 			if ( ! showEvents ) {
-				return;
+				return Promise.resolve();
 			}
 
-			try {
-				const response = await wp.apiFetch( {
-					path: `/eventive/v1/${ endpoints.event_buckets }/${ eventBucket }/films/${ filmId }/events?eventive_nonce=${ nonce }`,
-					method: 'GET',
-				} );
-
-				let events = [];
-				if ( Array.isArray( response?.events ) ) {
-					events = response.events;
-				} else if ( Array.isArray( response ) ) {
-					events = response;
-				}
+			return window.Eventive.request( {
+				method: 'GET',
+				path: `event_buckets/${ eventBucket }/films/${ filmId }/events`,
+				authenticatePerson: false,
+			} )
+				.then( ( response ) => {
+					let events = [];
+					if ( Array.isArray( response?.events ) ) {
+						events = response.events;
+					} else if ( Array.isArray( response ) ) {
+						events = response;
+					}
 
 				const now = new Date();
 				const upcomingDated = events
@@ -483,29 +483,48 @@ document.addEventListener( 'DOMContentLoaded', () => {
 				if ( window.Eventive?.rebuild ) {
 					window.Eventive.rebuild();
 				}
-			} catch ( error ) {
-				console.error( 'Error fetching events:', error );
+			} )
+			.catch( ( error ) => {
+				console.error( '[eventive-film-details] Error fetching events:', error );
 				const listEl = block.querySelector( '.film-events' );
 				if ( listEl ) {
 					listEl.innerHTML =
 						'<div>Error loading events for this film.</div>';
 				}
-			}
+			} );
 		};
 
 		// Main fetch and render
-		const init = async () => {
-			try {
-				const film = await wp.apiFetch( {
-					path: `/eventive/v1/${ endpoints.films }/${ filmId }?eventive_nonce=${ nonce }`,
+		const init = () => {
+			const fetchFilm = () => {
+				window.Eventive.request( {
 					method: 'GET',
-				} );
+					path: `films/${ filmId }`,
+					authenticatePerson: false,
+				} )
+					.then( ( film ) => {
+						renderFilm( film );
+						return fetchEvents();
+					} )
+					.catch( ( error ) => {
+						console.error( '[eventive-film-details] Error fetching film:', error );
+						block.innerHTML = '<div>Error loading film details.</div>';
+					} );
+			};
 
-				renderFilm( film );
-				await fetchEvents();
-			} catch ( error ) {
-				console.error( 'Error fetching film:', error );
-				block.innerHTML = '<div>Error loading film details.</div>';
+			if ( window.Eventive && window.Eventive._ready ) {
+				fetchFilm();
+			} else if ( window.Eventive && typeof window.Eventive.on === 'function' ) {
+				window.Eventive.on( 'ready', fetchFilm );
+			} else {
+				setTimeout( () => {
+					if ( window.Eventive && typeof window.Eventive.request === 'function' ) {
+						fetchFilm();
+					} else {
+						console.error( '[eventive-film-details] Eventive API not available' );
+						block.innerHTML = '<div>Error loading film details.</div>';
+					}
+				}, 1000 );
 			}
 		};
 

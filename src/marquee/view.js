@@ -265,84 +265,103 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		};
 
 		// Fetch and render
-		const init = async () => {
-			try {
+		const init = () => {
+			const fetchData = () => {
 				const params = new URLSearchParams();
 				if ( yearRound ) {
 					params.append( 'marquee', 'true' );
 				}
-				params.append( 'eventive_nonce', nonce );
 
-				const response = await wp.apiFetch( {
-					path: `/eventive/v1/${
-						endpoints.event_buckets
-					}/${ eventBucket }/films?${ params.toString() }`,
+				let path = `event_buckets/${ eventBucket }/films`;
+				if ( params.toString() ) {
+					path += `?${ params.toString() }`;
+				}
+
+				window.Eventive.request( {
 					method: 'GET',
-				} );
+					path,
+					authenticatePerson: false,
+				} )
+					.then( ( response ) => {
+						const films = ( response && response.films ) || [];
+						const filtered = filterByIncludeExclude( films, tag, exclude );
 
-				const films = ( response && response.films ) || [];
-				const filtered = filterByIncludeExclude( films, tag, exclude );
+						const content = document.createElement( 'div' );
+						content.className = 'marquee-content';
+						const slideWidth = 210;
 
-				const content = document.createElement( 'div' );
-				content.className = 'marquee-content';
-				const slideWidth = 210;
+						filtered.slice( 0, number ).forEach( ( f ) => {
+							const imageUrl = getImageUrlForFilm( f, useStills );
+							content.appendChild(
+								createPosterSlide( f.name, imageUrl, f.id )
+							);
+						} );
 
-				filtered.slice( 0, number ).forEach( ( f ) => {
-					const imageUrl = getImageUrlForFilm( f, useStills );
-					content.appendChild(
-						createPosterSlide( f.name, imageUrl, f.id )
-					);
-				} );
+						let rendered = Array.from( content.children );
+						let currentWidth = rendered.length * slideWidth;
+						const containerWidth = marquee.offsetWidth;
 
-				let rendered = Array.from( content.children );
-				let currentWidth = rendered.length * slideWidth;
-				const containerWidth = marquee.offsetWidth;
+						while ( currentWidth < containerWidth ) {
+							rendered.forEach( ( slide ) => {
+								content.appendChild( slide.cloneNode( true ) );
+							} );
+							rendered = Array.from( content.children );
+							currentWidth = rendered.length * slideWidth;
+						}
 
-				while ( currentWidth < containerWidth ) {
-					rendered.forEach( ( slide ) => {
-						content.appendChild( slide.cloneNode( true ) );
+						duplicateContentForLoop( content );
+
+						const totalWidth = content.children.length * slideWidth;
+						content.style.width = totalWidth + 'px';
+
+						const PX_PER_SECOND = 60,
+							MIN_SEC = 20,
+							MAX_SEC = 180;
+						const durationSec = Math.max(
+							MIN_SEC,
+							Math.min(
+								MAX_SEC,
+								Math.round( totalWidth / PX_PER_SECOND )
+							)
+						);
+						content.style.animationDuration = durationSec + 's';
+
+						const captionSpeedAttr = (
+							wrapper.getAttribute( 'data-caption-speed' ) || 'match'
+						).toLowerCase();
+						let captionDuration = durationSec;
+						const asNumber = parseInt( captionSpeedAttr, 10 );
+						if ( ! isNaN( asNumber ) && asNumber > 0 ) {
+							captionDuration = asNumber;
+						}
+						if (
+							captionTrack &&
+							( captionTrack.textContent || '' ).trim().length
+						) {
+							captionTrack.style.animationDuration =
+								captionDuration + 's';
+							captionTrack.classList.add( 'caption-scroll' );
+						}
+
+						marquee.appendChild( content );
+					} )
+					.catch( ( error ) => {
+						console.error( '[eventive-marquee] Error fetching marquee films:', error );
 					} );
-					rendered = Array.from( content.children );
-					currentWidth = rendered.length * slideWidth;
-				}
+			};
 
-				duplicateContentForLoop( content );
-
-				const totalWidth = content.children.length * slideWidth;
-				content.style.width = totalWidth + 'px';
-
-				const PX_PER_SECOND = 60,
-					MIN_SEC = 20,
-					MAX_SEC = 180;
-				const durationSec = Math.max(
-					MIN_SEC,
-					Math.min(
-						MAX_SEC,
-						Math.round( totalWidth / PX_PER_SECOND )
-					)
-				);
-				content.style.animationDuration = durationSec + 's';
-
-				const captionSpeedAttr = (
-					wrapper.getAttribute( 'data-caption-speed' ) || 'match'
-				).toLowerCase();
-				let captionDuration = durationSec;
-				const asNumber = parseInt( captionSpeedAttr, 10 );
-				if ( ! isNaN( asNumber ) && asNumber > 0 ) {
-					captionDuration = asNumber;
-				}
-				if (
-					captionTrack &&
-					( captionTrack.textContent || '' ).trim().length
-				) {
-					captionTrack.style.animationDuration =
-						captionDuration + 's';
-					captionTrack.classList.add( 'caption-scroll' );
-				}
-
-				marquee.appendChild( content );
-			} catch ( error ) {
-				console.error( 'Error fetching marquee films:', error );
+			if ( window.Eventive && window.Eventive._ready ) {
+				fetchData();
+			} else if ( window.Eventive && typeof window.Eventive.on === 'function' ) {
+				window.Eventive.on( 'ready', fetchData );
+			} else {
+				setTimeout( () => {
+					if ( window.Eventive && typeof window.Eventive.request === 'function' ) {
+						fetchData();
+					} else {
+						console.error( '[eventive-marquee] Eventive API not available' );
+					}
+				}, 1000 );
 			}
 		};
 

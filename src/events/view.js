@@ -31,50 +31,67 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			window.eventiveOptions?.filmSyncEnabled || false;
 
 		// Initialize the events display
-		const fetchAndRenderEvents = async () => {
-			try {
-				const endpoints = window.EventiveBlockData?.apiEndpoints || {};
-				const nonce = window.EventiveBlockData?.eventNonce || '';
-
-				const queryParams = new URLSearchParams( {
-					bucket_id: eventBucket,
-					endpoint: 'events',
-					upcoming_only: 'true',
-					eventive_nonce: nonce,
-					...( tagId && { 'tag-id': tagId } ),
-					...( venueId && { 'venue-id': venueId } ),
-				} );
-
-				const response = await wp.apiFetch( {
-					path: `/eventive/v1/${ endpoints.event_buckets }?${ queryParams }`,
-					method: 'GET',
-				} );
-
-				const events = ( response?.events || [] ).filter(
-					( event ) => ! event.is_virtual
-				);
-
-				renderEvents( block, events, {
-					imageMode,
-					showDescription,
-					showFilter,
-					filmDetailBaseURL,
-					prettyPermalinks,
-					filmSyncEnabled,
-				} );
-
-				// Rebuild Eventive buttons (if Eventive is loaded for cart/tickets)
-				if ( window.Eventive?.rebuild ) {
-					window.Eventive.rebuild();
-				}
-			} catch ( error ) {
-				console.error( 'Error fetching events:', error );
-				block.innerHTML =
-					'<p class="error-message">Failed to load events.</p>';
+		const fetchAndRenderEvents = () => {
+			const queryParams = {};
+			if ( tagId ) {
+				queryParams[ 'tag-id' ] = tagId;
 			}
+			if ( venueId ) {
+				queryParams[ 'venue-id' ] = venueId;
+			}
+
+			let path = `event_buckets/${ eventBucket }/events`;
+			if ( Object.keys( queryParams ).length > 0 ) {
+				const query = new URLSearchParams( queryParams ).toString();
+				path += `?${ query }`;
+			}
+
+			window.Eventive.request( {
+				method: 'GET',
+				path,
+				authenticatePerson: false,
+			} )
+				.then( ( response ) => {
+					const events = ( response?.events || [] ).filter(
+						( event ) => ! event.is_virtual
+					);
+
+					renderEvents( block, events, {
+						imageMode,
+						showDescription,
+						showFilter,
+						filmDetailBaseURL,
+						prettyPermalinks,
+						filmSyncEnabled,
+					} );
+
+					// Rebuild Eventive buttons (if Eventive is loaded for cart/tickets)
+					if ( window.Eventive?.rebuild ) {
+						window.Eventive.rebuild();
+					}
+				} )
+				.catch( ( error ) => {
+					console.error( '[eventive-events] Error fetching events:', error );
+					block.innerHTML =
+						'<p class="error-message">Failed to load events.</p>';
+				} );
 		};
 
-		fetchAndRenderEvents();
+		if ( window.Eventive && window.Eventive._ready ) {
+			fetchAndRenderEvents();
+		} else if ( window.Eventive && typeof window.Eventive.on === 'function' ) {
+			window.Eventive.on( 'ready', fetchAndRenderEvents );
+		} else {
+			setTimeout( () => {
+				if ( window.Eventive && typeof window.Eventive.request === 'function' ) {
+					fetchAndRenderEvents();
+				} else {
+					console.error( '[eventive-events] Eventive API not available' );
+					block.innerHTML =
+						'<p class="error-message">Failed to load events.</p>';
+				}
+			}, 1000 );
+		}
 	} ); /**
 						 * Render events into the block
 						 * @param container

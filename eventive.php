@@ -98,7 +98,7 @@ function eventive_activate() {
 
 	// Add our custom post type caps to the administrator role.
 	$role = get_role( 'administrator' );
-	
+
 	if ( $role ) {
 		$role->add_cap( 'edit_film' );
 		$role->add_cap( 'read_film' );

@@ -83,7 +83,6 @@ class Eventive_Sync {
 		if ( empty( $bucket_id ) || empty( $api_key ) ) {
 			$error = new WP_Error( 'missing_credentials', 'Eventive API credentials are missing. Please configure them in the settings.' );
 			if ( ! $return_result ) {
-				error_log( '[Eventive Sync] ' . $error->get_error_message() );
 				return $error;
 			}
 			return $error;
@@ -100,9 +99,6 @@ class Eventive_Sync {
 
 		// Check if response is a WP_Error.
 		if ( is_wp_error( $response ) ) {
-			if ( ! $return_result ) {
-				error_log( '[Eventive Sync] Failed to fetch films: ' . $response->get_error_message() );
-			}
 			return new WP_Error( 'api_error', 'Failed to fetch films from Eventive: ' . $response->get_error_message() );
 		}
 
@@ -119,9 +115,6 @@ class Eventive_Sync {
 
 		if ( empty( $films ) ) {
 			$error = new WP_Error( 'no_films', 'No films found in the Eventive API response.' );
-			if ( ! $return_result ) {
-				error_log( '[Eventive Sync] ' . $error->get_error_message() );
-			}
 			return $error;
 		}
 
@@ -143,9 +136,6 @@ class Eventive_Sync {
 			$result  = $this->create_or_update_film_post( $film, $bucket_id );
 
 			if ( is_wp_error( $result ) ) {
-				if ( ! $return_result ) {
-					error_log( '[Eventive Sync] Error syncing film ' . $film_id . ': ' . $result->get_error_message() );
-				}
 				++$skipped_count;
 				continue;
 			}
@@ -174,10 +164,6 @@ class Eventive_Sync {
 			'updated_count' => $updated_count,
 			'skipped_count' => $skipped_count,
 		);
-
-		if ( ! $return_result ) {
-			error_log( '[Eventive Sync] ' . $message );
-		}
 
 		return $result_data;
 	}

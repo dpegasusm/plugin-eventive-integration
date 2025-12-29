@@ -56,25 +56,46 @@ function EventiveCalendar() {
 			return;
 		}
 
-		const fetchEvents = async () => {
-			try {
-				const endpoints = window.EventiveBlockData?.apiEndpoints || {};
-				const nonce = window.EventiveBlockData?.eventNonce || '';
-
-				const response = await wp.apiFetch( {
-					path: `/eventive/v1/${ endpoints.event_buckets }?bucket_id=${ eventBucket }&endpoint=events&upcoming_only=true&eventive_nonce=${ nonce }`,
-					method: 'GET',
-				} );
-
-				setEvents( response.events || [] );
+		const fetchEvents = () => {
+			// Check if Eventive API is available
+			if ( ! window.Eventive || typeof window.Eventive.request !== 'function' ) {
+				console.error( '[eventive-calendar] Eventive API is not available' );
 				setIsLoading( false );
-			} catch ( error ) {
-				console.error( 'Error fetching events:', error );
-				setIsLoading( false );
+				return;
 			}
+
+			// Use Eventive.request() to fetch events
+			window.Eventive.request( {
+				method: 'GET',
+				path: `event_buckets/${ eventBucket }/events`,
+				authenticatePerson: false,
+			} )
+				.then( ( response ) => {
+					setEvents( response.events || [] );
+					setIsLoading( false );
+				} )
+				.catch( ( error ) => {
+					console.error( '[eventive-calendar] Error fetching events:', error );
+					setIsLoading( false );
+				} );
 		};
 
-		fetchEvents();
+		// Initialize when Eventive API is ready
+		if ( window.Eventive && window.Eventive._ready ) {
+			fetchEvents();
+		} else if ( window.Eventive && typeof window.Eventive.on === 'function' ) {
+			window.Eventive.on( 'ready', fetchEvents );
+		} else {
+			// Fallback: try after delay
+			setTimeout( () => {
+				if ( window.Eventive && typeof window.Eventive.request === 'function' ) {
+					fetchEvents();
+				} else {
+					console.error( '[eventive-calendar] Eventive API not found' );
+					setIsLoading( false );
+				}
+			}, 1000 );
+		}
 	}, [ eventBucket ] );
 
 	const generateCalendar = () => {

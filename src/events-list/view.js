@@ -435,8 +435,8 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		};
 
 		// Fetch and render
-		const init = async () => {
-			try {
+		const init = () => {
+			const fetchData = () => {
 				const params = new URLSearchParams();
 				if ( ! includePast ) {
 					params.append( 'upcoming_only', 'true' );
@@ -445,21 +445,42 @@ document.addEventListener( 'DOMContentLoaded', () => {
 				if ( includeVirtual ) {
 					params.append( 'include_virtual', 'true' );
 				}
-				params.append( 'eventive_nonce', nonce );
 
-				const response = await wp.apiFetch( {
-					path: `/eventive/v1/${
-						endpoints.event_buckets
-					}/${ eventBucket }/events?${ params.toString() }`,
+				let path = `event_buckets/${ eventBucket }/events`;
+				if ( params.toString() ) {
+					path += `?${ params.toString() }`;
+				}
+
+				window.Eventive.request( {
 					method: 'GET',
-				} );
+					path,
+					authenticatePerson: false,
+				} )
+					.then( ( response ) => {
+						allEvents = ( response && response.events ) || [];
+						renderEvents();
+					} )
+					.catch( ( error ) => {
+						console.error( '[eventive-events-list] Error fetching events:', error );
+						block.innerHTML =
+							'<div class="eventive-error">Error loading events.</div>';
+					} );
+			};
 
-				allEvents = ( response && response.events ) || [];
-				renderEvents();
-			} catch ( error ) {
-				console.error( 'Error fetching events:', error );
-				block.innerHTML =
-					'<div class="eventive-error">Error loading events.</div>';
+			if ( window.Eventive && window.Eventive._ready ) {
+				fetchData();
+			} else if ( window.Eventive && typeof window.Eventive.on === 'function' ) {
+				window.Eventive.on( 'ready', fetchData );
+			} else {
+				setTimeout( () => {
+					if ( window.Eventive && typeof window.Eventive.request === 'function' ) {
+						fetchData();
+					} else {
+						console.error( '[eventive-events-list] Eventive API not available' );
+						block.innerHTML =
+							'<div class="eventive-error">Error loading events.</div>';
+					}
+				}, 1000 );
 			}
 		};
 

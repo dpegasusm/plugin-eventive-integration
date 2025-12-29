@@ -48,18 +48,16 @@ function AccountTicketsApp() {
 
 	const fetchTickets = async () => {
 		try {
-			const endpoints = window.EventiveBlockData?.apiEndpoints || {};
-			const nonce = window.EventiveBlockData?.eventNonce || '';
-
-			const resp = await wp.apiFetch( {
-				path: `/eventive/v1/${ endpoints.tickets }?self=true&eventive_nonce=${ nonce }`,
+			const resp = await window.Eventive.request( {
 				method: 'GET',
+				path: 'tickets?self=true',
+				authenticatePerson: true,
 			} );
 
 			const list = ( resp && ( resp.tickets || resp ) ) || [];
 			setTickets( list );
 		} catch ( error ) {
-			console.error( 'Error fetching tickets:', error );
+			console.error( '[eventive-account-tickets] Error fetching tickets:', error );
 		}
 	};
 

@@ -50,18 +50,16 @@ function AccountPassesApp() {
 
 	const fetchPasses = async () => {
 		try {
-			const endpoints = window.EventiveBlockData?.apiEndpoints || {};
-			const nonce = window.EventiveBlockData?.eventNonce || '';
-
-			const resp = await wp.apiFetch( {
-				path: `/eventive/v1/${ endpoints.passes }?self=true&eventive_nonce=${ nonce }`,
+			const resp = await window.Eventive.request( {
 				method: 'GET',
+				path: 'passes?self=true',
+				authenticatePerson: true,
 			} );
 
 			const list = ( resp && ( resp.passes || resp ) ) || [];
 			setPasses( list );
 		} catch ( error ) {
-			console.error( 'Error fetching passes:', error );
+			console.error( '[eventive-account-passes] Error fetching passes:', error );
 		}
 	};
 

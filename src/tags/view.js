@@ -201,54 +201,78 @@ const TagsContainer = ( { view, display, hideEmpty, excludeTags } ) => {
 	}, [] );
 
 	useEffect( () => {
-		const loadTags = async () => {
-			try {
-				// Get event bucket and endpoints from localized data
-				const eventBucket = window.EventiveBlockData?.eventBucket || '';
-				const endpoints = window.EventiveBlockData?.apiEndpoints || {};
-				const nonce = window.EventiveBlockData?.eventNonce || '';
+		const loadTags = () => {
+			// Get event bucket from localized data
+			const eventBucket = window.EventiveBlockData?.eventBucket || '';
 
-				if ( ! eventBucket ) {
-					setError( 'Event bucket not configured.' );
-					setLoading( false );
-					return;
-				}
-
-				// Fetch tags from WordPress REST API using wp.apiFetch
-				const tagsData = await wp.apiFetch( {
-					path: `/eventive/v1/${ endpoints.event_buckets }?bucket_id=${ eventBucket }&endpoint=tags&eventive_nonce=${ nonce }`,
-					method: 'GET',
-				} );
-
-				const tagsList = tagsData?.tags || [];
-
-				// If display is limited to films or events, fetch and filter
-				let allowed = null;
-				if ( display === 'films' ) {
-					const filmsData = await wp.apiFetch( {
-						path: `/eventive/v1/${ endpoints.event_buckets }?bucket_id=${ eventBucket }&endpoint=films&eventive_nonce=${ nonce }`,
-						method: 'GET',
-					} );
-					allowed = collectTagIds( filmsData );
-				} else if ( display === 'events' ) {
-					const eventsData = await wp.apiFetch( {
-						path: `/eventive/v1/${ endpoints.event_buckets }?bucket_id=${ eventBucket }&endpoint=events&eventive_nonce=${ nonce }`,
-						method: 'GET',
-					} );
-					allowed = collectTagIds( eventsData );
-				}
-
-				setAllowedTagIds( allowed );
-				setTags( tagsList );
+			if ( ! eventBucket ) {
+				setError( 'Event bucket not configured.' );
 				setLoading( false );
-			} catch ( err ) {
-				console.error( 'Error loading tags:', err );
-				setError( err.message );
-				setLoading( false );
+				return;
 			}
+
+			// Fetch tags from Eventive API
+			window.Eventive.request( {
+				method: 'GET',
+				path: `event_buckets/${ eventBucket }/tags`,
+				authenticatePerson: false,
+			} )
+				.then( ( tagsData ) => {
+					const tagsList = tagsData?.tags || [];
+
+					// If display is limited to films or events, fetch and filter
+					if ( display === 'films' ) {
+						return window.Eventive.request( {
+							method: 'GET',
+							path: `event_buckets/${ eventBucket }/films`,
+							authenticatePerson: false,
+						} )
+							.then( ( filmsData ) => {
+								const allowed = collectTagIds( filmsData );
+								setAllowedTagIds( allowed );
+								setTags( tagsList );
+								setLoading( false );
+							} );
+					} else if ( display === 'events' ) {
+						return window.Eventive.request( {
+							method: 'GET',
+							path: `event_buckets/${ eventBucket }/events`,
+							authenticatePerson: false,
+						} )
+							.then( ( eventsData ) => {
+								const allowed = collectTagIds( eventsData );
+								setAllowedTagIds( allowed );
+								setTags( tagsList );
+								setLoading( false );
+							} );
+					} else {
+						setAllowedTagIds( null );
+						setTags( tagsList );
+						setLoading( false );
+					}
+				} )
+				.catch( ( err ) => {
+					console.error( '[eventive-tags] Error loading tags:', err );
+					setError( err.message );
+					setLoading( false );
+				} );
 		};
 
-		loadTags();
+		if ( window.Eventive && window.Eventive._ready ) {
+			loadTags();
+		} else if ( window.Eventive && typeof window.Eventive.on === 'function' ) {
+			window.Eventive.on( 'ready', loadTags );
+		} else {
+			setTimeout( () => {
+				if ( window.Eventive && typeof window.Eventive.request === 'function' ) {
+					loadTags();
+				} else {
+					console.error( '[eventive-tags] Eventive API not available' );
+					setError( 'Eventive API not available' );
+					setLoading( false );
+				}
+			}, 1000 );
+		}
 	}, [ display ] );
 
 	const handleTagClick = ( tagId ) => {
