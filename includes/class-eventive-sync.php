@@ -278,6 +278,9 @@ class Eventive_Sync {
 			update_post_meta( $post_id, '_eventive_film_tags', $film['tags'] );
 		}
 
+		// add a do action here so other functions can hook in after a film is created/updated.
+		do_action( 'eventive_film_synced', $post_id, $film, $action );
+
 		return $action;
 	}
 }
