@@ -95,6 +95,19 @@ if ( ! empty( $api_key ) ) {
 function eventive_activate() {
 	// flush the rewrite rules in the plugin so that our new rules take effect.
 	flush_rewrite_rules();
+
+	// Add our custom post type caps to the administrator role.
+	$role = get_role( 'administrator' );
+	
+	if ( $role ) {
+		$role->add_cap( 'edit_film' );
+		$role->add_cap( 'read_film' );
+		$role->add_cap( 'delete_film' );
+		$role->add_cap( 'edit_films' );
+		$role->add_cap( 'edit_others_films' );
+		$role->add_cap( 'publish_films' );
+		$role->add_cap( 'read_private_films' );
+	}
 }
 
 /**
