@@ -33,9 +33,6 @@ class Eventive_Blocks {
 		// Add the eventive category to the block editor.
 		add_filter( 'block_categories_all', array( $this, 'eventive_block_categories' ), 10, 2 );
 
-		// Enqueue the block editor to handle these.
-		add_action( 'enqueue_block_editor_assets', array( $this, 'eventive_site_enqueue_block_editor_assets' ) );
-
 		// Localize view scripts for frontend blocks.
 		add_action( 'wp_enqueue_scripts', array( $this, 'localize_block_view_scripts' ) );
 	}

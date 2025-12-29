@@ -161,19 +161,16 @@ jQuery( document ).ready( function ( $ ) {
 				success( response ) {
 					console.log( 'Sync response:', response );
 
-					if ( response.success ) {
-						$progressDiv.html(
-							'<span style="color: green;">✓ ' +
-								response.data.message +
-								'</span>'
-						);
+				if ( response.success ) {
+					$progressDiv.html(
+						'<span style="color: green;">✓ ' +
+							response.data.message +
+							'</span>'
+					);
 
-						// Re-enable button after a short delay
-						setTimeout( function () {
-							$button.prop( 'disabled', false );
-							$progressDiv.fadeOut();
-						}, 3000 );
-					} else {
+					// Re-enable button
+					$button.prop( 'disabled', false );
+				} else {
 						$progressDiv.html(
 							'<span style="color: red;">✗ Error: ' +
 								( response.data?.message ||
