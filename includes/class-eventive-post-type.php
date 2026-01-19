@@ -134,10 +134,8 @@ class Eventive_Post_Type {
 	 * @return void
 	 */
 	public function enqueue_film_properties_script() {
-		global $post;
-
 		// Only enqueue on eventive_film post type.
-		if ( ! $post || 'eventive_film' !== get_post_type( $post ) ) {
+		if ( 'eventive_film' !== get_post_type() ) {
 			return;
 		}
 
@@ -145,7 +143,7 @@ class Eventive_Post_Type {
 
 		wp_enqueue_script(
 			'eventive-film-properties',
-			plugins_url( 'build/film-properties/index.js', __DIR__ ),
+			EVENTIVE_PLUGIN . 'build/film-properties/index.js',
 			$asset_file['dependencies'],
 			$asset_file['version'],
 			true
