@@ -29,8 +29,7 @@ class Eventive_Post_Type_Film {
 		add_action( 'init', array( $this, 'register_film_meta' ) );
 		
 		// Enqueue block editor assets.
-		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_film_properties_script' ) );
-		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_film_sync_script' ) );
+		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_film_scripts' ) );
 		
 		// Add custom admin columns.
 		add_filter( 'manage_eventive_film_posts_columns', array( $this, 'add_sync_status_column' ) );
@@ -115,15 +114,34 @@ class Eventive_Post_Type_Film {
 			'_eventive_language'     => 'string',
 			'_eventive_country'      => 'string',
 			'_eventive_director'     => 'string',
-			'_eventive_sync_enabled' => 'boolean',
 		);
 
 		foreach ( $meta_fields as $meta_key => $type ) {
+			// Use the type to set the default. 
+			$default = null;
+
+			switch ( $type ) {
+				case 'string':
+					$default = '';
+					break;
+				case 'integer':
+					$default = 0;
+					break;
+				case 'boolean':
+					$default = false;
+					break;
+			}
+
+			// Allow the default to be filtered for a value.
+			$default = apply_filters( 'eventive_film_meta_default_' . $meta_key, $default );
+
+			// Register the post meta.
 			register_post_meta(
 				'eventive_film',
 				$meta_key,
 				array(
 					'show_in_rest'  => true,
+					'default'       => $default,
 					'single'        => true,
 					'type'          => $type,
 					'auth_callback' => function() {
@@ -132,6 +150,20 @@ class Eventive_Post_Type_Film {
 				)
 			);
 		}
+
+		register_post_meta( 
+			'eventive_film',
+			'_eventive_sync_enabled',
+			array(
+				'show_in_rest'  => true,
+				'default'       => true,
+				'single'        => true,
+				'type'          => 'boolean',
+				'auth_callback' => function() {
+					return current_user_can( 'edit_films' );
+				},
+			)
+		);
 	}
 
 	/**
@@ -145,33 +177,21 @@ class Eventive_Post_Type_Film {
 			return;
 		}
 
-		$asset_file = include plugin_dir_path( __DIR__ ) . 'build/film-properties/index.asset.php';
-
-		wp_enqueue_script(
-			'eventive-film-properties',
-			EVENTIVE_PLUGIN . 'build/film-properties/index.js',
-			$asset_file['dependencies'],
-			$asset_file['version'],
-			true
-		);
-	}
-
-	/**
-	 * Enqueue the film sync script for the block editor.
-	 *
-	 * @return void
-	 */
-	public function enqueue_film_sync_script() {
-		// Only enqueue on eventive_film post type.
-		if ( 'eventive_film' !== get_post_type() ) {
-			return;
-		}
-
 		$asset_file = include plugin_dir_path( __DIR__ ) . 'build/film-sync/index.asset.php';
 
 		wp_enqueue_script(
 			'eventive-film-sync',
 			EVENTIVE_PLUGIN . 'build/film-sync/index.js',
+			$asset_file['dependencies'],
+			$asset_file['version'],
+			true
+		);
+
+		$asset_file = include plugin_dir_path( __DIR__ ) . 'build/film-properties/index.asset.php';
+
+		wp_enqueue_script(
+			'eventive-film-properties',
+			EVENTIVE_PLUGIN . 'build/film-properties/index.js',
 			$asset_file['dependencies'],
 			$asset_file['version'],
 			true
