@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Eventive_Post_Type Class
  */
-class Eventive_Post_Type {
+class Eventive_Post_Type_Film {
 	/**
 	 * Initialize the custom post type.
 	 *
@@ -185,14 +185,16 @@ class Eventive_Post_Type {
 	 * @return array Modified columns.
 	 */
 	public function add_sync_status_column( $columns ) {
-		// Insert sync status column after the title column.
+		// Insert sync status column before the date column.
 		$new_columns = array();
+
 		foreach ( $columns as $key => $value ) {
-			$new_columns[ $key ] = $value;
-			if ( 'title' === $key ) {
-				$new_columns['sync_status'] = __( 'Sync Status', 'eventive' );
+			if ( 'date' === $key ) {
+				$new_columns['sync_status'] = __( 'Sync Enabled', 'eventive' );
 			}
+			$new_columns[ $key ] = $value;
 		}
+		
 		return $new_columns;
 	}
 

@@ -65,7 +65,7 @@ $eventive_sync->init();
 
 // Load the custom post type functionality.
 require_once EVENTIVE_PLUGIN_PATH . 'includes/class-eventive-post-type-film.php';
-$eventive_post_type = new Eventive_Post_Type_Films();
+$eventive_post_type = new Eventive_Post_Type_Film();
 $eventive_post_type->init();
 
 // Load the venues custom post type functionality.
