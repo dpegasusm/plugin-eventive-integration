@@ -171,7 +171,7 @@ class Eventive_Post_Type_Film {
 	 *
 	 * @return void
 	 */
-	public function enqueue_film_properties_script() {
+	public function enqueue_film_scripts() {
 		// Only enqueue on eventive_film post type.
 		if ( 'eventive_film' !== get_post_type() ) {
 			return;

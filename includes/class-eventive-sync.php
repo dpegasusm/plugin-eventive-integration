@@ -299,6 +299,9 @@ class Eventive_Sync {
 
 		if ( isset( $film['tags'] ) && is_array( $film['tags'] ) ) {
 			update_post_meta( $post_id, '_eventive_film_tags', $film['tags'] );
+			
+			// Sync taxonomy terms from tags.
+			$this->sync_film_tags( $post_id, $film['tags'] );
 		}
 
 		// add a do action here so other functions can hook in after a film is created/updated.
@@ -337,5 +340,89 @@ class Eventive_Sync {
 		set_post_thumbnail( $post_id, $attachment_id );
 
 		return $attachment_id;
+	}
+
+	/**
+	 * Sync film tags from Eventive data to WordPress taxonomy terms.
+	 *
+	 * @param int   $post_id Post ID.
+	 * @param array $tags    Array of tag objects from Eventive API.
+	 * @return void
+	 */
+	private function sync_film_tags( $post_id, $tags ) {
+		if ( empty( $tags ) || ! is_array( $tags ) ) {
+			// Clear all tags if none provided.
+			wp_set_object_terms( $post_id, array(), 'eventive_film_tags' );
+			return;
+		}
+
+		$term_ids = array();
+
+		foreach ( $tags as $tag ) {
+			if ( empty( $tag['id'] ) || empty( $tag['name'] ) ) {
+				continue;
+			}
+
+			$eventive_tag_id = sanitize_text_field( $tag['id'] );
+			$tag_name        = sanitize_text_field( $tag['name'] );
+			$tag_color       = ! empty( $tag['color'] ) ? sanitize_hex_color( $tag['color'] ) : '';
+			$tag_slug        = sanitize_title( $tag_name );
+
+			// Check if term already exists by Eventive ID.
+			$existing_terms = get_terms(
+				array(
+					'taxonomy'   => 'eventive_film_tags',
+					'hide_empty' => false,
+					'meta_query' => array(
+						array(
+							'key'     => 'eventive_tag_id',
+							'value'   => $eventive_tag_id,
+							'compare' => '=',
+						),
+					),
+				)
+			);
+
+			if ( ! empty( $existing_terms ) && ! is_wp_error( $existing_terms ) ) {
+				// Term exists, use it and update color if changed.
+				$term = $existing_terms[0];
+				$term_ids[] = $term->term_id;
+
+				if ( $tag_color ) {
+					$current_color = get_term_meta( $term->term_id, 'eventive_tag_color', true );
+					if ( $current_color !== $tag_color ) {
+						update_term_meta( $term->term_id, 'eventive_tag_color', $tag_color );
+					}
+				}
+			} else {
+				// Term doesn't exist, create it.
+				$term = wp_insert_term(
+					$tag_name,
+					'eventive_film_tags',
+					array(
+						'slug' => $tag_slug,
+					)
+				);
+
+				if ( ! is_wp_error( $term ) ) {
+					$term_id = $term['term_id'];
+					$term_ids[] = $term_id;
+
+					// Store Eventive tag ID and color as term meta.
+					update_term_meta( $term_id, 'eventive_tag_id', $eventive_tag_id );
+					if ( $tag_color ) {
+						update_term_meta( $term_id, 'eventive_tag_color', $tag_color );
+					}
+				}
+			}
+		}
+
+		// Set the post terms to match exactly what came from Eventive.
+		if ( ! empty( $term_ids ) ) {
+			wp_set_object_terms( $post_id, $term_ids, 'eventive_film_tags' );
+		} else {
+			// Clear all tags if we couldn't process any.
+			wp_set_object_terms( $post_id, array(), 'eventive_film_tags' );
+		}
 	}
 }

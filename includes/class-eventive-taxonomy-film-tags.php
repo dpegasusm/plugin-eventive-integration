@@ -24,6 +24,16 @@ class Eventive_Taxonomy_Film_Tags {
 	public function init() {
 		// Register the Eventive film tags taxonomy.
 		add_action( 'init', array( $this, 'register_eventive_taxonomy_tags' ) );
+		
+		// Register term meta for Eventive tag data.
+		add_action( 'init', array( $this, 'register_tag_meta' ) );
+		
+		// Add color picker field to tag edit screen.
+		add_action( 'eventive_film_tags_edit_form_fields', array( $this, 'add_tag_color_field' ), 10, 2 );
+		add_action( 'edited_eventive_film_tags', array( $this, 'save_tag_color_field' ), 10, 2 );
+		
+		// Enqueue color picker scripts.
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_color_picker' ) );
 	}
 
 	/**
@@ -78,5 +88,109 @@ class Eventive_Taxonomy_Film_Tags {
 		);
 
 		register_taxonomy( 'eventive_film_tags', array( 'eventive_film' ), $args );
+	}
+
+	/**
+	 * Register term meta for Eventive tag data.
+	 *
+	 * @return void
+	 */
+	public function register_tag_meta() {
+		register_term_meta(
+			'eventive_film_tags',
+			'eventive_tag_id',
+			array(
+				'type'         => 'string',
+				'description'  => 'Eventive Tag ID',
+				'single'       => true,
+				'show_in_rest' => true,
+			)
+		);
+
+		register_term_meta(
+			'eventive_film_tags',
+			'eventive_tag_color',
+			array(
+				'type'         => 'string',
+				'description'  => 'Eventive Tag Color',
+				'single'       => true,
+				'show_in_rest' => true,
+				'sanitize_callback' => 'sanitize_hex_color',
+			)
+		);
+	}
+
+	/**
+	 * Add color picker field to tag edit screen.
+	 *
+	 * @param WP_Term $term Current taxonomy term object.
+	 * @param string  $taxonomy Current taxonomy slug.
+	 * @return void
+	 */
+	public function add_tag_color_field( $term, $taxonomy ) {
+		$eventive_id = get_term_meta( $term->term_id, 'eventive_tag_id', true );
+		$color = get_term_meta( $term->term_id, 'eventive_tag_color', true );
+		?>
+		<tr class="form-field">
+			<th scope="row">
+				<label for="eventive_tag_id"><?php esc_html_e( 'Eventive Tag ID', 'eventive' ); ?></label>
+			</th>
+			<td>
+				<input type="text" name="eventive_tag_id" id="eventive_tag_id" value="<?php echo esc_attr( $eventive_id ); ?>" class="regular-text" />
+				<p class="description"><?php esc_html_e( 'The unique ID from Eventive for this tag.', 'eventive' ); ?></p>
+			</td>
+		</tr>
+		<tr class="form-field">
+			<th scope="row">
+				<label for="eventive_tag_color"><?php esc_html_e( 'Tag Color', 'eventive' ); ?></label>
+			</th>
+			<td>
+				<input type="text" name="eventive_tag_color" id="eventive_tag_color" value="<?php echo esc_attr( $color ); ?>" class="eventive-color-picker" />
+				<p class="description"><?php esc_html_e( 'Choose a color for this tag.', 'eventive' ); ?></p>
+			</td>
+		</tr>
+		<?php
+	}
+
+	/**
+	 * Save tag color field.
+	 *
+	 * @param int    $term_id Term ID.
+	 * @param int    $tt_id   Term taxonomy ID.
+	 * @return void
+	 */
+	public function save_tag_color_field( $term_id, $tt_id ) {
+		if ( isset( $_POST['eventive_tag_id'] ) ) {
+			update_term_meta( $term_id, 'eventive_tag_id', sanitize_text_field( $_POST['eventive_tag_id'] ) );
+		}
+
+		if ( isset( $_POST['eventive_tag_color'] ) ) {
+			update_term_meta( $term_id, 'eventive_tag_color', sanitize_hex_color( $_POST['eventive_tag_color'] ) );
+		}
+	}
+
+	/**
+	 * Enqueue color picker scripts.
+	 *
+	 * @param string $hook Current admin page hook.
+	 * @return void
+	 */
+	public function enqueue_color_picker( $hook ) {
+		if ( 'edit-tags.php' !== $hook && 'term.php' !== $hook ) {
+			return;
+		}
+
+		$screen = get_current_screen();
+		if ( ! $screen || 'eventive_film_tags' !== $screen->taxonomy ) {
+			return;
+		}
+
+		wp_enqueue_style( 'wp-color-picker' );
+		wp_enqueue_script( 'wp-color-picker' );
+
+		wp_add_inline_script(
+			'wp-color-picker',
+			'jQuery(document).ready(function($) { $(".eventive-color-picker").wpColorPicker(); });'
+		);
 	}
 }
