@@ -97,16 +97,18 @@ class Eventive_Post_Type_Venues {
 	 */
 	public function register_venue_meta() {
 		$meta_fields = array(
-			'_eventive_venue_id'      => 'string',
-			'_eventive_bucket_id'     => 'string',
-			'_eventive_venue_address' => 'string',
-			'_eventive_venue_city'    => 'string',
-			'_eventive_venue_state'   => 'string',
-			'_eventive_venue_zip'     => 'string',
-			'_eventive_venue_country' => 'string',
-			'_eventive_venue_lat'     => 'string',
-			'_eventive_venue_long'    => 'string',
-			'_eventive_venue_url'     => 'string',
+			'_eventive_venue_id'              => 'string',
+			'_eventive_bucket_id'             => 'string',
+			'_eventive_venue_address'         => 'string',
+			'_eventive_venue_city'            => 'string',
+			'_eventive_venue_state'           => 'string',
+			'_eventive_venue_zip'             => 'string',
+			'_eventive_venue_country'         => 'string',
+			'_eventive_venue_lat'             => 'string',
+			'_eventive_venue_long'            => 'string',
+			'_eventive_venue_url'             => 'string',
+			'_eventive_venue_color'           => 'string',
+			'_eventive_use_reserved_seating'  => 'boolean',
 		);
 
 		foreach ( $meta_fields as $meta_key => $type ) {

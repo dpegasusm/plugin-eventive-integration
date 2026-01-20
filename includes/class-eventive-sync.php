@@ -304,6 +304,14 @@ class Eventive_Sync {
 			$this->sync_film_tags( $post_id, $film['tags'] );
 		}
 
+		// Handle venue syncing.
+		if ( isset( $film['venue'] ) && is_array( $film['venue'] ) ) {
+			$venue_id = $this->sync_venue( $film['venue'] );
+			if ( $venue_id ) {
+				update_post_meta( $post_id, '_eventive_venue_id', $venue_id );
+			}
+		}
+
 		// add a do action here so other functions can hook in after a film is created/updated.
 		do_action( 'eventive_film_synced', $post_id, $film, $action );
 
@@ -424,5 +432,104 @@ class Eventive_Sync {
 			// Clear all tags if we couldn't process any.
 			wp_set_object_terms( $post_id, array(), 'eventive_film_tags' );
 		}
+	}
+
+	/**
+	 * Sync venue from Eventive data to WordPress post.
+	 *
+	 * @param array $venue Venue data from Eventive API.
+	 * @return int|false Venue post ID on success, false on failure.
+	 */
+	private function sync_venue( $venue ) {
+		if ( empty( $venue['id'] ) || empty( $venue['name'] ) ) {
+			return false;
+		}
+
+		$eventive_venue_id = sanitize_text_field( $venue['id'] );
+		$venue_name        = sanitize_text_field( $venue['name'] );
+		$venue_color       = ! empty( $venue['color'] ) ? sanitize_hex_color( $venue['color'] ) : '';
+		$use_reserved      = isset( $venue['use_reserved_seating'] ) ? (bool) $venue['use_reserved_seating'] : false;
+
+		// Check if venue post already exists by Eventive venue ID.
+		$existing_posts = get_posts(
+			array(
+				'post_type'      => 'eventive_venue',
+				'post_status'    => 'any',
+				'posts_per_page' => 1,
+				'meta_key'       => '_eventive_venue_id',
+				'meta_value'     => $eventive_venue_id,
+				'fields'         => 'ids',
+			)
+		);
+
+		$existing_post_id = ! empty( $existing_posts ) ? $existing_posts[0] : 0;
+
+		// Prepare post data.
+		$post_data = array(
+			'post_title'  => $venue_name,
+			'post_status' => 'publish',
+			'post_type'   => 'eventive_venue',
+		);
+
+		if ( $existing_post_id ) {
+			// Update existing venue.
+			$post_data['ID'] = $existing_post_id;
+			$post_id         = wp_update_post( $post_data, true );
+
+			if ( is_wp_error( $post_id ) ) {
+				return false;
+			}
+		} else {
+			// Create new venue.
+			$post_id = wp_insert_post( $post_data, true );
+
+			if ( is_wp_error( $post_id ) ) {
+				return false;
+			}
+		}
+
+		// Update venue meta.
+		update_post_meta( $post_id, '_eventive_venue_id', $eventive_venue_id );
+		
+		if ( $venue_color ) {
+			update_post_meta( $post_id, '_eventive_venue_color', $venue_color );
+		}
+		
+		update_post_meta( $post_id, '_eventive_use_reserved_seating', $use_reserved );
+
+		// Store any additional venue data that comes from the API.
+		if ( ! empty( $venue['address'] ) ) {
+			update_post_meta( $post_id, '_eventive_venue_address', sanitize_text_field( $venue['address'] ) );
+		}
+		
+		if ( ! empty( $venue['city'] ) ) {
+			update_post_meta( $post_id, '_eventive_venue_city', sanitize_text_field( $venue['city'] ) );
+		}
+		
+		if ( ! empty( $venue['state'] ) ) {
+			update_post_meta( $post_id, '_eventive_venue_state', sanitize_text_field( $venue['state'] ) );
+		}
+		
+		if ( ! empty( $venue['zip'] ) ) {
+			update_post_meta( $post_id, '_eventive_venue_zip', sanitize_text_field( $venue['zip'] ) );
+		}
+		
+		if ( ! empty( $venue['country'] ) ) {
+			update_post_meta( $post_id, '_eventive_venue_country', sanitize_text_field( $venue['country'] ) );
+		}
+		
+		if ( isset( $venue['latitude'] ) ) {
+			update_post_meta( $post_id, '_eventive_venue_lat', sanitize_text_field( $venue['latitude'] ) );
+		}
+		
+		if ( isset( $venue['longitude'] ) ) {
+			update_post_meta( $post_id, '_eventive_venue_long', sanitize_text_field( $venue['longitude'] ) );
+		}
+		
+		if ( ! empty( $venue['url'] ) ) {
+			update_post_meta( $post_id, '_eventive_venue_url', esc_url_raw( $venue['url'] ) );
+		}
+
+		return $post_id;
 	}
 }

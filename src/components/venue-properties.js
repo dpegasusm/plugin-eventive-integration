@@ -9,7 +9,7 @@
 import { registerPlugin } from '@wordpress/plugins';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import { useSelect, useDispatch } from '@wordpress/data';
-import { TextControl } from '@wordpress/components';
+import { TextControl, ToggleControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
 const VenuePropertiesPanel = () => {
@@ -103,6 +103,21 @@ const VenuePropertiesPanel = () => {
 				onChange={(value) => updateMeta('_eventive_venue_url', value)}
 				type="url"
 				help={__('Official venue website', 'eventive')}
+			/>
+
+			<TextControl
+				label={__('Venue Color', 'eventive')}
+				value={meta._eventive_venue_color || ''}
+				onChange={(value) => updateMeta('_eventive_venue_color', value)}
+				type="color"
+				help={__('Hex color code from Eventive', 'eventive')}
+			/>
+
+			<ToggleControl
+				label={__('Use Reserved Seating', 'eventive')}
+				checked={meta._eventive_use_reserved_seating || false}
+				onChange={(value) => updateMeta('_eventive_use_reserved_seating', value)}
+				help={__('Whether this venue uses reserved seating', 'eventive')}
 			/>
 		</PluginDocumentSettingPanel>
 	);

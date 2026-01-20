@@ -106,6 +106,7 @@ class Eventive_Post_Type_Film {
 		$meta_fields = array(
 			'_eventive_film_id'      => 'string',
 			'_eventive_bucket_id'    => 'string',
+			'_eventive_venue_id'     => 'string',
 			'_eventive_poster_image' => 'string',
 			'_eventive_cover_image'  => 'string',
 			'_eventive_trailer_url'  => 'string',
