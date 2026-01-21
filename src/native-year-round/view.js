@@ -147,6 +147,12 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		let eventsByDay = {};
 		let renderScheduled = false;
 
+		// Remove loading text
+		const loadingText = block.querySelector( '.eventive-film-loading-text' );
+		if ( loadingText ) {
+			loadingText.remove();
+		}
+
 		// Create UI structure
 		const calWrap = document.createElement( 'div' );
 		calWrap.className = 'eventive-nyr-calendar-wrap';
