@@ -19,15 +19,17 @@ export default function Edit() {
 	return (
 		<div { ...blockProps }>
 			<div className="eventive-block-placeholder">
-				<p className="eventive-block-placeholder__title">
-					<strong>{ __( 'Eventive Calendar', 'eventive' ) }</strong>
-				</p>
-				<p className="eventive-block-placeholder__description">
-					{ __(
-						'Monthly calendar view of Eventive events',
-						'eventive'
-					) }
-				</p>
+				<h3 className="eventive-block-placeholder__title">
+					{ __( 'Eventive Calendar', 'eventive' ) }
+				</h3>
+				<div className="eventive-block-placeholder__description">
+					<p>
+						{ __(
+							'Monthly calendar view of Eventive events',
+							'eventive'
+						) }
+					</p>
+				</div>
 			</div>
 		</div>
 	);

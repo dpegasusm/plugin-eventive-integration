@@ -19,15 +19,17 @@ export default function Edit() {
 	return (
 		<div { ...blockProps }>
 			<div className="eventive-block-placeholder">
-				<p className="eventive-block-placeholder__title">
-					<strong>{ __( 'Eventive Account', 'eventive' ) }</strong>
-				</p>
-				<p className="eventive-block-placeholder__description">
-					{ __(
-						'Displays user account with details, passes, and tickets',
-						'eventive'
-					) }
-				</p>
+				<h3 className="eventive-block-placeholder__title">
+					{ __( 'Eventive Account', 'eventive' ) }
+				</h3>
+				<div className="eventive-block-placeholder__description">
+					<p>
+						{ __(
+							'Displays user account with details, passes, and tickets',
+							'eventive'
+						) }
+					</p>
+				</div>
 			</div>
 		</div>
 	);

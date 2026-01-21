@@ -66,17 +66,17 @@ export default function Edit( { attributes, setAttributes } ) {
 
 		<div { ...blockProps }>
 			<div className="eventive-block-placeholder">
-				<p className="eventive-block-placeholder__title">
-					<strong>
-						{ __( 'Eventive Native Year-Round', 'eventive' ) }
-					</strong>
-				</p>
-				<p className="eventive-block-placeholder__description">
-					{ __(
-						'Weekly event calendar will display here',
-						'eventive'
-					) }
-				</p>
+				<h3 className="eventive-block-placeholder__title">
+					{ __( 'Eventive Native Year-Round', 'eventive' ) }
+				</h3>
+				<div className="eventive-block-placeholder__description">
+					<p>
+						{ __(
+							'Weekly event calendar will display here',
+							'eventive'
+						) }
+					</p>
+				</div>
 			</div>
 		</div>
 	</>

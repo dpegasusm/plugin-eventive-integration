@@ -122,36 +122,40 @@ export default function Edit( { attributes, setAttributes } ) {
 
 			<div { ...blockProps }>
 				<div className="eventive-block-placeholder">
-					<h3>{ __( 'Eventive Marquee', 'eventive' ) }</h3>
-					<p>
-						{ __(
-							'Film marquee will display on the frontend.',
-							'eventive'
-						) }
-					</p>
-					<p>
-						<strong>{ __( 'Settings:', 'eventive' ) }</strong>
-					</p>
-					<ul>
-						{ attributes.tag && (
+					<h3 className="eventive-block-placeholder__title">
+						{ __( 'Eventive Marquee', 'eventive' ) }
+					</h3>
+					<div className="eventive-block-placeholder__description">
+						<p>
+							{ __(
+								'Film marquee will display on the frontend.',
+								'eventive'
+							) }
+						</p>
+						<p>
+							<strong>{ __( 'Settings:', 'eventive' ) }</strong>
+						</p>
+						<ul>
+							{ attributes.tag && (
+								<li>
+									{ __( 'Tag:', 'eventive' ) } { attributes.tag }
+								</li>
+							) }
 							<li>
-								{ __( 'Tag:', 'eventive' ) } { attributes.tag }
+								{ __( 'Number:', 'eventive' ) }{ ' ' }
+								{ attributes.number }
 							</li>
-						) }
-						<li>
-							{ __( 'Number:', 'eventive' ) }{ ' ' }
-							{ attributes.number }
-						</li>
-						{ attributes.stills && (
-							<li>{ __( 'Using still images', 'eventive' ) }</li>
-						) }
-						{ attributes.caption && (
-							<li>
-								{ __( 'Caption:', 'eventive' ) }{ ' ' }
-								{ attributes.caption }
-							</li>
-						) }
-					</ul>
+							{ attributes.stills && (
+								<li>{ __( 'Using still images', 'eventive' ) }</li>
+							) }
+							{ attributes.caption && (
+								<li>
+									{ __( 'Caption:', 'eventive' ) }{ ' ' }
+									{ attributes.caption }
+								</li>
+							) }
+						</ul>
+					</div>
 				</div>
 			</div>
 		</>

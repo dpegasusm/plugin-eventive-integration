@@ -96,36 +96,30 @@ export default function Edit( { attributes, setAttributes } ) {
 			</InspectorControls>
 			<div { ...blockProps }>
 				<div className="eventive-block-placeholder">
-					<p className="eventive-block-placeholder__title">
-						<span
-							className="dashicons dashicons-tag"
-							style={ {
-								fontSize: '20px',
-								verticalAlign: 'middle',
-								marginRight: '4px',
-							} }
-						></span>
-						<strong>{ __( 'Eventive Tags Block', 'eventive' ) }</strong>
-					</p>
-					<p className="eventive-block-placeholder__description">
-						{ view === 'dropdown'
-							? __(
-									'Tags will be displayed as a dropdown on the frontend',
-									'eventive'
-							  )
-							: __(
-									'Tags will be displayed as filter pills on the frontend',
-									'eventive'
-							  ) }
-					</p>
-					<p className="eventive-block-placeholder__description">
-						{ display === 'both' &&
-							__( 'Showing: Films & Events', 'eventive' ) }
-						{ display === 'films' &&
-							__( 'Showing: Films Only', 'eventive' ) }
-						{ display === 'events' &&
-							__( 'Showing: Events Only', 'eventive' ) }
-					</p>
+					<h3 className="eventive-block-placeholder__title">
+						{ __( 'Eventive Tags Block', 'eventive' ) }
+					</h3>
+					<div className="eventive-block-placeholder__description">
+						<p>
+							{ view === 'dropdown'
+								? __(
+										'Tags will be displayed as a dropdown on the frontend',
+										'eventive'
+								)
+								: __(
+										'Tags will be displayed as filter pills on the frontend',
+										'eventive'
+								) }
+						</p>
+						<p className="eventive-block-placeholder__description">
+							{ display === 'both' &&
+								__( 'Showing: Films & Events', 'eventive' ) }
+							{ display === 'films' &&
+								__( 'Showing: Films Only', 'eventive' ) }
+							{ display === 'events' &&
+								__( 'Showing: Events Only', 'eventive' ) }
+						</p>
+					</div>
 				</div>
 			</div>
 		</>

@@ -149,36 +149,40 @@ export default function Edit( { attributes, setAttributes } ) {
 
 			<div { ...blockProps }>
 				<div className="eventive-block-placeholder">
-					<h3>{ __( 'Eventive Film Guide', 'eventive' ) }</h3>
-					<p>
-						{ __(
-							'Film guide will display on the frontend.',
-							'eventive'
-						) }
-					</p>
-					<p>
-						<strong>{ __( 'Settings:', 'eventive' ) }</strong>
-					</p>
-					<ul>
-						{ attributes.tagName && (
+					<h3 className='eventive-block-placeholder__title'>
+						{ __( 'Eventive Film Guide', 'eventive' ) }
+					</h3>
+					<div className="eventive-block-placeholder__description">
+						<p>
+							{ __(
+								'Film guide will display on the frontend.',
+								'eventive'
+							) }
+						</p>
+						<p>
+							<strong>{ __( 'Settings:', 'eventive' ) }</strong>
+						</p>
+						<ul>
+							{ attributes.tagName && (
+								<li>
+									{ __( 'Tag:', 'eventive' ) }{ ' ' }
+									{ attributes.tagName }
+								</li>
+							) }
+							{ attributes.filmId && (
+								<li>
+									{ __( 'Film ID:', 'eventive' ) }{ ' ' }
+									{ attributes.filmId }
+								</li>
+							) }
 							<li>
-								{ __( 'Tag:', 'eventive' ) }{ ' ' }
-								{ attributes.tagName }
+								{ __( 'View:', 'eventive' ) } { attributes.view }
 							</li>
-						) }
-						{ attributes.filmId && (
 							<li>
-								{ __( 'Film ID:', 'eventive' ) }{ ' ' }
-								{ attributes.filmId }
+								{ __( 'Image:', 'eventive' ) } { attributes.image }
 							</li>
-						) }
-						<li>
-							{ __( 'View:', 'eventive' ) } { attributes.view }
-						</li>
-						<li>
-							{ __( 'Image:', 'eventive' ) } { attributes.image }
-						</li>
-					</ul>
+						</ul>
+					</div>
 				</div>
 			</div>
 		</>

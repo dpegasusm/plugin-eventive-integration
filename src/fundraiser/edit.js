@@ -62,24 +62,28 @@ export default function Edit( { attributes, setAttributes } ) {
 
 			<div { ...blockProps }>
 				<div className="eventive-block-placeholder">
-					<h3>{ __( 'Eventive Fundraiser', 'eventive' ) }</h3>
-					<p>
-						{ __(
-							'Fundraiser progress will display on the frontend.',
-							'eventive'
-						) }
-					</p>
-					{ attributes.startTime && attributes.endTime && (
+					<h3 className="eventive-block-placeholder__title">
+						{ __( 'Eventive Fundraiser', 'eventive' ) }
+					</h3>
+					<div className="eventive-block-placeholder__description">
 						<p>
-							<strong>{ __( 'Period:', 'eventive' ) }</strong>{ ' ' }
-							{ attributes.startTime } { __( 'to', 'eventive' ) }{ ' ' }
-							{ attributes.endTime }
+							{ __(
+								'Fundraiser progress will display on the frontend.',
+								'eventive'
+							) }
 						</p>
-					) }
-					<p>
-						<strong>{ __( 'Goal:', 'eventive' ) }</strong> $
-						{ attributes.goalAmount }
-					</p>
+						{ attributes.startTime && attributes.endTime && (
+							<p>
+								<strong>{ __( 'Period:', 'eventive' ) }</strong>{ ' ' }
+								{ attributes.startTime } { __( 'to', 'eventive' ) }{ ' ' }
+								{ attributes.endTime }
+							</p>
+						) }
+						<p>
+							<strong>{ __( 'Goal:', 'eventive' ) }</strong> $
+							{ attributes.goalAmount }
+						</p>
+					</div>
 				</div>
 			</div>
 		</>

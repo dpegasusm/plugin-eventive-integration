@@ -55,17 +55,17 @@ export default function Edit( { attributes, setAttributes } ) {
 			</InspectorControls>
 			<div { ...blockProps }>
 				<div className="eventive-block-placeholder">
-					<p className="eventive-block-placeholder__title">
-						<strong>
-							{ __( 'Eventive Carousel', 'eventive' ) }
-						</strong>
-					</p>
-					<p className="eventive-block-placeholder__description">
-						{ __(
-							`Displaying up to ${ limit } upcoming events`,
-							'eventive'
-						) }
-					</p>
+					<h3 className="eventive-block-placeholder__title">
+						{ __( 'Eventive Carousel', 'eventive' ) }
+					</h3>
+					<div className="eventive-block-placeholder__description">
+						<p>
+							{ __(
+								`Displaying up to ${ limit } upcoming events`,
+								'eventive'
+							) }
+						</p>
+					</div>
 				</div>
 			</div>
 		</>

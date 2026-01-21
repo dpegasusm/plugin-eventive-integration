@@ -18,25 +18,17 @@ export default function Edit() {
 	return (
 		<div { ...blockProps }>
 			<div className="eventive-block-placeholder">
-				<p className="eventive-block-placeholder__title">
-					<span
-						className="dashicons dashicons-location-alt"
-						style={ {
-							fontSize: '20px',
-							verticalAlign: 'middle',
-							marginRight: '4px',
-						} }
-					></span>
-					<strong>
-						{ __( 'Eventive Venues Block', 'eventive' ) }
-					</strong>
-				</p>
-				<p className="eventive-block-placeholder__description">
-					{ __(
-						'Venues will be displayed here on the frontend',
-						'eventive'
-					) }
-				</p>
+				<h3 className="eventive-block-placeholder__title">
+					{ __( 'Eventive Venues Block', 'eventive' ) }
+				</h3>
+				<div className="eventive-block-placeholder__description">
+					<p>
+						{ __(
+							'Venues will be displayed here on the frontend',
+							'eventive'
+						) }
+					</p>
+				</div>
 			</div>
 		</div>
 	);

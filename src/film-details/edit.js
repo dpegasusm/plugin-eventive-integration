@@ -90,19 +90,19 @@ export default function Edit( { attributes, setAttributes } ) {
 
 			<div { ...blockProps }>
 				<div className="eventive-block-placeholder">
-					<p className="eventive-block-placeholder__title">
-						<strong>
-							{ __( 'Eventive Film Details', 'eventive' ) }
-						</strong>
-					</p>
-					<p className="eventive-block-placeholder__description">
-						{ filmId
-							? __( `Film ID: ${ filmId }`, 'eventive' )
-							: __(
-									'Film details will display here (set Film ID or use URL parameter)',
-									'eventive'
-							  ) }
-					</p>
+					<h3 className="eventive-block-placeholder__title">
+						{ __( 'Eventive Film Details', 'eventive' ) }
+					</h3>
+					<div className="eventive-block-placeholder__description">
+						<p>
+							{ filmId
+								? __( `Film ID: ${ filmId }`, 'eventive' )
+								: __(
+										'Film details will display here (set Film ID or use URL parameter)',
+										'eventive'
+								) }
+						</p>
+					</div>
 				</div>
 			</div>
 		</>

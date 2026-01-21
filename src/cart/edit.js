@@ -19,15 +19,17 @@ export default function Edit() {
 	return (
 		<div { ...blockProps }>
 			<div className="eventive-block-placeholder">
-				<p className="eventive-block-placeholder__title">
-					<strong>{ __( 'Eventive Cart', 'eventive' ) }</strong>
-				</p>
-				<p className="eventive-block-placeholder__description">
-					{ __(
-						'Displays the shopping cart with checkout and reset functionality.',
-						'eventive'
-					) }
-				</p>
+				<h3 className="eventive-block-placeholder__title">
+					{ __( 'Eventive Cart', 'eventive' ) }
+				</h3>
+				<div className="eventive-block-placeholder__description">
+					<p>
+						{ __(
+							'Displays the shopping cart with checkout and reset functionality.',
+							'eventive'
+						) }
+					</p>
+				</div>
 			</div>
 		</div>
 	);

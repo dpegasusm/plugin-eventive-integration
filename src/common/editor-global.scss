@@ -33,12 +33,19 @@
 	justify-content: center;
 	align-items: center;
 
-	h3 {
+	h3.eventive-block-placeholder__title {
+        margin: 0;
+        color: #666;
+        font-weight: 600;
+        font-size: 16px;
 		margin-top: 0;
-		color: #666;
-		font-weight: 600;
-		font-size: 16px;
 	}
+
+    .eventive-block-placeholder__description {
+        margin: 8px 0 0;
+        font-size: 14px;
+        color: #666;
+    }
 
 	p {
 		color: #666;
@@ -67,17 +74,4 @@
 			color: #666;
 		}
 	}
-}
-
-.eventive-block-placeholder__title {
-	margin: 0;
-	color: #666;
-	font-weight: 600;
-	font-size: 16px;
-}
-
-.eventive-block-placeholder__description {
-	margin: 8px 0 0;
-	font-size: 14px;
-	color: #666;
 }

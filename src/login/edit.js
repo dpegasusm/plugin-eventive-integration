@@ -43,13 +43,15 @@ export default function Edit( { attributes, setAttributes } ) {
 
 			<div { ...blockProps }>
 				<div className="eventive-block-placeholder">
-					<p className="eventive-block-placeholder__title">
-						<strong>{ __( 'Eventive Login', 'eventive' ) }</strong>
-					</p>
-					<p className="eventive-block-placeholder__description">
-						{ __( 'Login link text:', 'eventive' ) }{ ' ' }
-						{ loginLinkText }
-					</p>
+					<h3 className="eventive-block-placeholder__title">
+						{ __( 'Eventive Login', 'eventive' ) }
+					</h3>
+					<div className="eventive-block-placeholder__description">
+						<p>
+							{ __( 'Login link text:', 'eventive' ) }{ ' ' }
+							{ loginLinkText }
+						</p>
+					</div>
 				</div>
 			</div>
 		</>
