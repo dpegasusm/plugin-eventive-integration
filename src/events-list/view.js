@@ -417,6 +417,12 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 			renderTagsFilter( tags, block );
 
+			// Remove loading text
+			const loadingText = block.querySelector( '.eventive-film-loading-text' );
+			if ( loadingText ) {
+				loadingText.remove();
+			}
+
 			let listEl = block.querySelector( '.eventive-events-container' );
 			if ( ! listEl ) {
 				listEl = document.createElement( 'div' );
