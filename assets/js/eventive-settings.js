@@ -25,18 +25,22 @@ jQuery( document ).ready( function ( $ ) {
 
 		// Show loading state
 		$bucketDropdown.prop( 'disabled', true );
-		$bucketDropdown.html(
-			'<option value="">Loading buckets...</option>'
-		);
+		$bucketDropdown.html( '<option value="">Loading buckets...</option>' );
 
 		// Fetch buckets using WordPress REST API
 		wp.apiFetch( {
-			path: '/eventive/v1/event_buckets?eventive_nonce=' + EventiveData.eventNonce,
+			path:
+				'/eventive/v1/event_buckets?eventive_nonce=' +
+				EventiveData.eventNonce,
 			method: 'GET',
 		} )
 			.then( function ( response ) {
 				// Response from WP REST API
-				if ( response && response.event_buckets && response.event_buckets.length > 0 ) {
+				if (
+					response &&
+					response.event_buckets &&
+					response.event_buckets.length > 0
+				) {
 					populateBucketDropdown( response.event_buckets );
 				} else {
 					disableBucketDropdown( 'No buckets found' );
@@ -54,7 +58,8 @@ jQuery( document ).ready( function ( $ ) {
 	 * Populate the bucket dropdown with options
 	 */
 	function populateBucketDropdown( buckets ) {
-		const selectedValue = $bucketDropdown.attr( 'data-selected-value' ) || '';
+		const selectedValue =
+			$bucketDropdown.attr( 'data-selected-value' ) || '';
 
 		// Build options HTML
 		let optionsHtml = '<option value="">Select a bucket</option>';
@@ -161,16 +166,16 @@ jQuery( document ).ready( function ( $ ) {
 				success( response ) {
 					console.log( 'Sync response:', response );
 
-				if ( response.success ) {
-					$progressDiv.html(
-						'<span style="color: green;">✓ ' +
-							response.data.message +
-							'</span>'
-					);
+					if ( response.success ) {
+						$progressDiv.html(
+							'<span style="color: green;">✓ ' +
+								response.data.message +
+								'</span>'
+						);
 
-					// Re-enable button
-					$button.prop( 'disabled', false );
-				} else {
+						// Re-enable button
+						$button.prop( 'disabled', false );
+					} else {
 						$progressDiv.html(
 							'<span style="color: red;">✗ Error: ' +
 								( response.data?.message ||

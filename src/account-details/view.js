@@ -163,7 +163,10 @@ function AccountDetailsApp() {
 					}
 				}
 			} catch ( error ) {
-				console.error( '[eventive-account-details] Error fetching account details:', error );
+				console.error(
+					'[eventive-account-details] Error fetching account details:',
+					error
+				);
 			} finally {
 				setIsLoading( false );
 			}
@@ -209,7 +212,10 @@ function AccountDetailsApp() {
 			setEditingKey( null );
 			setEditValue( '' );
 		} catch ( err ) {
-			console.error( '[eventive-account-details] Error submitting update:', err );
+			console.error(
+				'[eventive-account-details] Error submitting update:',
+				err
+			);
 			alert( 'Failed to save changes. Please try again.' );
 		}
 	};
@@ -231,7 +237,10 @@ function AccountDetailsApp() {
 			} );
 			setDetails( { ...details, sms_tickets_enabled: checked } );
 		} catch ( err ) {
-			console.error( '[eventive-account-details] Error updating SMS setting:', err );
+			console.error(
+				'[eventive-account-details] Error updating SMS setting:',
+				err
+			);
 		}
 	};
 

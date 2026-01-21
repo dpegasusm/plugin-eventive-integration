@@ -75,7 +75,8 @@ export default function Edit( { attributes, setAttributes } ) {
 						{ attributes.startTime && attributes.endTime && (
 							<p>
 								<strong>{ __( 'Period:', 'eventive' ) }</strong>{ ' ' }
-								{ attributes.startTime } { __( 'to', 'eventive' ) }{ ' ' }
+								{ attributes.startTime }{ ' ' }
+								{ __( 'to', 'eventive' ) }{ ' ' }
 								{ attributes.endTime }
 							</p>
 						) }

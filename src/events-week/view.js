@@ -58,7 +58,10 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		} )
 			.then( ( response ) => response.events || [] )
 			.catch( ( error ) => {
-				console.error( '[eventive-events-week] Error fetching all events:', error );
+				console.error(
+					'[eventive-events-week] Error fetching all events:',
+					error
+				);
 				return [];
 			} );
 	}

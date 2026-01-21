@@ -1,36 +1,36 @@
 {
-    "$schema": "https://schemas.wp.org/trunk/block.json",
-    "apiVersion": 3,
-    "name": "eventive/tags",
-    "version": "0.1.0",
-    "title": "Eventive Tags",
-    "category": "eventive",
-    "description": "Display Eventive event tags as filterable pills or dropdown.",
-    "textdomain": "eventive",
-    "attributes": {
-        "view": {
-            "type": "string",
-            "default": "list"
-        },
-        "display": {
-            "type": "string",
-            "default": "both"
-        },
-        "hideEmpty": {
-            "type": "boolean",
-            "default": false
-        },
-        "excludeTags": {
-            "type": "string",
-            "default": ""
-        }
-    },
-    "supports": {
-        "html": false,
-        "align": true
-    },
-    "viewScript": "file:./view.js",
-    "editorScript": "file:./index.js",
-    "editorStyle": "file:./index.css",
-    "style": "file:./style-index.css"
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "eventive/tags",
+	"version": "0.1.0",
+	"title": "Eventive Tags",
+	"category": "eventive",
+	"description": "Display Eventive event tags as filterable pills or dropdown.",
+	"textdomain": "eventive",
+	"attributes": {
+		"view": {
+			"type": "string",
+			"default": "list"
+		},
+		"display": {
+			"type": "string",
+			"default": "both"
+		},
+		"hideEmpty": {
+			"type": "boolean",
+			"default": false
+		},
+		"excludeTags": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"html": false,
+		"align": true
+	},
+	"viewScript": "file:./view.js",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
 }

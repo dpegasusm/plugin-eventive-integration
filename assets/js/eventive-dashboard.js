@@ -44,7 +44,7 @@
 				'<': '&lt;',
 				'>': '&gt;',
 				'"': '&quot;',
-				"'": '&#39;'
+				"'": '&#39;',
 			}[ c ];
 		} );
 	}
@@ -105,43 +105,66 @@
 
 		// Check if wp.apiFetch is available.
 		if ( ! window.wp || ! window.wp.apiFetch ) {
-			container.innerHTML = '<div class="eventive-error"><strong>Error:</strong> WordPress API is not available. Please check your configuration.</div>';
+			container.innerHTML =
+				'<div class="eventive-error"><strong>Error:</strong> WordPress API is not available. Please check your configuration.</div>';
 			return;
 		}
 
 		// Check if EventiveData is available.
-		if ( typeof EventiveData === 'undefined' || ! EventiveData.defaultBucket || ! EventiveData.eventNonce ) {
-			container.innerHTML = '<div class="eventive-error"><strong>Error:</strong> Eventive configuration is missing. Please update your settings.</div>';
+		if (
+			typeof EventiveData === 'undefined' ||
+			! EventiveData.defaultBucket ||
+			! EventiveData.eventNonce
+		) {
+			container.innerHTML =
+				'<div class="eventive-error"><strong>Error:</strong> Eventive configuration is missing. Please update your settings.</div>';
 			return;
 		}
 
 		// Build the API path for charts endpoint.
-		const apiPath = '/eventive/v1/charts?event_bucket=' + encodeURIComponent( EventiveData.defaultBucket ) + '&eventive_nonce=' + encodeURIComponent( EventiveData.eventNonce );
+		const apiPath =
+			'/eventive/v1/charts?event_bucket=' +
+			encodeURIComponent( EventiveData.defaultBucket ) +
+			'&eventive_nonce=' +
+			encodeURIComponent( EventiveData.eventNonce );
 
 		// Make the API call using wp.apiFetch.
 		wp.apiFetch( {
 			path: apiPath,
-			method: 'GET'
+			method: 'GET',
 		} )
 			.then( function ( data ) {
 				// Extract and format data.
-				const totalVolume = data.total_volume ? ( data.total_volume / 100 ).toFixed( 2 ) : '0.00';
-				const totalNetVolume = data.total_net_volume ? ( data.total_net_volume / 100 ).toFixed( 2 ) : '0.00';
-				const totalPaidCount = data.total_paid_count ? parseInt( data.total_paid_count, 10 ) : 0;
+				const totalVolume = data.total_volume
+					? ( data.total_volume / 100 ).toFixed( 2 )
+					: '0.00';
+				const totalNetVolume = data.total_net_volume
+					? ( data.total_net_volume / 100 ).toFixed( 2 )
+					: '0.00';
+				const totalPaidCount = data.total_paid_count
+					? parseInt( data.total_paid_count, 10 )
+					: 0;
 
 				// Build the dashboard HTML.
-				const html = '<div class="eventive-dashboard-container">' +
+				const html =
+					'<div class="eventive-dashboard-container">' +
 					'<div class="eventive-dashboard-box">' +
 					'<strong>Total Volume</strong>' +
-					'<div class="count" data-count="' + htmlEscape( totalVolume ) + '">$0</div>' +
+					'<div class="count" data-count="' +
+					htmlEscape( totalVolume ) +
+					'">$0</div>' +
 					'</div>' +
 					'<div class="eventive-dashboard-box">' +
 					'<strong>Net Volume</strong>' +
-					'<div class="count" data-count="' + htmlEscape( totalNetVolume ) + '">$0</div>' +
+					'<div class="count" data-count="' +
+					htmlEscape( totalNetVolume ) +
+					'">$0</div>' +
 					'</div>' +
 					'<div class="eventive-dashboard-box">' +
 					'<strong>Paid Transactions</strong>' +
-					'<div class="count" data-count="' + htmlEscape( String( totalPaidCount ) ) + '">0</div>' +
+					'<div class="count" data-count="' +
+					htmlEscape( String( totalPaidCount ) ) +
+					'">0</div>' +
 					'</div>' +
 					'</div>' +
 					'<p style="text-align: center; margin-top: 15px;">' +
@@ -153,11 +176,19 @@
 				container.innerHTML = html;
 
 				// Animate the counts.
-				const countElements = container.querySelectorAll( '.eventive-dashboard-box .count' );
+				const countElements = container.querySelectorAll(
+					'.eventive-dashboard-box .count'
+				);
 				countElements.forEach( function ( element ) {
-					const endValue = parseFloat( element.getAttribute( 'data-count' ) );
-					const parentBox = element.closest( '.eventive-dashboard-box' );
-					const strongText = parentBox ? bySel( parentBox, 'strong' ).textContent : '';
+					const endValue = parseFloat(
+						element.getAttribute( 'data-count' )
+					);
+					const parentBox = element.closest(
+						'.eventive-dashboard-box'
+					);
+					const strongText = parentBox
+						? bySel( parentBox, 'strong' ).textContent
+						: '';
 					const isCurrency = strongText.includes( 'Volume' );
 
 					if ( isCurrency ) {
@@ -175,7 +206,8 @@
 								1
 							);
 							const currentValue = progress * endValue;
-							element.textContent = formatCurrency( currentValue );
+							element.textContent =
+								formatCurrency( currentValue );
 
 							if ( progress < 1 ) {
 								requestAnimationFrame( animateCurrency );
@@ -190,12 +222,19 @@
 				} );
 			} )
 			.catch( function ( error ) {
-				console.error( '[eventive-dashboard] Error fetching dashboard data:', error && ( error.message || error.status || error ) );
+				console.error(
+					'[eventive-dashboard] Error fetching dashboard data:',
+					error && ( error.message || error.status || error )
+				);
 
-				const errorMessage = ( error && error.message ) || 'Unable to load dashboard data. Please try again later.';
+				const errorMessage =
+					( error && error.message ) ||
+					'Unable to load dashboard data. Please try again later.';
 
-				container.innerHTML = '<div class="eventive-error">' +
-					'<strong>Connection Error:</strong> ' + htmlEscape( errorMessage ) +
+				container.innerHTML =
+					'<div class="eventive-error">' +
+					'<strong>Connection Error:</strong> ' +
+					htmlEscape( errorMessage ) +
 					'</div>';
 			} );
 	}
@@ -210,7 +249,9 @@
 
 	// Initialize when document is ready.
 	if ( document.readyState === 'loading' ) {
-		document.addEventListener( 'DOMContentLoaded', initDashboard, { once: true } );
+		document.addEventListener( 'DOMContentLoaded', initDashboard, {
+			once: true,
+		} );
 	} else {
 		initDashboard();
 	}

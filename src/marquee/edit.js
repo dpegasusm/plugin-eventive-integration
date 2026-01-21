@@ -138,7 +138,8 @@ export default function Edit( { attributes, setAttributes } ) {
 						<ul>
 							{ attributes.tag && (
 								<li>
-									{ __( 'Tag:', 'eventive' ) } { attributes.tag }
+									{ __( 'Tag:', 'eventive' ) }{ ' ' }
+									{ attributes.tag }
 								</li>
 							) }
 							<li>
@@ -146,7 +147,9 @@ export default function Edit( { attributes, setAttributes } ) {
 								{ attributes.number }
 							</li>
 							{ attributes.stills && (
-								<li>{ __( 'Using still images', 'eventive' ) }</li>
+								<li>
+									{ __( 'Using still images', 'eventive' ) }
+								</li>
 							) }
 							{ attributes.caption && (
 								<li>

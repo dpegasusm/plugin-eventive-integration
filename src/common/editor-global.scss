@@ -11,7 +11,8 @@
    Used in: ALL blocks (19 blocks)
    ========================================================================== */
 
-[class*='wp-block-eventive-'] {
+[class*="wp-block-eventive-"] {
+
 	/* Base min-height for all Eventive blocks in the editor */
 	min-height: 100px;
 }
@@ -34,18 +35,18 @@
 	align-items: center;
 
 	h3.eventive-block-placeholder__title {
-        margin: 0;
-        color: #666;
-        font-weight: 600;
-        font-size: 16px;
+		margin: 0;
+		color: #666;
+		font-weight: 600;
+		font-size: 16px;
 		margin-top: 0;
 	}
 
-    .eventive-block-placeholder__description {
-        margin-top: 10px;
-        font-size: 14px;
-        color: #666;
-    }
+	.eventive-block-placeholder__description {
+		margin-top: 10px;
+		font-size: 14px;
+		color: #666;
+	}
 
 	p {
 		color: inherit;

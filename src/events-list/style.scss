@@ -79,7 +79,8 @@
 	}
 
 	/* Grid view */
-	&[data-view='grid'] {
+	&[data-view="grid"] {
+
 		.event-schedule-list {
 			display: grid;
 			grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -154,6 +155,7 @@
 
 	/* Responsive adjustments */
 	@media (max-width: 768px) {
+
 		.event-list-item {
 			flex-direction: column;
 
@@ -169,7 +171,8 @@
 			}
 		}
 
-		&[data-view='grid'] {
+		&[data-view="grid"] {
+
 			.event-schedule-list {
 				grid-template-columns: 1fr;
 			}

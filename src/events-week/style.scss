@@ -44,7 +44,7 @@
 	}
 
 	#current-week-range {
-		font-weight: bold;
+		font-weight: 700;
 		font-size: 1rem;
 	}
 
@@ -167,7 +167,7 @@
 			color: #aaa;
 			float: right;
 			font-size: 28px;
-			font-weight: bold;
+			font-weight: 700;
 			line-height: 20px;
 			cursor: pointer;
 
@@ -180,6 +180,7 @@
 
 	/* Responsive adjustments */
 	@media (max-width: 768px) {
+
 		.weekly-calendar-controls {
 			flex-direction: column;
 			gap: 8px;
@@ -194,7 +195,9 @@
 		}
 
 		.weekly-calendar-grid {
+
 			.week-table {
+
 				th,
 				td {
 					min-width: 100px;

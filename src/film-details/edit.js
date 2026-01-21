@@ -100,7 +100,7 @@ export default function Edit( { attributes, setAttributes } ) {
 								: __(
 										'Film details will display here (set Film ID or use URL parameter)',
 										'eventive'
-								) }
+								  ) }
 						</p>
 					</div>
 				</div>

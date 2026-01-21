@@ -52,7 +52,7 @@
 		position: relative;
 
 		&::after {
-			content: '';
+			content: "";
 			position: absolute;
 			bottom: -10px;
 			left: 0;
@@ -79,7 +79,7 @@
 		background: rgba(0, 0, 0, 0.5);
 		color: white;
 		font-size: 1.5rem;
-		font-weight: bold;
+		font-weight: 700;
 		z-index: 3;
 	}
 
@@ -91,21 +91,26 @@
 }
 
 @keyframes marquee-scroll {
+
 	0% {
 		transform: translate3d(0, 0, 0);
 	}
+
 	100% {
 		transform: translate3d(-50%, 0, 0);
 	}
 }
 
 @keyframes scrollMarquee {
+
 	0% {
 		transform: translateX(0);
 	}
+
 	50% {
 		transform: translateX(-50%);
 	}
+
 	100% {
 		transform: translateX(0);
 	}

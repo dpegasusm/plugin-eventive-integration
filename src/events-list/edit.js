@@ -177,26 +177,26 @@ export default function Edit( { attributes, setAttributes } ) {
 							setAttributes( { shortDescription: value } )
 						}
 					/>
-			</PanelBody>
-		</InspectorControls>
+				</PanelBody>
+			</InspectorControls>
 
-		<div { ...blockProps }>
-			<div className="eventive-block-placeholder">
-				<h3 className="eventive-block-placeholder__title">
-					{ __( 'Eventive Events List', 'eventive' ) }
-				</h3>
-				<div className="eventive-block-placeholder__description">
-					<p>
-						{ __(
-							`${
-								view === 'list' ? 'List' : 'Grid'
-							} view • Limit: ${ limit }`,
-							'eventive'
-						) }
-					</p>
+			<div { ...blockProps }>
+				<div className="eventive-block-placeholder">
+					<h3 className="eventive-block-placeholder__title">
+						{ __( 'Eventive Events List', 'eventive' ) }
+					</h3>
+					<div className="eventive-block-placeholder__description">
+						<p>
+							{ __(
+								`${
+									view === 'list' ? 'List' : 'Grid'
+								} view • Limit: ${ limit }`,
+								'eventive'
+							) }
+						</p>
+					</div>
 				</div>
 			</div>
-		</div>
-	</>
-);
+		</>
+	);
 }

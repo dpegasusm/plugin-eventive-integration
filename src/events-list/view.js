@@ -461,7 +461,10 @@ document.addEventListener( 'DOMContentLoaded', () => {
 						renderEvents();
 					} )
 					.catch( ( error ) => {
-						console.error( '[eventive-events-list] Error fetching events:', error );
+						console.error(
+							'[eventive-events-list] Error fetching events:',
+							error
+						);
 						block.innerHTML =
 							'<div class="eventive-error">Error loading events.</div>';
 					} );
@@ -469,14 +472,22 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 			if ( window.Eventive && window.Eventive._ready ) {
 				fetchData();
-			} else if ( window.Eventive && typeof window.Eventive.on === 'function' ) {
+			} else if (
+				window.Eventive &&
+				typeof window.Eventive.on === 'function'
+			) {
 				window.Eventive.on( 'ready', fetchData );
 			} else {
 				setTimeout( () => {
-					if ( window.Eventive && typeof window.Eventive.request === 'function' ) {
+					if (
+						window.Eventive &&
+						typeof window.Eventive.request === 'function'
+					) {
 						fetchData();
 					} else {
-						console.error( '[eventive-events-list] Eventive API not available' );
+						console.error(
+							'[eventive-events-list] Eventive API not available'
+						);
 						block.innerHTML =
 							'<div class="eventive-error">Error loading events.</div>';
 					}

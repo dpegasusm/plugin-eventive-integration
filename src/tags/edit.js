@@ -105,11 +105,11 @@ export default function Edit( { attributes, setAttributes } ) {
 								? __(
 										'Tags will be displayed as a dropdown on the frontend',
 										'eventive'
-								)
+								  )
 								: __(
 										'Tags will be displayed as filter pills on the frontend',
 										'eventive'
-								) }
+								  ) }
 						</p>
 						<p className="eventive-block-placeholder__description">
 							{ display === 'both' &&

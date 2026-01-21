@@ -30,7 +30,7 @@
 		padding: 8px 10px;
 		text-align: center;
 		font-size: clamp(1rem, 1.2vw + 0.6rem, 1.5rem);
-		font-weight: bold;
+		font-weight: 700;
 		color: var(--button-text, #fff);
 		background-color: var(--primary-color, #0073aa);
 		border-radius: 4px;
@@ -136,12 +136,14 @@
 
 	/* Responsive adjustments */
 	@media (max-width: 1024px) {
+
 		.event-group-items {
 			grid-template-columns: repeat(2, minmax(0, 1fr));
 		}
 	}
 
 	@media (max-width: 520px) {
+
 		.event-group-items {
 			grid-template-columns: 1fr;
 		}

@@ -1,28 +1,28 @@
 {
-    "$schema": "https://schemas.wp.org/trunk/block.json",
-    "apiVersion": 3,
-    "name": "eventive/single-film",
-    "version": "0.1.0",
-    "title": "Eventive Single Film",
-    "category": "eventive",
-    "description": "Display a hero-style single film or event page with details and screenings.",
-    "textdomain": "eventive",
-    "attributes": {
-        "filmId": {
-            "type": "string",
-            "default": ""
-        },
-        "eventId": {
-            "type": "string",
-            "default": ""
-        }
-    },
-    "supports": {
-        "html": false,
-        "align": true
-    },
-    "viewScript": "file:./view.js",
-    "editorScript": "file:./index.js",
-    "editorStyle": "file:./index.css",
-    "style": "file:./style-index.css"
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "eventive/single-film",
+	"version": "0.1.0",
+	"title": "Eventive Single Film",
+	"category": "eventive",
+	"description": "Display a hero-style single film or event page with details and screenings.",
+	"textdomain": "eventive",
+	"attributes": {
+		"filmId": {
+			"type": "string",
+			"default": ""
+		},
+		"eventId": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"html": false,
+		"align": true
+	},
+	"viewScript": "file:./view.js",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
 }

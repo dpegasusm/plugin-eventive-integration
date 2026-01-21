@@ -284,7 +284,11 @@ document.addEventListener( 'DOMContentLoaded', () => {
 				} )
 					.then( ( response ) => {
 						const films = ( response && response.films ) || [];
-						const filtered = filterByIncludeExclude( films, tag, exclude );
+						const filtered = filterByIncludeExclude(
+							films,
+							tag,
+							exclude
+						);
 
 						const content = document.createElement( 'div' );
 						content.className = 'marquee-content';
@@ -327,7 +331,8 @@ document.addEventListener( 'DOMContentLoaded', () => {
 						content.style.animationDuration = durationSec + 's';
 
 						const captionSpeedAttr = (
-							wrapper.getAttribute( 'data-caption-speed' ) || 'match'
+							wrapper.getAttribute( 'data-caption-speed' ) ||
+							'match'
 						).toLowerCase();
 						let captionDuration = durationSec;
 						const asNumber = parseInt( captionSpeedAttr, 10 );
@@ -346,20 +351,31 @@ document.addEventListener( 'DOMContentLoaded', () => {
 						marquee.appendChild( content );
 					} )
 					.catch( ( error ) => {
-						console.error( '[eventive-marquee] Error fetching marquee films:', error );
+						console.error(
+							'[eventive-marquee] Error fetching marquee films:',
+							error
+						);
 					} );
 			};
 
 			if ( window.Eventive && window.Eventive._ready ) {
 				fetchData();
-			} else if ( window.Eventive && typeof window.Eventive.on === 'function' ) {
+			} else if (
+				window.Eventive &&
+				typeof window.Eventive.on === 'function'
+			) {
 				window.Eventive.on( 'ready', fetchData );
 			} else {
 				setTimeout( () => {
-					if ( window.Eventive && typeof window.Eventive.request === 'function' ) {
+					if (
+						window.Eventive &&
+						typeof window.Eventive.request === 'function'
+					) {
 						fetchData();
 					} else {
-						console.error( '[eventive-marquee] Eventive API not available' );
+						console.error(
+							'[eventive-marquee] Eventive API not available'
+						);
 					}
 				}, 1000 );
 			}

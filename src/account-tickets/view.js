@@ -57,7 +57,10 @@ function AccountTicketsApp() {
 			const list = ( resp && ( resp.tickets || resp ) ) || [];
 			setTickets( list );
 		} catch ( error ) {
-			console.error( '[eventive-account-tickets] Error fetching tickets:', error );
+			console.error(
+				'[eventive-account-tickets] Error fetching tickets:',
+				error
+			);
 		}
 	};
 

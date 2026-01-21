@@ -35,9 +35,11 @@
 	}
 
 	@keyframes fadeInBackdrop {
+
 		from {
 			opacity: 0;
 		}
+
 		to {
 			opacity: 1;
 		}
@@ -86,8 +88,8 @@
 			font-size: 0.9rem;
 		}
 
-		input[type='text'],
-		input[type='password'] {
+		input[type="text"],
+		input[type="password"] {
 			padding: 10px;
 			font-size: 0.95rem;
 			border: 1px solid #ccc;
@@ -126,7 +128,7 @@
 				cursor: pointer;
 				transition: background 0.2s;
 
-				&[type='submit'] {
+				&[type="submit"] {
 					background: var(--primary-color);
 					color: #fff;
 
@@ -135,7 +137,7 @@
 					}
 				}
 
-				&[type='button'] {
+				&[type="button"] {
 					background: #6c757d;
 					color: #fff;
 

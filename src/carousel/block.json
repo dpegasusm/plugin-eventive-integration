@@ -1,28 +1,28 @@
 {
-    "$schema": "https://schemas.wp.org/trunk/block.json",
-    "apiVersion": 3,
-    "name": "eventive/carousel",
-    "version": "0.1.0",
-    "title": "Eventive Carousel",
-    "category": "eventive",
-    "description": "Display upcoming Eventive events in a carousel slider.",
-    "textdomain": "eventive",
-    "attributes": {
-        "limit": {
-            "type": "number",
-            "default": 10
-        },
-        "showDescription": {
-            "type": "boolean",
-            "default": true
-        }
-    },
-    "supports": {
-        "html": false,
-        "align": true
-    },
-    "viewScript": "file:./view.js",
-    "editorScript": "file:./index.js",
-    "editorStyle": "file:./index.css",
-    "style": "file:./style-index.css"
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "eventive/carousel",
+	"version": "0.1.0",
+	"title": "Eventive Carousel",
+	"category": "eventive",
+	"description": "Display upcoming Eventive events in a carousel slider.",
+	"textdomain": "eventive",
+	"attributes": {
+		"limit": {
+			"type": "number",
+			"default": 10
+		},
+		"showDescription": {
+			"type": "boolean",
+			"default": true
+		}
+	},
+	"supports": {
+		"html": false,
+		"align": true
+	},
+	"viewScript": "file:./view.js",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
 }

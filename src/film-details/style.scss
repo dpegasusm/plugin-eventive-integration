@@ -35,10 +35,12 @@
 	}
 
 	@keyframes heroFade {
+
 		from {
 			opacity: 0;
 			transform: translateY(-10px);
 		}
+
 		to {
 			opacity: 1;
 			transform: translateY(0);
@@ -47,6 +49,7 @@
 
 	/* Desktop refinements for hero and poster */
 	@media (min-width: 1024px) {
+
 		.hero-section {
 			height: 420px;
 		}
@@ -236,6 +239,7 @@
 
 	/* Responsive adjustments */
 	@media (max-width: 768px) {
+
 		.hero-section {
 			height: 200px;
 		}

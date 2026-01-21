@@ -128,9 +128,14 @@ const VenuesContainer = () => {
 					setLoading( false );
 				} )
 				.catch( ( err ) => {
-					console.error( '[eventive-venues] Error fetching venues:', err );
+					console.error(
+						'[eventive-venues] Error fetching venues:',
+						err
+					);
 					setError(
-						`Error fetching venues: ${ err.message || 'Unknown error' }`
+						`Error fetching venues: ${
+							err.message || 'Unknown error'
+						}`
 					);
 					setLoading( false );
 				} );
@@ -138,14 +143,22 @@ const VenuesContainer = () => {
 
 		if ( window.Eventive && window.Eventive._ready ) {
 			loadVenues();
-		} else if ( window.Eventive && typeof window.Eventive.on === 'function' ) {
+		} else if (
+			window.Eventive &&
+			typeof window.Eventive.on === 'function'
+		) {
 			window.Eventive.on( 'ready', loadVenues );
 		} else {
 			setTimeout( () => {
-				if ( window.Eventive && typeof window.Eventive.request === 'function' ) {
+				if (
+					window.Eventive &&
+					typeof window.Eventive.request === 'function'
+				) {
 					loadVenues();
 				} else {
-					console.error( '[eventive-venues] Eventive API not available' );
+					console.error(
+						'[eventive-venues] Eventive API not available'
+					);
 					setError( 'Eventive API not available' );
 					setLoading( false );
 				}

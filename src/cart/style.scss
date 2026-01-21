@@ -3,6 +3,7 @@
  */
 
 .wp-block-eventive-cart {
+
 	.eventive-cart-container {
 		padding: 20px;
 		background-color: var(--card-bg);
@@ -80,7 +81,7 @@
 		th {
 			background-color: var(--primary-color);
 			color: #fff;
-			font-weight: bold;
+			font-weight: 700;
 		}
 
 		tbody tr:nth-child(even) {
@@ -90,11 +91,13 @@
 
 	// Responsive design
 	@media (max-width: 768px) {
+
 		.eventive-cart-container {
 			padding: 10px;
 		}
 
 		.cart-table {
+
 			th,
 			td {
 				font-size: 12px;

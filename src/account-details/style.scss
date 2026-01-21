@@ -24,9 +24,11 @@
 	}
 
 	@keyframes spin {
+
 		0% {
 			transform: rotate(0deg);
 		}
+
 		100% {
 			transform: rotate(360deg);
 		}
@@ -41,6 +43,7 @@
 	}
 
 	.eventive-account-details-content {
+
 		h2 {
 			margin: 0 0 12px 0;
 			font-size: 1.3rem;
@@ -158,7 +161,7 @@
 				background-color: var(--primary-color);
 			}
 
-			&:checked + .slider:before {
+			&:checked + .slider::before {
 				transform: translateX(26px);
 			}
 		}
@@ -174,9 +177,9 @@
 			transition: 0.4s;
 			border-radius: 24px;
 
-			&:before {
+			&::before {
 				position: absolute;
-				content: '';
+				content: "";
 				height: 18px;
 				width: 18px;
 				left: 3px;

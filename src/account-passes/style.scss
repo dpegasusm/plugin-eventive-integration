@@ -3,6 +3,7 @@
  */
 
 .wp-block-eventive-account-passes {
+
 	.eventive-login-container {
 		min-height: 100px;
 		display: flex;
@@ -20,9 +21,11 @@
 	}
 
 	@keyframes spin {
+
 		0% {
 			transform: rotate(0deg);
 		}
+
 		100% {
 			transform: rotate(360deg);
 		}
@@ -38,6 +41,7 @@
 	}
 
 	.eventive-passes-list {
+
 		h2 {
 			margin: 0 0 16px 0;
 			font-size: 1.5rem;

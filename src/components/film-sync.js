@@ -14,44 +14,47 @@ import { __ } from '@wordpress/i18n';
 
 const FilmSyncPanel = () => {
 	const postType = useSelect(
-		(select) => select('core/editor').getCurrentPostType(),
+		( select ) => select( 'core/editor' ).getCurrentPostType(),
 		[]
 	);
 
 	// Only show for eventive_film post type
-	if (postType !== 'eventive_film') {
+	if ( postType !== 'eventive_film' ) {
 		return null;
 	}
 
-	const { editPost } = useDispatch('core/editor');
+	const { editPost } = useDispatch( 'core/editor' );
 
 	const meta = useSelect(
-		(select) => select('core/editor').getEditedPostAttribute('meta') || {},
+		( select ) =>
+			select( 'core/editor' ).getEditedPostAttribute( 'meta' ) || {},
 		[]
 	);
 
-	const updateMeta = (key, value) => {
-		editPost({ meta: { [key]: value } });
+	const updateMeta = ( key, value ) => {
+		editPost( { meta: { [ key ]: value } } );
 	};
 
 	return (
 		<PluginDocumentSettingPanel
 			name="eventive-film-sync"
-			title={__('Eventive Sync', 'eventive')}
+			title={ __( 'Eventive Sync', 'eventive' ) }
 		>
 			<ToggleControl
-				label={__('Sync this film from Eventive', 'eventive')}
-				checked={meta._eventive_sync_enabled !== false}
-				onChange={(value) => updateMeta('_eventive_sync_enabled', value)}
-				help={__(
+				label={ __( 'Sync this film from Eventive', 'eventive' ) }
+				checked={ meta._eventive_sync_enabled !== false }
+				onChange={ ( value ) =>
+					updateMeta( '_eventive_sync_enabled', value )
+				}
+				help={ __(
 					'When disabled, this film will be skipped during sync operations',
 					'eventive'
-				)}
+				) }
 			/>
 		</PluginDocumentSettingPanel>
 	);
 };
 
-registerPlugin('eventive-film-sync', {
+registerPlugin( 'eventive-film-sync', {
 	render: FilmSyncPanel,
-});
+} );

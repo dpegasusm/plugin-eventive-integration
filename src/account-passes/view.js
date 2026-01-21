@@ -59,7 +59,10 @@ function AccountPassesApp() {
 			const list = ( resp && ( resp.passes || resp ) ) || [];
 			setPasses( list );
 		} catch ( error ) {
-			console.error( '[eventive-account-passes] Error fetching passes:', error );
+			console.error(
+				'[eventive-account-passes] Error fetching passes:',
+				error
+			);
 		}
 	};
 

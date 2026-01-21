@@ -112,7 +112,10 @@ document.addEventListener( 'DOMContentLoaded', () => {
 						}
 					} )
 					.catch( ( error ) => {
-						console.error( '[eventive-single-film] Error fetching film data:', error );
+						console.error(
+							'[eventive-single-film] Error fetching film data:',
+							error
+						);
 						if ( detailsContainer ) {
 							detailsContainer.innerHTML =
 								'<p>Error loading film details.</p>';
@@ -175,7 +178,10 @@ document.addEventListener( 'DOMContentLoaded', () => {
 						}
 					} )
 					.catch( ( error ) => {
-						console.error( '[eventive-single-film] Error fetching event data:', error );
+						console.error(
+							'[eventive-single-film] Error fetching event data:',
+							error
+						);
 						if ( detailsContainer ) {
 							detailsContainer.innerHTML =
 								'<p>Error loading event details.</p>';
@@ -186,17 +192,28 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 		if ( window.Eventive && window.Eventive._ready ) {
 			fetchAndRenderFilm();
-		} else if ( window.Eventive && typeof window.Eventive.on === 'function' ) {
+		} else if (
+			window.Eventive &&
+			typeof window.Eventive.on === 'function'
+		) {
 			window.Eventive.on( 'ready', fetchAndRenderFilm );
 		} else {
 			setTimeout( () => {
-				if ( window.Eventive && typeof window.Eventive.request === 'function' ) {
+				if (
+					window.Eventive &&
+					typeof window.Eventive.request === 'function'
+				) {
 					fetchAndRenderFilm();
 				} else {
-					console.error( '[eventive-single-film] Eventive API not available' );
-					const container = block.querySelector( '#single-film-or-event-container' );
+					console.error(
+						'[eventive-single-film] Eventive API not available'
+					);
+					const container = block.querySelector(
+						'#single-film-or-event-container'
+					);
 					if ( container ) {
-						container.innerHTML = '<div>Error: Eventive API not available</div>';
+						container.innerHTML =
+							'<div>Error: Eventive API not available</div>';
 					}
 				}
 			}, 1000 );

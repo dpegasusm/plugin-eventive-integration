@@ -114,23 +114,23 @@ export default function Edit( { attributes, setAttributes } ) {
 						) }
 					/>
 				</PanelBody>
-		</InspectorControls>
+			</InspectorControls>
 
-		<div { ...blockProps }>
-			<div className="eventive-block-placeholder">
-				<h3 className="eventive-block-placeholder__title">
-					{ __( 'Eventive Events', 'eventive' ) }
-				</h3>
-				<div className="eventive-block-placeholder__description">
-					<p>
-						{ __(
-							'Upcoming events will display here',
-							'eventive'
-						) }
-					</p>
+			<div { ...blockProps }>
+				<div className="eventive-block-placeholder">
+					<h3 className="eventive-block-placeholder__title">
+						{ __( 'Eventive Events', 'eventive' ) }
+					</h3>
+					<div className="eventive-block-placeholder__description">
+						<p>
+							{ __(
+								'Upcoming events will display here',
+								'eventive'
+							) }
+						</p>
+					</div>
 				</div>
 			</div>
-		</div>
-	</>
-);
+		</>
+	);
 }

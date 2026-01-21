@@ -66,13 +66,17 @@ export default function Edit( { attributes, setAttributes } ) {
 						</p>
 						{ attributes.filmId && (
 							<p>
-								<strong>{ __( 'Film ID:', 'eventive' ) }</strong>{ ' ' }
+								<strong>
+									{ __( 'Film ID:', 'eventive' ) }
+								</strong>{ ' ' }
 								{ attributes.filmId }
 							</p>
 						) }
 						{ attributes.eventId && (
 							<p>
-								<strong>{ __( 'Event ID:', 'eventive' ) }</strong>{ ' ' }
+								<strong>
+									{ __( 'Event ID:', 'eventive' ) }
+								</strong>{ ' ' }
 								{ attributes.eventId }
 							</p>
 						) }

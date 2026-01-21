@@ -149,7 +149,7 @@ export default function Edit( { attributes, setAttributes } ) {
 
 			<div { ...blockProps }>
 				<div className="eventive-block-placeholder">
-					<h3 className='eventive-block-placeholder__title'>
+					<h3 className="eventive-block-placeholder__title">
 						{ __( 'Eventive Film Guide', 'eventive' ) }
 					</h3>
 					<div className="eventive-block-placeholder__description">
@@ -176,10 +176,12 @@ export default function Edit( { attributes, setAttributes } ) {
 								</li>
 							) }
 							<li>
-								{ __( 'View:', 'eventive' ) } { attributes.view }
+								{ __( 'View:', 'eventive' ) }{ ' ' }
+								{ attributes.view }
 							</li>
 							<li>
-								{ __( 'Image:', 'eventive' ) } { attributes.image }
+								{ __( 'Image:', 'eventive' ) }{ ' ' }
+								{ attributes.image }
 							</li>
 						</ul>
 					</div>

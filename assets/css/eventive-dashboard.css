@@ -76,10 +76,11 @@
 
 /* Responsive Design */
 @media screen and (max-width: 782px) {
+
 	#eventive_dashboard_widget .eventive-dashboard-container {
 		flex-direction: column;
 	}
-	
+
 	#eventive_dashboard_widget .eventive-dashboard-box {
 		min-width: 100%;
 	}
@@ -87,10 +88,12 @@
 
 /* Animation for count updates */
 @keyframes fadeIn {
+
 	from {
 		opacity: 0;
 		transform: translateY(10px);
 	}
+
 	to {
 		opacity: 1;
 		transform: translateY(0);

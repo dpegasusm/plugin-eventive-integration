@@ -296,162 +296,168 @@ document.addEventListener( 'DOMContentLoaded', () => {
 						events = response;
 					}
 
-				const now = new Date();
-				const upcomingDated = events
-					.filter(
-						( e ) =>
-							e &&
-							e.start_time &&
-							! isNaN( new Date( e.start_time ) ) &&
-							new Date( e.start_time ) > now
-					)
-					.filter( ( e ) => ! excludeVirtual || ! e.is_virtual );
+					const now = new Date();
+					const upcomingDated = events
+						.filter(
+							( e ) =>
+								e &&
+								e.start_time &&
+								! isNaN( new Date( e.start_time ) ) &&
+								new Date( e.start_time ) > now
+						)
+						.filter( ( e ) => ! excludeVirtual || ! e.is_virtual );
 
-				let undatedVirtual = [];
-				if ( ! excludeVirtual ) {
-					undatedVirtual = events.filter(
-						( e ) =>
-							e &&
-							e.is_virtual === true &&
-							e.is_dated === false &&
-							( ! e.start_time ||
-								isNaN( new Date( e.start_time ) ) )
-					);
-				}
-
-				const upcoming = upcomingDated
-					.concat( undatedVirtual )
-					.sort( ( a, b ) => {
-						const aHasDate =
-							a &&
-							a.start_time &&
-							! isNaN( new Date( a.start_time ) );
-						const bHasDate =
-							b &&
-							b.start_time &&
-							! isNaN( new Date( b.start_time ) );
-						if ( aHasDate && bHasDate ) {
-							return (
-								new Date( a.start_time ) -
-								new Date( b.start_time )
-							);
-						}
-						if ( aHasDate && ! bHasDate ) {
-							return -1;
-						}
-						if ( ! aHasDate && bHasDate ) {
-							return 1;
-						}
-						return 0;
-					} );
-
-				const listEl = block.querySelector( '.film-events' );
-				if ( ! listEl ) {
-					return;
-				}
-
-				if ( ! upcoming.length ) {
-					listEl.innerHTML =
-						'<div>Scheduled showtime coming soon!</div>';
-					if ( window.Eventive?.rebuild ) {
-						window.Eventive.rebuild();
+					let undatedVirtual = [];
+					if ( ! excludeVirtual ) {
+						undatedVirtual = events.filter(
+							( e ) =>
+								e &&
+								e.is_virtual === true &&
+								e.is_dated === false &&
+								( ! e.start_time ||
+									isNaN( new Date( e.start_time ) ) )
+						);
 					}
-					return;
-				}
 
-				// Group by date and venue
-				const groups = {};
-				upcoming.forEach( ( ev ) => {
-					if ( ! ev ) {
-						return;
-					}
-					const hasValidStart =
-						ev.start_time && ! isNaN( new Date( ev.start_time ) );
-					const isUndatedVirtual =
-						ev.is_virtual === true &&
-						ev.is_dated === false &&
-						! hasValidStart;
-
-					const venueName =
-						( ev.venue &&
-							( ev.venue.name ||
-								ev.venue.display_name ||
-								ev.venue.slug ) ) ||
-						( ev.is_virtual ? 'Virtual' : 'TBA' );
-					const dt = hasValidStart ? new Date( ev.start_time ) : null;
-					let key;
-					let dateForGroup;
-					let dateStr;
-
-					if ( isUndatedVirtual ) {
-						key = 'virtual_anytime::virtual';
-						dateForGroup = new Date( 8640000000000000 );
-						dateStr = 'ON-DEMAND';
-					} else if ( dt ) {
-						const dateKey = dt.toLocaleDateString( undefined, {
-							year: 'numeric',
-							month: '2-digit',
-							day: '2-digit',
+					const upcoming = upcomingDated
+						.concat( undatedVirtual )
+						.sort( ( a, b ) => {
+							const aHasDate =
+								a &&
+								a.start_time &&
+								! isNaN( new Date( a.start_time ) );
+							const bHasDate =
+								b &&
+								b.start_time &&
+								! isNaN( new Date( b.start_time ) );
+							if ( aHasDate && bHasDate ) {
+								return (
+									new Date( a.start_time ) -
+									new Date( b.start_time )
+								);
+							}
+							if ( aHasDate && ! bHasDate ) {
+								return -1;
+							}
+							if ( ! aHasDate && bHasDate ) {
+								return 1;
+							}
+							return 0;
 						} );
-						const venueId =
-							( ev.venue && ev.venue.id ) ||
-							( ev.is_virtual ? 'virtual' : 'tba' );
-						key = dateKey + '::' + venueId;
-						dateForGroup = dt;
-						dateStr = dt
-							.toLocaleDateString( undefined, {
-								weekday: 'short',
-								month: 'short',
-								day: 'numeric',
-							} )
-							.toUpperCase();
-					} else {
+
+					const listEl = block.querySelector( '.film-events' );
+					if ( ! listEl ) {
 						return;
 					}
 
-					if ( ! groups[ key ] ) {
-						groups[ key ] = {
-							date: dateForGroup,
-							dateStr,
+					if ( ! upcoming.length ) {
+						listEl.innerHTML =
+							'<div>Scheduled showtime coming soon!</div>';
+						if ( window.Eventive?.rebuild ) {
+							window.Eventive.rebuild();
+						}
+						return;
+					}
+
+					// Group by date and venue
+					const groups = {};
+					upcoming.forEach( ( ev ) => {
+						if ( ! ev ) {
+							return;
+						}
+						const hasValidStart =
+							ev.start_time &&
+							! isNaN( new Date( ev.start_time ) );
+						const isUndatedVirtual =
+							ev.is_virtual === true &&
+							ev.is_dated === false &&
+							! hasValidStart;
+
+						const venueName =
+							( ev.venue &&
+								( ev.venue.name ||
+									ev.venue.display_name ||
+									ev.venue.slug ) ) ||
+							( ev.is_virtual ? 'Virtual' : 'TBA' );
+						const dt = hasValidStart
+							? new Date( ev.start_time )
+							: null;
+						let key;
+						let dateForGroup;
+						let dateStr;
+
+						if ( isUndatedVirtual ) {
+							key = 'virtual_anytime::virtual';
+							dateForGroup = new Date( 8640000000000000 );
+							dateStr = 'ON-DEMAND';
+						} else if ( dt ) {
+							const dateKey = dt.toLocaleDateString( undefined, {
+								year: 'numeric',
+								month: '2-digit',
+								day: '2-digit',
+							} );
+							const venueId =
+								( ev.venue && ev.venue.id ) ||
+								( ev.is_virtual ? 'virtual' : 'tba' );
+							key = dateKey + '::' + venueId;
+							dateForGroup = dt;
+							dateStr = dt
+								.toLocaleDateString( undefined, {
+									weekday: 'short',
+									month: 'short',
+									day: 'numeric',
+								} )
+								.toUpperCase();
+						} else {
+							return;
+						}
+
+						if ( ! groups[ key ] ) {
+							groups[ key ] = {
+								date: dateForGroup,
+								dateStr,
+								venueName,
+								isUndatedVirtual,
+								items: [],
+							};
+						}
+
+						groups[ key ].items.push( {
+							id: ev.id || '',
+							dt,
+							tz:
+								ev.timezone ||
+								( ev.venue && ev.venue.timezone ) ||
+								undefined,
 							venueName,
 							isUndatedVirtual,
-							items: [],
-						};
-					}
-
-					groups[ key ].items.push( {
-						id: ev.id || '',
-						dt,
-						tz:
-							ev.timezone ||
-							( ev.venue && ev.venue.timezone ) ||
-							undefined,
-						venueName,
-						isUndatedVirtual,
-					} );
-				} );
-
-				const groupList = Object.values( groups )
-					.sort( ( a, b ) => a.date - b.date )
-					.map( ( g ) => {
-						g.items.sort( ( a, b ) => a.dt - b.dt );
-						return g;
+						} );
 					} );
 
-				const rows = groupList
-					.map( ( g ) => {
-						const itemsHTML = g.items
-							.map( ( it ) => {
-								const timeStr = it.dt
-									? it.dt
-											.toLocaleTimeString( undefined, {
-												hour: 'numeric',
-												minute: '2-digit',
-												timeZone: it.tz,
-											} )
-											.toLowerCase()
-									: 'on demand';
-								return `
+					const groupList = Object.values( groups )
+						.sort( ( a, b ) => a.date - b.date )
+						.map( ( g ) => {
+							g.items.sort( ( a, b ) => a.dt - b.dt );
+							return g;
+						} );
+
+					const rows = groupList
+						.map( ( g ) => {
+							const itemsHTML = g.items
+								.map( ( it ) => {
+									const timeStr = it.dt
+										? it.dt
+												.toLocaleTimeString(
+													undefined,
+													{
+														hour: 'numeric',
+														minute: '2-digit',
+														timeZone: it.tz,
+													}
+												)
+												.toLowerCase()
+										: 'on demand';
+									return `
 									<div class="eventive-showtime-row" style="display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;padding:6px 0;">
 										<span class="eventive-showtime-time" style="font-weight:600;white-space:nowrap;">${ timeStr }</span>
 										<span class="eventive-showtime-venue" style="opacity:.85;">${ htmlEscape(
@@ -461,10 +467,10 @@ document.addEventListener( 'DOMContentLoaded', () => {
 											it.id
 										}" data-label="${ timeStr }"></div></div>
 									</div>`;
-							} )
-							.join( '' );
+								} )
+								.join( '' );
 
-						return `
+							return `
 							<div class="eventive-screening" style="padding:12px 0;border-top:1px solid rgba(0,0,0,0.08);">
 								<div class="eventive-screening__header" style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:6px;">
 									<div class="eventive-screening__datetime" style="font-weight:700;">${
@@ -476,22 +482,25 @@ document.addEventListener( 'DOMContentLoaded', () => {
 								</div>
 								<div class="eventive-screening__items">${ itemsHTML }</div>
 							</div>`;
-					} )
-					.join( '' );
+						} )
+						.join( '' );
 
-				listEl.innerHTML = `<h3 class="eventive-events-title">Upcoming Events</h3><div class="eventive-events-list">${ rows }</div>`;
-				if ( window.Eventive?.rebuild ) {
-					window.Eventive.rebuild();
-				}
-			} )
-			.catch( ( error ) => {
-				console.error( '[eventive-film-details] Error fetching events:', error );
-				const listEl = block.querySelector( '.film-events' );
-				if ( listEl ) {
-					listEl.innerHTML =
-						'<div>Error loading events for this film.</div>';
-				}
-			} );
+					listEl.innerHTML = `<h3 class="eventive-events-title">Upcoming Events</h3><div class="eventive-events-list">${ rows }</div>`;
+					if ( window.Eventive?.rebuild ) {
+						window.Eventive.rebuild();
+					}
+				} )
+				.catch( ( error ) => {
+					console.error(
+						'[eventive-film-details] Error fetching events:',
+						error
+					);
+					const listEl = block.querySelector( '.film-events' );
+					if ( listEl ) {
+						listEl.innerHTML =
+							'<div>Error loading events for this film.</div>';
+					}
+				} );
 		};
 
 		// Main fetch and render
@@ -507,22 +516,35 @@ document.addEventListener( 'DOMContentLoaded', () => {
 						return fetchEvents();
 					} )
 					.catch( ( error ) => {
-						console.error( '[eventive-film-details] Error fetching film:', error );
-						block.innerHTML = '<div>Error loading film details.</div>';
+						console.error(
+							'[eventive-film-details] Error fetching film:',
+							error
+						);
+						block.innerHTML =
+							'<div>Error loading film details.</div>';
 					} );
 			};
 
 			if ( window.Eventive && window.Eventive._ready ) {
 				fetchFilm();
-			} else if ( window.Eventive && typeof window.Eventive.on === 'function' ) {
+			} else if (
+				window.Eventive &&
+				typeof window.Eventive.on === 'function'
+			) {
 				window.Eventive.on( 'ready', fetchFilm );
 			} else {
 				setTimeout( () => {
-					if ( window.Eventive && typeof window.Eventive.request === 'function' ) {
+					if (
+						window.Eventive &&
+						typeof window.Eventive.request === 'function'
+					) {
 						fetchFilm();
 					} else {
-						console.error( '[eventive-film-details] Eventive API not available' );
-						block.innerHTML = '<div>Error loading film details.</div>';
+						console.error(
+							'[eventive-film-details] Eventive API not available'
+						);
+						block.innerHTML =
+							'<div>Error loading film details.</div>';
 					}
 				}, 1000 );
 			}

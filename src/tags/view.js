@@ -226,25 +226,23 @@ const TagsContainer = ( { view, display, hideEmpty, excludeTags } ) => {
 							method: 'GET',
 							path: `event_buckets/${ eventBucket }/films`,
 							authenticatePerson: false,
-						} )
-							.then( ( filmsData ) => {
-								const allowed = collectTagIds( filmsData );
-								setAllowedTagIds( allowed );
-								setTags( tagsList );
-								setLoading( false );
-							} );
+						} ).then( ( filmsData ) => {
+							const allowed = collectTagIds( filmsData );
+							setAllowedTagIds( allowed );
+							setTags( tagsList );
+							setLoading( false );
+						} );
 					} else if ( display === 'events' ) {
 						return window.Eventive.request( {
 							method: 'GET',
 							path: `event_buckets/${ eventBucket }/events`,
 							authenticatePerson: false,
-						} )
-							.then( ( eventsData ) => {
-								const allowed = collectTagIds( eventsData );
-								setAllowedTagIds( allowed );
-								setTags( tagsList );
-								setLoading( false );
-							} );
+						} ).then( ( eventsData ) => {
+							const allowed = collectTagIds( eventsData );
+							setAllowedTagIds( allowed );
+							setTags( tagsList );
+							setLoading( false );
+						} );
 					} else {
 						setAllowedTagIds( null );
 						setTags( tagsList );
@@ -260,14 +258,22 @@ const TagsContainer = ( { view, display, hideEmpty, excludeTags } ) => {
 
 		if ( window.Eventive && window.Eventive._ready ) {
 			loadTags();
-		} else if ( window.Eventive && typeof window.Eventive.on === 'function' ) {
+		} else if (
+			window.Eventive &&
+			typeof window.Eventive.on === 'function'
+		) {
 			window.Eventive.on( 'ready', loadTags );
 		} else {
 			setTimeout( () => {
-				if ( window.Eventive && typeof window.Eventive.request === 'function' ) {
+				if (
+					window.Eventive &&
+					typeof window.Eventive.request === 'function'
+				) {
 					loadTags();
 				} else {
-					console.error( '[eventive-tags] Eventive API not available' );
+					console.error(
+						'[eventive-tags] Eventive API not available'
+					);
 					setError( 'Eventive API not available' );
 					setLoading( false );
 				}

@@ -33,9 +33,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 				method: 'GET',
 				path: `ledger?start_time=${ encodeURIComponent(
 					startDate
-				) }&end_time=${ encodeURIComponent(
-					endDate
-				) }&type=PAYMENT`,
+				) }&end_time=${ encodeURIComponent( endDate ) }&type=PAYMENT`,
 				authenticatePerson: false,
 			} )
 				.then( ( data ) => {
@@ -47,7 +45,9 @@ document.addEventListener( 'DOMContentLoaded', () => {
 					// Process donations
 					if ( data && Array.isArray( data.transactions ) ) {
 						data.transactions.forEach( ( transaction ) => {
-							if ( transaction.category?.ref_label === 'Donation' ) {
+							if (
+								transaction.category?.ref_label === 'Donation'
+							) {
 								totalDonations +=
 									parseFloat( transaction.gross ) / 100;
 							}
@@ -85,19 +85,28 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 		if ( window.Eventive && window.Eventive._ready ) {
 			fetchData();
-		} else if ( window.Eventive && typeof window.Eventive.on === 'function' ) {
+		} else if (
+			window.Eventive &&
+			typeof window.Eventive.on === 'function'
+		) {
 			window.Eventive.on( 'ready', fetchData );
 		} else {
 			setTimeout( () => {
-				if ( window.Eventive && typeof window.Eventive.request === 'function' ) {
+				if (
+					window.Eventive &&
+					typeof window.Eventive.request === 'function'
+				) {
 					fetchData();
 				} else {
-					console.error( '[eventive-fundraiser] Eventive API not available' );
+					console.error(
+						'[eventive-fundraiser] Eventive API not available'
+					);
 					const container = block.querySelector(
 						'#eventive-donations-container'
 					);
 					if ( container ) {
-						container.innerHTML = '<p>Error: Eventive API not available</p>';
+						container.innerHTML =
+							'<p>Error: Eventive API not available</p>';
 					}
 				}
 			}, 1000 );

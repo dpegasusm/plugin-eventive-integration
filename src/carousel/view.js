@@ -111,21 +111,32 @@ function EventiveCarousel( { limit, showDescription } ) {
 					setIsLoading( false );
 				} )
 				.catch( ( error ) => {
-					console.error( '[eventive-carousel] Error fetching events:', error );
+					console.error(
+						'[eventive-carousel] Error fetching events:',
+						error
+					);
 					setIsLoading( false );
 				} );
 		};
 
 		if ( window.Eventive && window.Eventive._ready ) {
 			fetchEvents();
-		} else if ( window.Eventive && typeof window.Eventive.on === 'function' ) {
+		} else if (
+			window.Eventive &&
+			typeof window.Eventive.on === 'function'
+		) {
 			window.Eventive.on( 'ready', fetchEvents );
 		} else {
 			setTimeout( () => {
-				if ( window.Eventive && typeof window.Eventive.request === 'function' ) {
+				if (
+					window.Eventive &&
+					typeof window.Eventive.request === 'function'
+				) {
 					fetchEvents();
 				} else {
-					console.error( '[eventive-carousel] Eventive API not available' );
+					console.error(
+						'[eventive-carousel] Eventive API not available'
+					);
 					setIsLoading( false );
 				}
 			}, 1000 );

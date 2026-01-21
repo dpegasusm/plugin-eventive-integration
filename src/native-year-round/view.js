@@ -454,7 +454,10 @@ document.addEventListener( 'DOMContentLoaded', () => {
 				eventsByDay = byDay;
 				weekCache[ wkKey ] = byDay;
 			} catch ( error ) {
-				console.error( '[eventive-native-year-round] Error fetching week events:', error );
+				console.error(
+					'[eventive-native-year-round] Error fetching week events:',
+					error
+				);
 				eventsByDay = {};
 			}
 		};
