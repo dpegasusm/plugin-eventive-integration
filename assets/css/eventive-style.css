@@ -797,6 +797,22 @@
     margin-bottom: 0;
 }
 
+.eventive-nyr-btn {
+    background-color: #0073aa;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+.eventive-nyr-btn:hover {
+    background-color: #005f8d;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
 .yr-day-btn {
     border: 1px solid rgb(209, 38, 17);
     background-color: rgb(244, 241, 241);
