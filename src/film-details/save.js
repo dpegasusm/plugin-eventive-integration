@@ -27,7 +27,7 @@ export default function Save( { attributes } ) {
 			data-exclude-virtual={ excludeVirtual ? 'true' : 'false' }
 		>
 			<div className="eventive-film-details">
-				<p>Loading film details...</p>
+				<p className='eventive-film-loading-text'>Loading film details...</p>
 			</div>
 		</div>
 	);

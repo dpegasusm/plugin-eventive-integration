@@ -50,7 +50,7 @@ export default function Save( { attributes } ) {
 			data-end-date={ endDate }
 		>
 			<div className="event-schedule-list">
-				<p>Loading events...</p>
+				<p className='eventive-film-loading-text'>Loading events...</p>
 			</div>
 		</div>
 	);

@@ -86,7 +86,6 @@
 		gap: 10px;
 		justify-content: center;
 		padding: 20px;
-		background-color: #222;
 		border-radius: 8px;
 
 		&.grid {
@@ -209,13 +208,10 @@
 		text-align: center;
 		margin: 20px;
 		padding: 20px;
-		background: rgba(255, 107, 107, 0.1);
 		border-radius: 8px;
 	}
 
 	.catalog-no-films {
-		color: #aaa;
-		background: rgba(255, 255, 255, 0.05);
 		font-style: italic;
 	}
 

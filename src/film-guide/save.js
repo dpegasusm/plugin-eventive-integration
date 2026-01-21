@@ -49,7 +49,7 @@ export default function Save( { attributes } ) {
 			data-show-view-switcher={ showViewSwitcher ? 'true' : 'false' }
 		>
 			<div className="eventive-film-guide-container">
-				<p>Loading film guide...</p>
+				<p className='eventive-film-loading-text'>Loading film details...</p>
 			</div>
 		</div>
 	);

@@ -36,7 +36,7 @@ export default function Save( { attributes } ) {
 			data-films-base={ filmsBase }
 		>
 			<div className="event-schedule-container">
-				<p>Loading events...</p>
+				<p className='eventive-film-loading-text'>Loading events...</p>
 			</div>
 		</div>
 	);

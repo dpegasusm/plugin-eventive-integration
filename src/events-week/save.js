@@ -32,7 +32,7 @@ export default function Save() {
 					</button>
 				</div>
 				<div id="weekly-calendar-grid" className="weekly-calendar-grid">
-					<p>Loading events...</p>
+					<p className='eventive-film-loading-text'>Loading events...</p>
 				</div>
 				<div id="event-modal" className="event-modal">
 					<div className="modal-content">

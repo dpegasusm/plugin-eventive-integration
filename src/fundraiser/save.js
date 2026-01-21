@@ -24,7 +24,7 @@ export default function Save( { attributes } ) {
 			data-goal-amount={ goalAmount }
 		>
 			<div id="eventive-donations-container">
-				<p>Loading fundraiser progress...</p>
+				<p className='eventive-film-loading-text'>Loading fundraiser progress...</p>
 			</div>
 		</div>
 	);
