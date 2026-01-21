@@ -22,13 +22,50 @@
 		position: relative;
 		z-index: 2;
 		width: 100%;
+		height: 300px;
 		overflow: hidden;
 	}
 
 	.eventive-marquee {
 		display: flex;
 		align-items: center;
+		position: absolute;
+		width: 100%;
+		height: 100%;
 		min-height: 300px;
+	}
+
+	.marquee-content {
+		display: flex;
+		width: 200%;
+		animation: scrollMarquee 60s linear infinite;
+	}
+
+	.poster-slide {
+		flex: 0 0 auto;
+		width: 200px;
+		height: 300px;
+		background-size: cover;
+		background-position: center;
+		margin-right: 10px;
+		transition: transform 0.3s ease;
+		position: relative;
+
+		&::after {
+			content: '';
+			position: absolute;
+			bottom: -10px;
+			left: 0;
+			width: 100%;
+			height: 20px;
+			background: linear-gradient(to top, rgba(0, 0, 0, 0.3), transparent);
+			z-index: 1;
+			pointer-events: none;
+		}
+
+		&:hover {
+			transform: scale(1.1);
+		}
 	}
 
 	.eventive-marquee-caption {
@@ -61,3 +98,16 @@
 		transform: translate3d(-50%, 0, 0);
 	}
 }
+
+@keyframes scrollMarquee {
+	0% {
+		transform: translateX(0);
+	}
+	50% {
+		transform: translateX(-50%);
+	}
+	100% {
+		transform: translateX(0);
+	}
+}
+
