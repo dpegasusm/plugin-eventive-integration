@@ -299,7 +299,7 @@ class Eventive_Sync {
 
 		if ( isset( $film['tags'] ) && is_array( $film['tags'] ) ) {
 			update_post_meta( $post_id, '_eventive_film_tags', $film['tags'] );
-			
+
 			// Sync taxonomy terms from tags.
 			$this->sync_film_tags( $post_id, $film['tags'] );
 		}
@@ -393,7 +393,7 @@ class Eventive_Sync {
 
 			if ( ! empty( $existing_terms ) && ! is_wp_error( $existing_terms ) ) {
 				// Term exists, use it and update color if changed.
-				$term = $existing_terms[0];
+				$term       = $existing_terms[0];
 				$term_ids[] = $term->term_id;
 
 				if ( $tag_color ) {
@@ -413,7 +413,7 @@ class Eventive_Sync {
 				);
 
 				if ( ! is_wp_error( $term ) ) {
-					$term_id = $term['term_id'];
+					$term_id    = $term['term_id'];
 					$term_ids[] = $term_id;
 
 					// Store Eventive tag ID and color as term meta.
@@ -490,42 +490,42 @@ class Eventive_Sync {
 
 		// Update venue meta.
 		update_post_meta( $post_id, '_eventive_venue_id', $eventive_venue_id );
-		
+
 		if ( $venue_color ) {
 			update_post_meta( $post_id, '_eventive_venue_color', $venue_color );
 		}
-		
+
 		update_post_meta( $post_id, '_eventive_use_reserved_seating', $use_reserved );
 
 		// Store any additional venue data that comes from the API.
 		if ( ! empty( $venue['address'] ) ) {
 			update_post_meta( $post_id, '_eventive_venue_address', sanitize_text_field( $venue['address'] ) );
 		}
-		
+
 		if ( ! empty( $venue['city'] ) ) {
 			update_post_meta( $post_id, '_eventive_venue_city', sanitize_text_field( $venue['city'] ) );
 		}
-		
+
 		if ( ! empty( $venue['state'] ) ) {
 			update_post_meta( $post_id, '_eventive_venue_state', sanitize_text_field( $venue['state'] ) );
 		}
-		
+
 		if ( ! empty( $venue['zip'] ) ) {
 			update_post_meta( $post_id, '_eventive_venue_zip', sanitize_text_field( $venue['zip'] ) );
 		}
-		
+
 		if ( ! empty( $venue['country'] ) ) {
 			update_post_meta( $post_id, '_eventive_venue_country', sanitize_text_field( $venue['country'] ) );
 		}
-		
+
 		if ( isset( $venue['latitude'] ) ) {
 			update_post_meta( $post_id, '_eventive_venue_lat', sanitize_text_field( $venue['latitude'] ) );
 		}
-		
+
 		if ( isset( $venue['longitude'] ) ) {
 			update_post_meta( $post_id, '_eventive_venue_long', sanitize_text_field( $venue['longitude'] ) );
 		}
-		
+
 		if ( ! empty( $venue['url'] ) ) {
 			update_post_meta( $post_id, '_eventive_venue_url', esc_url_raw( $venue['url'] ) );
 		}

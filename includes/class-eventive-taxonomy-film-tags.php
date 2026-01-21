@@ -24,14 +24,18 @@ class Eventive_Taxonomy_Film_Tags {
 	public function init() {
 		// Register the Eventive film tags taxonomy.
 		add_action( 'init', array( $this, 'register_eventive_taxonomy_tags' ) );
-		
+
 		// Register term meta for Eventive tag data.
 		add_action( 'init', array( $this, 'register_tag_meta' ) );
-		
+
+		// Add color picker field to tag add screen.
+		add_action( 'eventive_film_tags_add_form_fields', array( $this, 'add_tag_color_field_new' ), 10, 1 );
+		add_action( 'created_eventive_film_tags', array( $this, 'save_tag_color_field' ), 10, 2 );
+
 		// Add color picker field to tag edit screen.
 		add_action( 'eventive_film_tags_edit_form_fields', array( $this, 'add_tag_color_field' ), 10, 2 );
 		add_action( 'edited_eventive_film_tags', array( $this, 'save_tag_color_field' ), 10, 2 );
-		
+
 		// Enqueue color picker scripts.
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_color_picker' ) );
 	}
@@ -62,24 +66,24 @@ class Eventive_Taxonomy_Film_Tags {
 		);
 
 		$args = array(
-			'labels'            => $labels,
-			'description'       => __( 'Tags for films imported from Eventive.', 'eventive' ),
-			'hierarchical'      => false,
-			'public'            => true,
-			'show_ui'           => true,
-			'show_in_menu'      => true,
-			'show_in_nav_menus' => true,
-			'show_in_rest'      => true,
-			'show_tagcloud'     => true,
+			'labels'             => $labels,
+			'description'        => __( 'Tags for films imported from Eventive.', 'eventive' ),
+			'hierarchical'       => false,
+			'public'             => true,
+			'show_ui'            => true,
+			'show_in_menu'       => true,
+			'show_in_nav_menus'  => true,
+			'show_in_rest'       => true,
+			'show_tagcloud'      => true,
 			'show_in_quick_edit' => true,
-			'show_admin_column' => true,
-			'rewrite'           => array(
+			'show_admin_column'  => true,
+			'rewrite'            => array(
 				'slug'         => 'film-tag',
 				'with_front'   => false,
 				'hierarchical' => false,
 			),
-			'query_var'         => true,
-			'capabilities'      => array(
+			'query_var'          => true,
+			'capabilities'       => array(
 				'manage_terms' => 'manage_categories',
 				'edit_terms'   => 'manage_categories',
 				'delete_terms' => 'manage_categories',
@@ -111,13 +115,35 @@ class Eventive_Taxonomy_Film_Tags {
 			'eventive_film_tags',
 			'eventive_tag_color',
 			array(
-				'type'         => 'string',
-				'description'  => 'Eventive Tag Color',
-				'single'       => true,
-				'show_in_rest' => true,
+				'type'              => 'string',
+				'description'       => 'Eventive Tag Color',
+				'single'            => true,
+				'show_in_rest'      => true,
 				'sanitize_callback' => 'sanitize_hex_color',
 			)
 		);
+	}
+
+	/**
+	 * Add meta fields to Add New Tag screen.
+	 *
+	 * @param string $taxonomy Current taxonomy slug.
+	 * @return void
+	 */
+	public function add_tag_color_field_new( $taxonomy ) {
+		wp_nonce_field( 'eventive_save_tag_meta', 'eventive_tag_meta_nonce' );
+		?>
+		<div class="form-field">
+			<label for="eventive_tag_id"><?php esc_html_e( 'Eventive Tag ID', 'eventive' ); ?></label>
+			<input type="text" name="eventive_tag_id" id="eventive_tag_id" value="" class="regular-text" />
+			<p><?php esc_html_e( 'The unique ID from Eventive for this tag.', 'eventive' ); ?></p>
+		</div>
+		<div class="form-field">
+			<label for="eventive_tag_color"><?php esc_html_e( 'Tag Color', 'eventive' ); ?></label>
+			<input type="text" name="eventive_tag_color" id="eventive_tag_color" value="" class="eventive-color-picker" />
+			<p><?php esc_html_e( 'Choose a color for this tag.', 'eventive' ); ?></p>
+		</div>
+		<?php
 	}
 
 	/**
@@ -129,7 +155,8 @@ class Eventive_Taxonomy_Film_Tags {
 	 */
 	public function add_tag_color_field( $term, $taxonomy ) {
 		$eventive_id = get_term_meta( $term->term_id, 'eventive_tag_id', true );
-		$color = get_term_meta( $term->term_id, 'eventive_tag_color', true );
+		$color       = get_term_meta( $term->term_id, 'eventive_tag_color', true );
+		wp_nonce_field( 'eventive_save_tag_meta', 'eventive_tag_meta_nonce' );
 		?>
 		<tr class="form-field">
 			<th scope="row">
@@ -155,17 +182,24 @@ class Eventive_Taxonomy_Film_Tags {
 	/**
 	 * Save tag color field.
 	 *
-	 * @param int    $term_id Term ID.
-	 * @param int    $tt_id   Term taxonomy ID.
+	 * @param int $term_id Term ID.
+	 * @param int $tt_id   Term taxonomy ID.
 	 * @return void
 	 */
 	public function save_tag_color_field( $term_id, $tt_id ) {
+		// Verify nonce.
+		if ( ! isset( $_POST['eventive_tag_meta_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['eventive_tag_meta_nonce'] ) ), 'eventive_save_tag_meta' ) ) {
+			return;
+		}
+
 		if ( isset( $_POST['eventive_tag_id'] ) ) {
-			update_term_meta( $term_id, 'eventive_tag_id', sanitize_text_field( $_POST['eventive_tag_id'] ) );
+			$tag_id = sanitize_text_field( wp_unslash( $_POST['eventive_tag_id'] ) );
+			update_term_meta( $term_id, 'eventive_tag_id', $tag_id );
 		}
 
 		if ( isset( $_POST['eventive_tag_color'] ) ) {
-			update_term_meta( $term_id, 'eventive_tag_color', sanitize_hex_color( $_POST['eventive_tag_color'] ) );
+			$tag_color = sanitize_hex_color( wp_unslash( $_POST['eventive_tag_color'] ) );
+			update_term_meta( $term_id, 'eventive_tag_color', $tag_color );
 		}
 	}
 

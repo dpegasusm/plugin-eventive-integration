@@ -24,13 +24,13 @@ class Eventive_Post_Type_Film {
 	public function init() {
 		// Register the Eventive custom post type.
 		add_action( 'init', array( $this, 'register_eventive_post_type' ) );
-		
+
 		// Register meta fields for REST API.
 		add_action( 'init', array( $this, 'register_film_meta' ) );
-		
+
 		// Enqueue block editor assets.
 		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_film_scripts' ) );
-		
+
 		// Add custom admin columns.
 		add_filter( 'manage_eventive_film_posts_columns', array( $this, 'add_sync_status_column' ) );
 		add_action( 'manage_eventive_film_posts_custom_column', array( $this, 'display_sync_status_column' ), 10, 2 );
@@ -118,7 +118,7 @@ class Eventive_Post_Type_Film {
 		);
 
 		foreach ( $meta_fields as $meta_key => $type ) {
-			// Use the type to set the default. 
+			// Use the type to set the default.
 			$default = null;
 
 			switch ( $type ) {
@@ -145,14 +145,14 @@ class Eventive_Post_Type_Film {
 					'default'       => $default,
 					'single'        => true,
 					'type'          => $type,
-					'auth_callback' => function() {
+					'auth_callback' => function () {
 						return current_user_can( 'edit_films' );
 					},
 				)
 			);
 		}
 
-		register_post_meta( 
+		register_post_meta(
 			'eventive_film',
 			'_eventive_sync_enabled',
 			array(
@@ -160,7 +160,7 @@ class Eventive_Post_Type_Film {
 				'default'       => true,
 				'single'        => true,
 				'type'          => 'boolean',
-				'auth_callback' => function() {
+				'auth_callback' => function () {
 					return current_user_can( 'edit_films' );
 				},
 			)
@@ -215,7 +215,7 @@ class Eventive_Post_Type_Film {
 			}
 			$new_columns[ $key ] = $value;
 		}
-		
+
 		return $new_columns;
 	}
 
@@ -229,12 +229,12 @@ class Eventive_Post_Type_Film {
 	public function display_sync_status_column( $column, $post_id ) {
 		if ( 'sync_status' === $column ) {
 			$sync_enabled = get_post_meta( $post_id, '_eventive_sync_enabled', true );
-			
+
 			// Default to true if not set (for backward compatibility).
 			if ( '' === $sync_enabled ) {
 				$sync_enabled = true;
 			}
-			
+
 			if ( false === $sync_enabled ) {
 				echo '<span class="dashicons dashicons-no-alt" style="color: #dc3232; font-size: 20px;" title="' . esc_attr__( 'Sync Disabled', 'eventive' ) . '"></span>';
 			} else {

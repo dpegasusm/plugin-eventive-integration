@@ -110,6 +110,7 @@ function eventive_activate() {
 	$role = get_role( 'administrator' );
 
 	if ( $role ) {
+		// Film capabilities.
 		$role->add_cap( 'edit_film' );
 		$role->add_cap( 'read_film' );
 		$role->add_cap( 'delete_film' );
@@ -117,6 +118,15 @@ function eventive_activate() {
 		$role->add_cap( 'edit_others_films' );
 		$role->add_cap( 'publish_films' );
 		$role->add_cap( 'read_private_films' );
+
+		// Venue capabilities.
+		$role->add_cap( 'edit_venue' );
+		$role->add_cap( 'read_venue' );
+		$role->add_cap( 'delete_venue' );
+		$role->add_cap( 'edit_venues' );
+		$role->add_cap( 'edit_others_venues' );
+		$role->add_cap( 'publish_venues' );
+		$role->add_cap( 'read_private_venues' );
 	}
 }
 

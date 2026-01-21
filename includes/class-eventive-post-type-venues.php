@@ -24,10 +24,10 @@ class Eventive_Post_Type_Venues {
 	public function init() {
 		// Register the Eventive venues custom post type.
 		add_action( 'init', array( $this, 'register_eventive_post_type' ) );
-		
+
 		// Register meta fields for REST API.
 		add_action( 'init', array( $this, 'register_venue_meta' ) );
-		
+
 		// Enqueue block editor assets.
 		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_venue_properties_script' ) );
 	}
@@ -97,18 +97,18 @@ class Eventive_Post_Type_Venues {
 	 */
 	public function register_venue_meta() {
 		$meta_fields = array(
-			'_eventive_venue_id'              => 'string',
-			'_eventive_bucket_id'             => 'string',
-			'_eventive_venue_address'         => 'string',
-			'_eventive_venue_city'            => 'string',
-			'_eventive_venue_state'           => 'string',
-			'_eventive_venue_zip'             => 'string',
-			'_eventive_venue_country'         => 'string',
-			'_eventive_venue_lat'             => 'string',
-			'_eventive_venue_long'            => 'string',
-			'_eventive_venue_url'             => 'string',
-			'_eventive_venue_color'           => 'string',
-			'_eventive_use_reserved_seating'  => 'boolean',
+			'_eventive_venue_id'             => 'string',
+			'_eventive_bucket_id'            => 'string',
+			'_eventive_venue_address'        => 'string',
+			'_eventive_venue_city'           => 'string',
+			'_eventive_venue_state'          => 'string',
+			'_eventive_venue_zip'            => 'string',
+			'_eventive_venue_country'        => 'string',
+			'_eventive_venue_lat'            => 'string',
+			'_eventive_venue_long'           => 'string',
+			'_eventive_venue_url'            => 'string',
+			'_eventive_venue_color'          => 'string',
+			'_eventive_use_reserved_seating' => 'boolean',
 		);
 
 		foreach ( $meta_fields as $meta_key => $type ) {
@@ -119,7 +119,7 @@ class Eventive_Post_Type_Venues {
 					'show_in_rest'  => true,
 					'single'        => true,
 					'type'          => $type,
-					'auth_callback' => function() {
+					'auth_callback' => function () {
 						return current_user_can( 'edit_venues' );
 					},
 				)

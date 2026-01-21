@@ -46,7 +46,7 @@ class Eventive_Settings {
 	 * @return void
 	 */
 	public function eventive_admin_menu() {
-		$page = add_options_page( __( 'EventiveWP', 'eventive' ), __( 'EventiveWP', 'eventive' ), 'manage_options', 'eventive_options', array( $this, 'eventive_options_page' ) );
+		$page = add_options_page( __( 'Eventive', 'eventive' ), __( 'Eventive', 'eventive' ), 'manage_options', 'eventive_options', array( $this, 'eventive_options_page' ) );
 	}
 
 	/**

@@ -179,7 +179,7 @@ class Eventive_Blocks {
 			'eventive-eventive-venues-view-script',
 		);
 
-		// Allow for the blocks to be filtered with apply filters. 
+		// Allow for the blocks to be filtered with apply filters.
 		$blocks_with_views = apply_filters( 'eventive_blocks_with_view_scripts', $blocks_with_views );
 
 		// Localize each view script.
