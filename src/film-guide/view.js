@@ -398,6 +398,12 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			renderTagsFilter( tags );
 			renderSearch();
 
+			// Remove loading text
+			const loadingText = block.querySelector( '.eventive-film-loading-text' );
+			if ( loadingText ) {
+				loadingText.remove();
+			}
+
 			let containerEl = block.querySelector(
 				'.eventive-films-container'
 			);
