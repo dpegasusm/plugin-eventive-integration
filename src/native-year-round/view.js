@@ -119,7 +119,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		const nonce = window.EventiveBlockData?.eventNonce || '';
 		const eventBucket =
 			window.EventiveBlockData?.eventBucket ||
-			window.eventiveOptions?.eventBucket ||
+			window.EventiveBlockData?.eventBucket ||
 			'';
 
 		// Extract attributes
@@ -129,11 +129,11 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		const showVenue = block.getAttribute( 'data-venue' ) === 'true';
 		const showDetails = block.getAttribute( 'data-details' ) === 'true';
 		const filmDetailBaseURL =
-			window.eventiveOptions?.filmDetailBaseURL || '';
+			window.EventiveBlockData?.filmDetailBaseURL || '';
 		const usePrettyPermalinks =
-			window.eventiveOptions?.usePrettyPermalinks || false;
+			window.EventiveBlockData?.usePrettyPermalinks || false;
 		const filmSyncEnabled =
-			window.eventiveOptions?.filmSyncEnabled || false;
+			window.EventiveBlockData?.filmSyncEnabled || false;
 
 		// State
 		const today = new Date();

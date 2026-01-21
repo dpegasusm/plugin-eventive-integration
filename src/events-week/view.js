@@ -25,8 +25,8 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	}
 
 	async function initializeWeeklyCalendar( block ) {
-		const eventBucket = window.eventiveOptions?.eventBucket || '';
-		const apiKey = window.eventiveOptions?.apiKey || '';
+		const eventBucket = window.EventiveBlockData?.eventBucket || '';
+		const apiKey = window.EventiveBlockData?.apiKey || '';
 
 		if ( ! eventBucket ) {
 			block.innerHTML =

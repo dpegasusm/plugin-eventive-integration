@@ -112,7 +112,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		const nonce = window.EventiveBlockData?.eventNonce || '';
 		const eventBucket =
 			window.EventiveBlockData?.eventBucket ||
-			window.eventiveOptions?.eventBucket ||
+			window.EventiveBlockData?.eventBucket ||
 			'';
 
 		// Setup trailer modal
