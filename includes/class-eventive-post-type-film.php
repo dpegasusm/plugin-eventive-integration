@@ -173,8 +173,14 @@ class Eventive_Post_Type_Film {
 	 * @return void
 	 */
 	public function enqueue_film_scripts() {
+		// The post types to enqueue scripts for.
+		$film_post_types = array( 'eventive_film' );
+
+		// Allow for filtering the post types.
+		$film_post_types = apply_filters( 'eventive_film_properties_post_types', $film_post_types );
+
 		// Only enqueue on eventive_film post type.
-		if ( 'eventive_film' !== get_post_type() ) {
+		if ( ! in_array( get_post_type(), $film_post_types, true ) ) {
 			return;
 		}
 
