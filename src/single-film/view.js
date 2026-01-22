@@ -27,7 +27,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		}
 
 		// Get Eventive options from global settings
-		const eventBucket = window.eventiveSettings?.eventBucket || '';
+		const eventBucket = window.EventiveBlockData?.eventBucket || '';
 		const endpoints = window.EventiveBlockData?.apiEndpoints || {};
 		const nonce = window.EventiveBlockData?.eventNonce || '';
 

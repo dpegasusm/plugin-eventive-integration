@@ -5,7 +5,9 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
-import { PanelBody, TextControl, ToggleControl } from '@wordpress/components';
+import { PanelBody, SelectControl, ToggleControl, Spinner } from '@wordpress/components';
+import { useState, useEffect } from '@wordpress/element';
+import apiFetch from '@wordpress/api-fetch';
 import './editor.scss';
 
 /**
@@ -20,6 +22,40 @@ export default function Edit( { attributes, setAttributes } ) {
 	const blockProps = useBlockProps();
 	const { filmId, showEvents, showDetails, showTags, excludeVirtual } =
 		attributes;
+	const [ films, setFilms ] = useState( [] );
+	const [ loadingFilms, setLoadingFilms ] = useState( true );
+
+	useEffect( () => {
+		// Fetch films
+		const fetchFilms = async () => {
+			try {
+				const params = new URLSearchParams( {
+					eventive_nonce: window.EventiveBlockData?.eventNonce || '',
+				} );
+
+				const data = await apiFetch( {
+					path: `eventive/v1/films?${ params.toString() }`,
+					method: 'GET',
+				} );
+
+				const filmList = ( data.films || data || [] ).map(
+					( film ) => ( {
+						label: film.name || film.title || 'Untitled',
+						value: film.id,
+					} )
+				);
+
+				filmList.sort( ( a, b ) => a.label.localeCompare( b.label ) );
+				setFilms( filmList );
+			} catch ( error ) {
+				console.error( 'Error fetching films:', error );
+			} finally {
+				setLoadingFilms( false );
+			}
+		};
+
+		fetchFilms();
+	}, [] );
 
 	return (
 		<>
@@ -28,17 +64,31 @@ export default function Edit( { attributes, setAttributes } ) {
 					title={ __( 'Film Settings', 'eventive' ) }
 					initialOpen={ true }
 				>
-					<TextControl
-						label={ __( 'Film ID', 'eventive' ) }
-						value={ filmId }
-						onChange={ ( value ) =>
-							setAttributes( { filmId: value } )
-						}
-						help={ __(
-							'Eventive film ID (can also be passed via URL parameter)',
-							'eventive'
-						) }
-					/>
+					{ loadingFilms ? (
+						<div style={ { padding: '10px 0' } }>
+							<Spinner />{ ' ' }
+							{ __( 'Loading films...', 'eventive' ) }
+						</div>
+					) : (
+						<SelectControl
+							label={ __( 'Select Film', 'eventive' ) }
+							value={ filmId }
+							options={ [
+								{
+									label: __( '-- Select a Film --', 'eventive' ),
+									value: '',
+								},
+								...films,
+							] }
+							onChange={ ( value ) =>
+								setAttributes( { filmId: value } )
+							}
+							help={ __(
+								'Choose a film to display (can also be passed via URL parameter)',
+								'eventive'
+							) }
+						/>
+					) }
 				</PanelBody>
 				<PanelBody
 					title={ __( 'Display Settings', 'eventive' ) }
@@ -96,7 +146,10 @@ export default function Edit( { attributes, setAttributes } ) {
 					<div className="eventive-block-placeholder__description">
 						<p>
 							{ filmId
-								? __( `Film ID: ${ filmId }`, 'eventive' )
+								? `${ __( 'Selected Film:', 'eventive' ) } ${
+										films.find( ( f ) => f.value === filmId )
+											?.label || filmId
+								  }`
 								: __(
 										'Film details will display here (set Film ID or use URL parameter)',
 										'eventive'
