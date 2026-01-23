@@ -1,0 +1,22 @@
+/**
+ * Film Meta Block - Editor Styles
+ */
+
+.wp-block-eventive-film-meta {
+	.eventive-film-meta-preview {
+		margin-top: 1em;
+		padding: 1em;
+		background-color: #f8f8f8;
+		border-radius: 4px;
+		font-size: 0.95em;
+	}
+
+	.eventive-film-meta-label {
+		font-weight: 600;
+		color: #333;
+	}
+
+	.eventive-film-meta-value {
+		color: #666;
+	}
+}

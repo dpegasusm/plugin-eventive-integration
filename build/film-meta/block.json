@@ -1,0 +1,34 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "eventive/film-meta",
+  "version": "1.0.0",
+  "title": "Film Meta",
+  "category": "eventive-films",
+  "icon": "admin-settings",
+  "description": "Display film metadata from Eventive.",
+  "textdomain": "eventive",
+  "attributes": {
+    "metaField": {
+      "type": "string",
+      "default": "_eventive_runtime"
+    },
+    "label": {
+      "type": "string",
+      "default": ""
+    },
+    "showLabel": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "example": {},
+  "supports": {
+    "html": false,
+    "align": true
+  },
+  "viewScript": "file:./view.js",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

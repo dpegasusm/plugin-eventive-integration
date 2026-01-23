@@ -1,0 +1,36 @@
+/**
+ * Film Meta Block - Frontend Styles
+ */
+
+.wp-block-eventive-film-meta {
+	margin: 1em 0;
+
+	.eventive-loading,
+	.eventive-error {
+		padding: 1em;
+		text-align: center;
+		border-radius: 4px;
+		background-color: #f5f5f5;
+	}
+
+	.eventive-error {
+		background-color: #fee;
+		color: #c00;
+	}
+
+	.eventive-film-meta-content {
+		display: inline-block;
+		font-size: 1em;
+		line-height: 1.6;
+	}
+
+	.eventive-film-meta-label {
+		font-weight: 600;
+		color: #333;
+		margin-right: 0.5em;
+	}
+
+	.eventive-film-meta-value {
+		color: #666;
+	}
+}
