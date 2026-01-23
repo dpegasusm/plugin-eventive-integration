@@ -115,6 +115,9 @@ class Eventive_Post_Type_Film {
 			'_eventive_language'     => 'string',
 			'_eventive_country'      => 'string',
 			'_eventive_director'     => 'string',
+			'_eventive_film_details' => 'array',
+			'_eventive_film_credits' => 'array',
+			'_eventive_film_tags'    => 'array',
 		);
 
 		foreach ( $meta_fields as $meta_key => $type ) {
@@ -130,6 +133,9 @@ class Eventive_Post_Type_Film {
 					break;
 				case 'boolean':
 					$default = false;
+					break;
+				case 'array':
+					$default = array();
 					break;
 			}
 

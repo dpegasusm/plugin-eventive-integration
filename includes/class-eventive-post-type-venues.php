@@ -97,26 +97,48 @@ class Eventive_Post_Type_Venues {
 	 */
 	public function register_venue_meta() {
 		$meta_fields = array(
-			'_eventive_venue_id'             => 'string',
-			'_eventive_bucket_id'            => 'string',
-			'_eventive_venue_address'        => 'string',
-			'_eventive_venue_city'           => 'string',
-			'_eventive_venue_state'          => 'string',
-			'_eventive_venue_zip'            => 'string',
-			'_eventive_venue_country'        => 'string',
-			'_eventive_venue_lat'            => 'string',
-			'_eventive_venue_long'           => 'string',
-			'_eventive_venue_url'            => 'string',
-			'_eventive_venue_color'          => 'string',
-			'_eventive_use_reserved_seating' => 'boolean',
+			'_eventive_venue_id'               => 'string',
+			'_eventive_bucket_id'              => 'string',
+			'_eventive_venue_address'          => 'string',
+			'_eventive_venue_city'             => 'string',
+			'_eventive_venue_state'            => 'string',
+			'_eventive_venue_zip'              => 'string',
+			'_eventive_venue_country'          => 'string',
+			'_eventive_venue_lat'              => 'string',
+			'_eventive_venue_long'             => 'string',
+			'_eventive_venue_url'              => 'string',
+			'_eventive_venue_color'            => 'string',
+			'_eventive_use_reserved_seating'   => 'boolean',
+			'_eventive_venue_short_name'       => 'string',
+			'_eventive_venue_default_capacity' => 'integer',
+			'_eventive_venue_comscore_include' => 'boolean',
 		);
 
 		foreach ( $meta_fields as $meta_key => $type ) {
+			// Set default value based on type
+			$default = null;
+
+			switch ( $type ) {
+				case 'string':
+					$default = '';
+					break;
+				case 'integer':
+					$default = 0;
+					break;
+				case 'boolean':
+					$default = false;
+					break;
+			}
+
+			// Allow the default to be filtered
+			$default = apply_filters( 'eventive_venue_meta_default_' . $meta_key, $default );
+
 			register_post_meta(
 				'eventive_venue',
 				$meta_key,
 				array(
 					'show_in_rest'  => true,
+					'default'       => $default,
 					'single'        => true,
 					'type'          => $type,
 					'auth_callback' => function () {

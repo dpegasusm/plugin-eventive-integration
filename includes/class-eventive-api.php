@@ -426,14 +426,17 @@ class Eventive_API {
 				'permission_callback' => array( $this, 'check_api_nonce' ),
 				'args'                => array(
 					'start' => array(
+						'required'          => true,
 						'default'           => '',
 						'sanitize_callback' => 'sanitize_text_field',
 					),
 					'end'   => array(
+						'required'          => true,
 						'default'           => '',
 						'sanitize_callback' => 'sanitize_text_field',
 					),
 					'type'  => array(
+						'required'          => true,
 						'default'           => '',
 						'sanitize_callback' => 'sanitize_text_field',
 					),
@@ -1018,11 +1021,11 @@ class Eventive_API {
 
 		// Aggregate donation statistics (non-sensitive data only).
 		$aggregated_data = array(
-			'total_donations'       => 0,
-			'donation_count'        => 0,
-			'start_date'            => $start,
-			'end_date'              => $end,
-			'currency'              => 'USD',
+			'total_donations' => 0,
+			'donation_count'  => 0,
+			'start_date'      => $start,
+			'end_date'        => $end,
+			'currency'        => 'USD',
 		);
 
 		// Process transactions to extract donation totals.
@@ -1032,9 +1035,9 @@ class Eventive_API {
 				if ( isset( $transaction['category']['ref_label'] ) && 'Donation' === $transaction['category']['ref_label'] ) {
 					// Aggregate the donation amount (convert from cents to dollars).
 					if ( isset( $transaction['gross'] ) && is_numeric( $transaction['gross'] ) ) {
-						$amount_in_dollars = floatval( $transaction['gross'] ) / 100;
+						$amount_in_dollars                   = floatval( $transaction['gross'] ) / 100;
 						$aggregated_data['total_donations'] += $amount_in_dollars;
-						$aggregated_data['donation_count']++;
+						++$aggregated_data['donation_count'];
 					}
 				}
 			}
