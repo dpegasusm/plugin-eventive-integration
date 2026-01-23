@@ -56,7 +56,6 @@ class Eventive_Blocks {
 		register_block_type( EVENTIVE_PLUGIN_PATH . '/build/carousel/' );
 		register_block_type( EVENTIVE_PLUGIN_PATH . '/build/account-passes/' );
 		register_block_type( EVENTIVE_PLUGIN_PATH . '/build/account-tickets/' );
-		register_block_type( EVENTIVE_PLUGIN_PATH . '/build/cart/' );
 		register_block_type( EVENTIVE_PLUGIN_PATH . '/build/login/' );
 		register_block_type( EVENTIVE_PLUGIN_PATH . '/build/native-year-round/' );
 		register_block_type( EVENTIVE_PLUGIN_PATH . '/build/events/' );
@@ -166,7 +165,6 @@ class Eventive_Blocks {
 			'eventive-carousel-view-script',
 			'eventive-account-passes-view-script',
 			'eventive-account-tickets-view-script',
-			'eventive-cart-view-script',
 			'eventive-login-view-script',
 			'eventive-native-year-round-view-script',
 			'eventive-events-view-script',
