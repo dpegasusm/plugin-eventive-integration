@@ -3,6 +3,7 @@
  */
 import { createRoot } from '@wordpress/element';
 import { useState, useEffect } from '@wordpress/element';
+import apiFetch from '@wordpress/api-fetch';
 
 /**
  * FilmShowtimes React Component
@@ -154,14 +155,12 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	);
 
 	showtimeBlocks.forEach( ( block ) => {
-		// Get the current post ID from the page
-		const postId = document.body.classList.contains( 'single-eventive_film' )
-			? document.querySelector( 'article[id^="post-"]' )?.id?.replace( 'post-', '' )
-			: null;
+		// Get post ID from EventiveBlockData (localized from PHP)
+		const postId = window.EventiveBlockData?.postId;
 
 		if ( ! postId ) {
 			block.innerHTML =
-				'<div class="eventive-error">Unable to determine the current post ID.</div>';
+				'<div class="eventive-error">This block requires it be placed on a Eventive Film post type.</div>';
 			return;
 		}
 
@@ -169,13 +168,9 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		block.innerHTML = '<div class="eventive-loading">Loading showtimes...</div>';
 
 		// Fetch the film meta from WordPress REST API
-		fetch( `/wp-json/wp/v2/eventive_film/${ postId }` )
-			.then( ( response ) => {
-				if ( ! response.ok ) {
-					throw new Error( 'Failed to fetch post data' );
-				}
-				return response.json();
-			} )
+		apiFetch( {
+			path: `/wp/v2/eventive_film/${ postId }`,
+		} )
 			.then( ( post ) => {
 				const filmId = post.meta?._eventive_film_id;
 				const bucketId =

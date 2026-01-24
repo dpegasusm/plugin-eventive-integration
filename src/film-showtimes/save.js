@@ -8,6 +8,7 @@ import { useBlockProps } from '@wordpress/block-editor';
 /**
  * Save component for Eventive Film Showtimes block
  * Saves a placeholder div that will be replaced by React component on frontend
+ * Note: postId is provided via EventiveBlockData (localized in PHP)
  *
  * @return {JSX.Element} Save component
  */

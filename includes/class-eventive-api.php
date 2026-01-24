@@ -273,7 +273,6 @@ class Eventive_API {
 		return array(
 			'apiBase'       => $this->get_api_base(),
 			'apiKey'        => $this->get_api_public_key(),
-			'apiEndpoints'  => $this->get_api_endpoints(),
 			'defaultBucket' => $this->get_api_default_bucket_id(),
 			'eventBucket'   => $this->get_api_default_bucket_id(),
 			'restUrl'       => esc_url_raw( rest_url( 'eventive/v1' ) ),

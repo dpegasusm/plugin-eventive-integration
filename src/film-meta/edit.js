@@ -6,6 +6,7 @@ import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import { PanelBody, SelectControl, TextControl, ToggleControl } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
 import { useEffect, useState } from '@wordpress/element';
+import apiFetch from '@wordpress/api-fetch';
 
 /**
  * Internal dependencies
@@ -52,7 +53,7 @@ const META_FIELDS = {
  * @param {Object} props Block properties
  * @return {JSX.Element} Edit component
  */
-export default function Edit( { attributes, setAttributes } ) {
+export default function Edit( { attributes, setAttributes, context } ) {
 	const { metaField, label, showLabel } = attributes;
 	const [ metaValue, setMetaValue ] = useState( null );
 	const [ loading, setLoading ] = useState( true );
@@ -61,10 +62,8 @@ export default function Edit( { attributes, setAttributes } ) {
 		className: 'eventive-film-meta-block',
 	} );
 
-	// Get the current post ID
-	const postId = useSelect( ( select ) => {
-		return select( 'core/editor' ).getCurrentPostId();
-	}, [] );
+	// Get the current post ID from context
+	const postId = context.postId;
 
 	// Fetch meta value
 	useEffect( () => {
@@ -75,13 +74,9 @@ export default function Edit( { attributes, setAttributes } ) {
 
 		setLoading( true );
 
-		fetch( `/wp-json/wp/v2/eventive_film/${ postId }` )
-			.then( ( response ) => {
-				if ( ! response.ok ) {
-					throw new Error( 'Failed to fetch post data' );
-				}
-				return response.json();
-			} )
+		apiFetch( {
+			path: `/wp/v2/eventive_film/${ postId }`,
+		} )
 			.then( ( post ) => {
 				const value = post.meta?.[ metaField ];
 				setMetaValue( value );

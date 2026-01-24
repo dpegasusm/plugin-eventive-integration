@@ -158,7 +158,6 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		block.classList.add( 'eventive-events-list--inited' );
 
 		// Get API configuration
-		const endpoints = window.EventiveBlockData?.apiEndpoints || {};
 		const nonce = window.EventiveBlockData?.eventNonce || '';
 		const eventBucket =
 			window.EventiveBlockData?.eventBucket ||

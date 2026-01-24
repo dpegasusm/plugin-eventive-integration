@@ -140,7 +140,6 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		block.__inited = true;
 
 		// Get API configuration
-		const endpoints = window.EventiveBlockData?.apiEndpoints || {};
 		const nonce = window.EventiveBlockData?.eventNonce || '';
 		const eventBucket =
 			window.EventiveBlockData?.eventBucket ||

@@ -34,7 +34,7 @@ class Eventive_Blocks {
 		add_filter( 'block_categories_all', array( $this, 'eventive_block_categories' ), 10, 2 );
 
 		// Localize view scripts for frontend blocks.
-		add_action( 'wp_enqueue_scripts', array( $this, 'localize_block_view_scripts' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'localize_block_view_scripts' ), 999, 0 );
 
 		// Localize editor scripts for admin blocks.
 		add_action( 'enqueue_block_editor_assets', array( $this, 'localize_block_editor_scripts' ) );
@@ -103,16 +103,9 @@ class Eventive_Blocks {
 		register_block_type( EVENTIVE_PLUGIN_PATH . '/build/single-film/' );
 		register_block_type( EVENTIVE_PLUGIN_PATH . '/build/venues/' );
 
-		// Get the Eventive film post types.
-		$eventive_film_post_types = Eventive::get_eventive_film_post_types();
-
-		// register the folowing blocks to be used on eventive film post types.
-		$current_post_type = $this->get_current_post_type();
-		if ( $current_post_type && in_array( $current_post_type, $eventive_film_post_types, true ) ) {
-			register_block_type( EVENTIVE_PLUGIN_PATH . '/build/film-showtimes/' );
-			register_block_type( EVENTIVE_PLUGIN_PATH . '/build/film-meta/' );
-			register_block_type( EVENTIVE_PLUGIN_PATH . '/build/film-venue/' );
-		}
+		// The following Blocks require a post film type ID.
+		register_block_type( EVENTIVE_PLUGIN_PATH . '/build/film-showtimes/' );
+		register_block_type( EVENTIVE_PLUGIN_PATH . '/build/film-meta/' );
 	}
 
 	/**
@@ -226,6 +219,17 @@ class Eventive_Blocks {
 
 		// Prepare data to pass to view scripts.
 		$localization = $eventive_api->get_api_localization_data();
+		
+		// Get the Eventive film post types.
+		$eventive_film_post_types = Eventive::get_eventive_film_post_types();
+
+		// Localize the Post ID into our eventive post types.
+		if ( in_array( get_post_type( get_the_ID() ), $eventive_film_post_types, true ) && is_singular( $eventive_film_post_types ) ) {
+			// Add current post ID to localization data.
+			$localization['postId'] = get_the_ID();
+		} else {
+			$localization['postId'] = '';
+		}
 
 		// List of blocks with view scripts.
 		$blocks_with_views = array(
@@ -251,12 +255,12 @@ class Eventive_Blocks {
 		);
 
 		// Allow for the blocks to be filtered with apply filters.
-		$blocks_with_views = apply_filters( 'eventive_blocks_with_view_scripts', $blocks_with_views );
+		$blocks_with_views = apply_filters( 'eventive_blocks_view_scripts_list', $blocks_with_views );
 
 		// Find the first registered script and localize it only once.
 		$localized = false;
 		foreach ( $blocks_with_views as $script_handle ) {
-			if ( ! $localized && wp_script_is( $script_handle, 'registered' ) ) {
+			if ( ! $localized && wp_script_is( $script_handle, 'enqueued' ) ) {
 				// Add the WP REST API script as a dependency.
 				wp_localize_script(
 					$script_handle,
@@ -264,7 +268,6 @@ class Eventive_Blocks {
 					$localization
 				);
 				$localized = true;
-				break;
 			}
 		}
 	}

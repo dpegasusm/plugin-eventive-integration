@@ -6,13 +6,14 @@
 	"title": "Film Showtimes",
 	"category": "eventive-films",
 	"icon": "tickets-alt",
-	"description": "Display upcoming showtimes for the current film from Eventive.",
+	"description": "Display upcoming showtimes for the current film from Eventive. This block requires it be placed on a Eventive Film post type.",
 	"textdomain": "eventive",
 	"example": {},
 	"supports": {
 		"html": false,
 		"align": true
 	},
+	"usesContext": ["postId"],
 	"viewScript": "file:./view.js",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",

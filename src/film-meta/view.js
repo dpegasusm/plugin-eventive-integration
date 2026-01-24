@@ -3,6 +3,7 @@
  */
 import { createRoot } from '@wordpress/element';
 import { useState, useEffect } from '@wordpress/element';
+import apiFetch from '@wordpress/api-fetch';
 
 /**
  * Available meta fields with their labels and formatters
@@ -41,17 +42,12 @@ const META_FIELDS = {
 /**
  * FilmMeta React Component
  */
-function FilmMeta( { metaField, label, showLabel } ) {
+function FilmMeta( { postId, metaField, label, showLabel } ) {
 	const [ metaValue, setMetaValue ] = useState( null );
 	const [ loading, setLoading ] = useState( true );
 	const [ error, setError ] = useState( null );
 
 	useEffect( () => {
-		// Get the current post ID from the page
-		const postId = document.body.classList.contains( 'single-eventive_film' )
-			? document.querySelector( 'article[id^="post-"]' )?.id?.replace( 'post-', '' )
-			: null;
-
 		if ( ! postId ) {
 			setError( 'Unable to determine the current post ID.' );
 			setLoading( false );
@@ -59,13 +55,9 @@ function FilmMeta( { metaField, label, showLabel } ) {
 		}
 
 		// Fetch the film meta from WordPress REST API
-		fetch( `/wp-json/wp/v2/eventive_film/${ postId }` )
-			.then( ( response ) => {
-				if ( ! response.ok ) {
-					throw new Error( 'Failed to fetch post data' );
-				}
-				return response.json();
-			} )
+		apiFetch( {
+			path: `/wp/v2/eventive_film/${ postId }`,
+		} )
 			.then( ( post ) => {
 				const value = post.meta?.[ metaField ];
 				setMetaValue( value );
@@ -76,7 +68,7 @@ function FilmMeta( { metaField, label, showLabel } ) {
 				setError( 'Unable to load metadata' );
 				setLoading( false );
 			} );
-	}, [ metaField ] );
+	}, [ postId, metaField ] );
 
 	if ( loading ) {
 		return <div className="eventive-loading">Loading...</div>;
@@ -112,17 +104,24 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	);
 
 	metaBlocks.forEach( ( block ) => {
+		// Get post ID from EventiveBlockData (localized from PHP)
+		const postId = window.EventiveBlockData?.postId || '';
+		
 		// Get block attributes from data attributes
-		const metaField =
-			block.dataset.metaField || '_eventive_runtime';
+		const metaField = block.dataset.metaField || '_eventive_runtime';
 		const label = block.dataset.label || '';
-		const showLabel =
-			block.dataset.showLabel !== 'false';
+		const showLabel = block.dataset.showLabel !== 'false';
+
+		if ( ! postId ) {
+			block.innerHTML = '<div class="eventive-error">This block requires it be placed on a Eventive Film post type.</div>';
+			return;
+		}
 
 		// Mount React component
 		const root = createRoot( block );
 		root.render(
 			<FilmMeta
+				postId={ postId }
 				metaField={ metaField }
 				label={ label }
 				showLabel={ showLabel }

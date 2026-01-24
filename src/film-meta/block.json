@@ -6,7 +6,7 @@
 	"title": "Film Meta",
 	"category": "eventive-films",
 	"icon": "admin-settings",
-	"description": "Display film metadata from Eventive.",
+	"description": "Display film metadata from Eventive. This block requires it be placed on a Eventive Film post type.",
 	"textdomain": "eventive",
 	"attributes": {
 		"metaField": {
@@ -27,6 +27,7 @@
 		"html": false,
 		"align": true
 	},
+	"usesContext": ["postId"],
 	"viewScript": "file:./view.js",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",

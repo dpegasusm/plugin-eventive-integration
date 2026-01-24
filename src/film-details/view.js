@@ -108,7 +108,6 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			block.getAttribute( 'data-exclude-virtual' ) !== 'false';
 
 		// Get API configuration
-		const endpoints = window.EventiveBlockData?.apiEndpoints || {};
 		const nonce = window.EventiveBlockData?.eventNonce || '';
 		const eventBucket = window.EventiveBlockData?.eventBucket || '';
 
