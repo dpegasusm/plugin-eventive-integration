@@ -60,6 +60,7 @@ export default function Edit( { attributes, setAttributes, context } ) {
 
 	const blockProps = useBlockProps( {
 		className: 'eventive-film-meta-block',
+		style: { display: 'inline' },
 	} );
 
 	// Get the current post ID from context
@@ -130,34 +131,22 @@ export default function Edit( { attributes, setAttributes, context } ) {
 				</PanelBody>
 			</InspectorControls>
 
-			<div { ...blockProps }>
-				<div className="eventive-block-placeholder">
-					<div className="eventive-block-placeholder__icon">
-						<span className="dashicon dashicons-admin-settings"></span>
-					</div>
-					<div className="eventive-block-placeholder__label">
-						{ __( 'Eventive Film Meta', 'eventive' ) }
-					</div>
-					<div className="eventive-block-placeholder__description">
-						{ loading ? (
-							<div className="eventive-loading">
-								{ __( 'Loading...', 'eventive' ) }
-							</div>
-						) : (
-							<div className="eventive-film-meta-preview">
-								{ showLabel && (
-									<strong className="eventive-film-meta-label">
-										{ displayLabel }:{ ' ' }
-									</strong>
-								) }
-								<span className="eventive-film-meta-value">
-									{ formattedValue }
-								</span>
-							</div>
+			<span { ...blockProps }>
+				{ loading ? (
+					<span className="eventive-loading">{ __( 'Loading...', 'eventive' ) }</span>
+				) : (
+					<>
+						{ showLabel && (
+							<strong className="eventive-film-meta-label">
+								{ displayLabel }:{ ' ' }
+							</strong>
 						) }
-					</div>
-				</div>
-			</div>
+						<span className="eventive-film-meta-value">
+							{ formattedValue }
+						</span>
+					</>
+				) }
+			</span>
 		</>
 	);
 }

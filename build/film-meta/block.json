@@ -25,7 +25,26 @@
   "example": {},
   "supports": {
     "html": false,
-    "align": true
+    "align": true,
+    "color": {
+      "background": true,
+      "text": true,
+      "gradients": true,
+      "link": true
+    },
+    "typography": {
+      "fontSize": true,
+      "lineHeight": true,
+      "fontStyle": true,
+      "fontWeight": true,
+      "textTransform": true,
+      "letterSpacing": true,
+      "textDecoration": true
+    },
+    "spacing": {
+      "margin": true,
+      "padding": true
+    }
   },
   "usesContext": [
     "postId"

@@ -21,8 +21,8 @@ export default function save( { attributes } ) {
 	} );
 
 	return (
-		<div { ...blockProps }>
-			<div className="eventive-loading">Loading...</div>
-		</div>
+		<span { ...blockProps }>
+			<span className="eventive-loading">Loading...</span>
+		</span>
 	);
 }

@@ -71,11 +71,11 @@ function FilmMeta( { postId, metaField, label, showLabel } ) {
 	}, [ postId, metaField ] );
 
 	if ( loading ) {
-		return <div className="eventive-loading">Loading...</div>;
+		return <span className="eventive-loading">Loading...</span>;
 	}
 
 	if ( error ) {
-		return <div className="eventive-error">{ error }</div>;
+		return <span className="eventive-error">{ error }</span>;
 	}
 
 	// Get field config
@@ -86,12 +86,12 @@ function FilmMeta( { postId, metaField, label, showLabel } ) {
 		: metaValue || 'No value';
 
 	return (
-		<div className="eventive-film-meta-content">
+		<>
 			{ showLabel && (
 				<span className="eventive-film-meta-label">{ displayLabel }: </span>
 			) }
 			<span className="eventive-film-meta-value">{ formattedValue }</span>
-		</div>
+		</>
 	);
 }
 
