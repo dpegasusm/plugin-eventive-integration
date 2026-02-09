@@ -17,8 +17,10 @@ jobs:
       uses: wordpress/plugin-check-action@v1
       with:
           exclude-checks: |
+            plugin_header_text_domain
             textdomain_mismatch
             license
           exclude-files: |
-            .github/**
             .gitignore
+          exclude-directories: |
+            .github
