@@ -39,8 +39,8 @@ class Eventive_Post_Type_Venues {
 	 */
 	public function register_eventive_post_type() {
 		$labels = array(
-			'name'               => __( 'Venues', 'post type general name', 'eventive' ),
-			'singular_name'      => __( 'Venue', 'post type singular name', 'eventive' ),
+			'name'               => __( 'Venues', 'eventive' ),
+			'singular_name'      => __( 'Venue', 'eventive' ),
 			'add_new'            => __( 'Add New', 'eventive' ),
 			'add_new_item'       => __( 'Add New Venue', 'eventive' ),
 			'edit_item'          => __( 'Edit Venue', 'eventive' ),

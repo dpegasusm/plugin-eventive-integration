@@ -441,7 +441,6 @@ class Eventive_Sync {
 		// Check if sideload was successful.
 		if ( is_wp_error( $attachment_id ) ) {
 			// Log the error but don't fail the entire sync.
-			error_log( 'Eventive Sync: Failed to sideload poster image for post ' . $post_id . ': ' . $attachment_id->get_error_message() );
 			return false;
 		}
 

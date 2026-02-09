@@ -1,6 +1,6 @@
 <?php
 /**
- * Eventive Plugin
+ * Eventive Integration Plugin
  *
  * @package WordPress
  * @subpackage Eventive
@@ -8,7 +8,7 @@
  */
 
 /**
- * Plugin Name: Eventive
+ * Plugin Name: Eventive Integration
  * Plugin URI: https://eventive.org/
  * Description: Seamlessly integrate Eventive's Event and Ticketing Services into your WordPress site. Includes dynamic event loaders, shortcode support, event bucket overrides, and Gutenberg blocks.
  * Version:           1.0.1
@@ -29,7 +29,7 @@ register_activation_hook( __FILE__, 'eventive_activate' );
 register_deactivation_hook( __FILE__, 'eventive_deactivate' );
 
 // Get the plugin data so we can use it here to define props.
-$plugin_data = get_file_data(
+$eventive_plugin_data = get_file_data(
 	__FILE__,
 	array(
 		'Version' => 'Version',
@@ -39,7 +39,7 @@ $plugin_data = get_file_data(
 // Set us a definition so that we can load pdp from anywhere.
 define( 'EVENTIVE_PLUGIN', plugin_dir_url( __FILE__ ) );
 define( 'EVENTIVE_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
-define( 'EVENTIVE_CURRENT_VERSION', ( $plugin_data && $plugin_data['Version'] ) ? $plugin_data['Version'] : '1.0.0' );
+define( 'EVENTIVE_CURRENT_VERSION', ( $eventive_plugin_data && $eventive_plugin_data['Version'] ) ? $eventive_plugin_data['Version'] : '1.0.0' );
 
 // Load the base class and its methods.
 require_once EVENTIVE_PLUGIN_PATH . 'includes/class-eventive.php';
@@ -77,10 +77,10 @@ $eventive_taxonomy_film_tags = new Eventive_Taxonomy_Film_Tags();
 $eventive_taxonomy_film_tags->init();
 
 // Check for the API key before loading any functionalty that uses API functionality.
-$api_key = get_option( 'eventive_public_key', '' );
+$eventive_api_key = get_option( 'eventive_public_key', '' );
 
 // Only load the rest of the plugin if we have an API key.
-if ( ! empty( $api_key ) ) {
+if ( ! empty( $eventive_api_key ) ) {
 	// Load the admin dashboard widget only in admin.
 	if ( is_admin() ) {
 		// Load the admin settings page.
