@@ -1,7 +1,7 @@
 {
-	"name": "dpegasusm/plugin-eventive-integration",
+	"name": "dpegasusm/eventive-integration",
 	"type": "package",
-	"description": "Eventive Integration for WordPress.",
+	"description": "Eventive Integration",
 	"keywords": [
 		"WordPress",
 		"Plugins"

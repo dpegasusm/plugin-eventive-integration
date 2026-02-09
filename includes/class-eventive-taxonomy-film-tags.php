@@ -47,27 +47,27 @@ class Eventive_Taxonomy_Film_Tags {
 	 */
 	public function register_eventive_taxonomy_tags() {
 		$labels = array(
-			'name'                       => _x( 'Film Tags', 'taxonomy general name', 'eventive' ),
-			'singular_name'              => _x( 'Film Tag', 'taxonomy singular name', 'eventive' ),
-			'search_items'               => __( 'Search Film Tags', 'eventive' ),
-			'popular_items'              => __( 'Popular Film Tags', 'eventive' ),
-			'all_items'                  => __( 'All Film Tags', 'eventive' ),
+			'name'                       => __( 'Film Tags', 'eventive-integration' ),
+			'singular_name'              => __( 'Film Tag', 'eventive-integration' ),
+			'search_items'               => __( 'Search Film Tags', 'eventive-integration' ),
+			'popular_items'              => __( 'Popular Film Tags', 'eventive-integration' ),
+			'all_items'                  => __( 'All Film Tags', 'eventive-integration' ),
 			'parent_item'                => null,
 			'parent_item_colon'          => null,
-			'edit_item'                  => __( 'Edit Film Tag', 'eventive' ),
-			'update_item'                => __( 'Update Film Tag', 'eventive' ),
-			'add_new_item'               => __( 'Add New Film Tag', 'eventive' ),
-			'new_item_name'              => __( 'New Film Tag Name', 'eventive' ),
-			'separate_items_with_commas' => __( 'Separate film tags with commas', 'eventive' ),
-			'add_or_remove_items'        => __( 'Add or remove film tags', 'eventive' ),
-			'choose_from_most_used'      => __( 'Choose from the most used film tags', 'eventive' ),
-			'not_found'                  => __( 'No film tags found.', 'eventive' ),
-			'menu_name'                  => __( 'Film Tags', 'eventive' ),
+			'edit_item'                  => __( 'Edit Film Tag', 'eventive-integration' ),
+			'update_item'                => __( 'Update Film Tag', 'eventive-integration' ),
+			'add_new_item'               => __( 'Add New Film Tag', 'eventive-integration' ),
+			'new_item_name'              => __( 'New Film Tag Name', 'eventive-integration' ),
+			'separate_items_with_commas' => __( 'Separate film tags with commas', 'eventive-integration' ),
+			'add_or_remove_items'        => __( 'Add or remove film tags', 'eventive-integration' ),
+			'choose_from_most_used'      => __( 'Choose from the most used film tags', 'eventive-integration' ),
+			'not_found'                  => __( 'No film tags found.', 'eventive-integration' ),
+			'menu_name'                  => __( 'Film Tags', 'eventive-integration' ),
 		);
 
 		$args = array(
 			'labels'             => $labels,
-			'description'        => __( 'Tags for films imported from Eventive.', 'eventive' ),
+			'description'        => __( 'Tags for films imported from Eventive.', 'eventive-integration' ),
 			'hierarchical'       => false,
 			'public'             => true,
 			'show_ui'            => true,
@@ -134,14 +134,14 @@ class Eventive_Taxonomy_Film_Tags {
 		wp_nonce_field( 'eventive_save_tag_meta', 'eventive_tag_meta_nonce' );
 		?>
 		<div class="form-field">
-			<label for="eventive_tag_id"><?php esc_html_e( 'Eventive Tag ID', 'eventive' ); ?></label>
+			<label for="eventive_tag_id"><?php esc_html_e( 'Eventive Tag ID', 'eventive-integration' ); ?></label>
 			<input type="text" name="eventive_tag_id" id="eventive_tag_id" value="" class="regular-text" />
-			<p><?php esc_html_e( 'The unique ID from Eventive for this tag.', 'eventive' ); ?></p>
+			<p><?php esc_html_e( 'The unique ID from Eventive for this tag.', 'eventive-integration' ); ?></p>
 		</div>
 		<div class="form-field">
-			<label for="eventive_tag_color"><?php esc_html_e( 'Tag Color', 'eventive' ); ?></label>
+			<label for="eventive_tag_color"><?php esc_html_e( 'Tag Color', 'eventive-integration' ); ?></label>
 			<input type="text" name="eventive_tag_color" id="eventive_tag_color" value="" class="eventive-color-picker" />
-			<p><?php esc_html_e( 'Choose a color for this tag.', 'eventive' ); ?></p>
+			<p><?php esc_html_e( 'Choose a color for this tag.', 'eventive-integration' ); ?></p>
 		</div>
 		<?php
 	}
@@ -160,20 +160,20 @@ class Eventive_Taxonomy_Film_Tags {
 		?>
 		<tr class="form-field">
 			<th scope="row">
-				<label for="eventive_tag_id"><?php esc_html_e( 'Eventive Tag ID', 'eventive' ); ?></label>
+				<label for="eventive_tag_id"><?php esc_html_e( 'Eventive Tag ID', 'eventive-integration' ); ?></label>
 			</th>
 			<td>
 				<input type="text" name="eventive_tag_id" id="eventive_tag_id" value="<?php echo esc_attr( $eventive_id ); ?>" class="regular-text" />
-				<p class="description"><?php esc_html_e( 'The unique ID from Eventive for this tag.', 'eventive' ); ?></p>
+				<p class="description"><?php esc_html_e( 'The unique ID from Eventive for this tag.', 'eventive-integration' ); ?></p>
 			</td>
 		</tr>
 		<tr class="form-field">
 			<th scope="row">
-				<label for="eventive_tag_color"><?php esc_html_e( 'Tag Color', 'eventive' ); ?></label>
+				<label for="eventive_tag_color"><?php esc_html_e( 'Tag Color', 'eventive-integration' ); ?></label>
 			</th>
 			<td>
 				<input type="text" name="eventive_tag_color" id="eventive_tag_color" value="<?php echo esc_attr( $color ); ?>" class="eventive-color-picker" />
-				<p class="description"><?php esc_html_e( 'Choose a color for this tag.', 'eventive' ); ?></p>
+				<p class="description"><?php esc_html_e( 'Choose a color for this tag.', 'eventive-integration' ); ?></p>
 			</td>
 		</tr>
 		<?php

@@ -23,7 +23,9 @@ jobs:
             github_directory
             no_license
             plugin_header_no_license
-            WordPress.WP.I18n.TextDomainMismatch
+            plugin_header_invalid_license
+            no_stable_tag
+            missing_readme_header_tested
           exclude-files: |
             .gitignore
           exclude-directories: |

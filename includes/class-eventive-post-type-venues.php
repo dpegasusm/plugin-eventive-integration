@@ -39,23 +39,23 @@ class Eventive_Post_Type_Venues {
 	 */
 	public function register_eventive_post_type() {
 		$labels = array(
-			'name'               => _x( 'Venues', 'post type general name', 'eventive' ),
-			'singular_name'      => _x( 'Venue', 'post type singular name', 'eventive' ),
-			'add_new'            => _x( 'Add New', 'eventive' ),
-			'add_new_item'       => _x( 'Add New Venue', 'eventive' ),
-			'edit_item'          => _x( 'Edit Venue', 'eventive' ),
-			'new_item'           => _x( 'New Venue', 'eventive' ),
-			'view_item'          => _x( 'View Venue', 'eventive' ),
-			'search_items'       => _x( 'Search Venues', 'eventive' ),
-			'not_found'          => _x( 'No venues found', 'eventive' ),
-			'not_found_in_trash' => _x( 'No venues found in trash', 'eventive' ),
-			'parent_item_colon'  => _x( 'Parent Venue:', 'eventive' ),
-			'menu_name'          => _x( 'Venues', 'eventive' ),
+			'name'               => __( 'Venues', 'eventive-integration' ),
+			'singular_name'      => __( 'Venue', 'eventive-integration' ),
+			'add_new'            => __( 'Add New', 'eventive-integration' ),
+			'add_new_item'       => __( 'Add New Venue', 'eventive-integration' ),
+			'edit_item'          => __( 'Edit Venue', 'eventive-integration' ),
+			'new_item'           => __( 'New Venue', 'eventive-integration' ),
+			'view_item'          => __( 'View Venue', 'eventive-integration' ),
+			'search_items'       => __( 'Search Venues', 'eventive-integration' ),
+			'not_found'          => __( 'No venues found', 'eventive-integration' ),
+			'not_found_in_trash' => __( 'No venues found in trash', 'eventive-integration' ),
+			'parent_item_colon'  => __( 'Parent Venue:', 'eventive-integration' ),
+			'menu_name'          => __( 'Venues', 'eventive-integration' ),
 		);
 
 		$args = array(
-			'label'               => __( 'Venues', 'eventive' ),
-			'description'         => __( 'Venues imported from Eventive.', 'eventive' ),
+			'label'               => __( 'Venues', 'eventive-integration' ),
+			'description'         => __( 'Venues imported from Eventive.', 'eventive-integration' ),
 			'labels'              => $labels,
 			'hierarchical'        => false,
 			'supports'            => array( 'title', 'editor', 'thumbnail', 'custom-fields' ),

@@ -1,2 +1,2 @@
-# eventive-wordpress-plugin
-Eventive Wordpress Plugin Repository
+# Eventive Integration
+Eventive Integration for WordPress
