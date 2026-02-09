@@ -39,7 +39,7 @@ class Eventive_Dashboard {
 	public function register_dashboard_widget() {
 		wp_add_dashboard_widget(
 			'eventive_dashboard_widget',
-			__( 'Eventive Analytics', 'eventive' ),
+			__( 'Eventive Analytics', 'eventive-integration' ),
 			array( $this, 'render_dashboard_widget' ),
 			null,
 			null,
@@ -50,7 +50,7 @@ class Eventive_Dashboard {
 		if ( current_user_can( 'manage_options' ) ) {
 			wp_add_dashboard_widget(
 				'eventive_dashboard_sync_widget',
-				__( 'Eventive Sync', 'eventive' ),
+				__( 'Eventive Sync', 'eventive-integration' ),
 				array( $this, 'render_dashboard_sync_widget' ),
 				null,
 				null,
@@ -126,7 +126,7 @@ class Eventive_Dashboard {
 	public function render_dashboard_widget() {
 		?>
 		<div id="eventive-dashboard-widget-content">
-			<p class="eventive-loading"><?php esc_html_e( 'Loading dashboard data...', 'eventive' ); ?></p>
+			<p class="eventive-loading"><?php esc_html_e( 'Loading dashboard data...', 'eventive-integration' ); ?></p>
 		</div>
 		<?php
 	}
@@ -144,10 +144,10 @@ class Eventive_Dashboard {
 		<form method="post" action="">
 			<?php wp_nonce_field( 'eventive_sync_events', 'eventive_sync_events_nonce' ); ?>
 			<button type="submit" name="eventive_sync_events" class="button button-secondary">
-				<?php esc_html_e( 'Sync with Eventive', 'eventive' ); ?>
+				<?php esc_html_e( 'Sync with Eventive', 'eventive-integration' ); ?>
 			</button>
 			<div class='eventive-sync-progress' id='eventive-sync-events-progress' style='margin-top:10px; display:none;'>
-				<?php esc_html_e( 'Syncing events, please wait...', 'eventive' ); ?>
+				<?php esc_html_e( 'Syncing events, please wait...', 'eventive-integration' ); ?>
 			</div>
 		</form>
 		<?php

@@ -19,7 +19,7 @@
  * License:           Proprietary
  * Author:            David Marshall
  * Author URI:        https://github.com/dpegasusm
- * Text Domain:       eventive
+ * Text Domain:       eventive-integration
  */
 
 // Exit if accessed directly.

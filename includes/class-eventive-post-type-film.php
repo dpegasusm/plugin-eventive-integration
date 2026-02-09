@@ -43,23 +43,23 @@ class Eventive_Post_Type_Film {
 	 */
 	public function register_eventive_post_type() {
 		$labels = array(
-			'name'               => __( 'Films', 'eventive' ),
-			'singular_name'      => __( 'Film', 'eventive' ),
-			'add_new'            => __( 'Add New', 'eventive' ),
-			'add_new_item'       => __( 'Add New Film', 'eventive' ),
-			'edit_item'          => __( 'Edit Film', 'eventive' ),
-			'new_item'           => __( 'New Film', 'eventive' ),
-			'view_item'          => __( 'View Film', 'eventive' ),
-			'search_items'       => __( 'Search Films', 'eventive' ),
-			'not_found'          => __( 'No films found', 'eventive' ),
-			'not_found_in_trash' => __( 'No films found in trash', 'eventive' ),
-			'parent_item_colon'  => __( 'Parent:', 'eventive' ),
-			'menu_name'          => __( 'Eventive Films', 'eventive' ),
+			'name'               => __( 'Films', 'eventive-integration' ),
+			'singular_name'      => __( 'Film', 'eventive-integration' ),
+			'add_new'            => __( 'Add New', 'eventive-integration' ),
+			'add_new_item'       => __( 'Add New Film', 'eventive-integration' ),
+			'edit_item'          => __( 'Edit Film', 'eventive-integration' ),
+			'new_item'           => __( 'New Film', 'eventive-integration' ),
+			'view_item'          => __( 'View Film', 'eventive-integration' ),
+			'search_items'       => __( 'Search Films', 'eventive-integration' ),
+			'not_found'          => __( 'No films found', 'eventive-integration' ),
+			'not_found_in_trash' => __( 'No films found in trash', 'eventive-integration' ),
+			'parent_item_colon'  => __( 'Parent:', 'eventive-integration' ),
+			'menu_name'          => __( 'Eventive Films', 'eventive-integration' ),
 		);
 
 		$args = array(
-			'label'               => __( 'Films', 'eventive' ),
-			'description'         => __( 'Films imported from Eventive.', 'eventive' ),
+			'label'               => __( 'Films', 'eventive-integration' ),
+			'description'         => __( 'Films imported from Eventive.', 'eventive-integration' ),
 			'labels'              => $labels,
 			'hierarchical'        => false,
 			'supports'            => array( 'title', 'editor', 'excerpt', 'thumbnail', 'revisions', 'custom-fields' ),
@@ -214,7 +214,7 @@ class Eventive_Post_Type_Film {
 
 		foreach ( $columns as $key => $value ) {
 			if ( 'date' === $key ) {
-				$new_columns['sync_status'] = __( 'Sync Enabled', 'eventive' );
+				$new_columns['sync_status'] = __( 'Sync Enabled', 'eventive-integration' );
 			}
 			$new_columns[ $key ] = $value;
 		}
@@ -239,9 +239,9 @@ class Eventive_Post_Type_Film {
 			}
 
 			if ( false === $sync_enabled ) {
-				echo '<span class="dashicons dashicons-no-alt" style="color: #dc3232; font-size: 20px;" title="' . esc_attr__( 'Sync Disabled', 'eventive' ) . '"></span>';
+				echo '<span class="dashicons dashicons-no-alt" style="color: #dc3232; font-size: 20px;" title="' . esc_attr__( 'Sync Disabled', 'eventive-integration' ) . '"></span>';
 			} else {
-				echo '<span class="dashicons dashicons-yes-alt" style="color: #46b450; font-size: 20px;" title="' . esc_attr__( 'Sync Enabled', 'eventive' ) . '"></span>';
+				echo '<span class="dashicons dashicons-yes-alt" style="color: #46b450; font-size: 20px;" title="' . esc_attr__( 'Sync Enabled', 'eventive-integration' ) . '"></span>';
 			}
 		}
 	}

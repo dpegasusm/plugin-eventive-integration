@@ -46,7 +46,7 @@ class Eventive_Settings {
 	 * @return void
 	 */
 	public function eventive_admin_menu() {
-		$page = add_options_page( __( 'Eventive', 'eventive' ), __( 'Eventive', 'eventive' ), 'manage_options', 'eventive_options', array( $this, 'eventive_options_page' ) );
+		$page = add_options_page( __( 'Eventive', 'eventive-integration' ), __( 'Eventive', 'eventive-integration' ), 'manage_options', 'eventive_options', array( $this, 'eventive_options_page' ) );
 	}
 
 	/**
@@ -91,7 +91,7 @@ class Eventive_Settings {
 	 */
 	public function eventive_register_settings() {
 		// Create the Navbar section.
-		add_settings_section( 'eventive_info_section', __( 'Eventive Configuration Settings', 'eventive' ), array( $this, 'eventive_admin_options_section_info' ), 'eventive_options' );
+		add_settings_section( 'eventive_info_section', __( 'Eventive Configuration Settings', 'eventive-integration' ), array( $this, 'eventive_admin_options_section_info' ), 'eventive_options' );
 
 		// Add the Navbar settings - with sanitize callback.
 		register_setting(
@@ -105,13 +105,13 @@ class Eventive_Settings {
 		// Fields to be added to the Navbar section.
 		add_settings_field(
 			'eventive_public_key',
-			esc_html__( 'Event Public Key', 'eventive' ),
+			esc_html__( 'Event Public Key', 'eventive-integration' ),
 			array( $this, 'eventive_text_field_callback' ),
 			'eventive_options',
 			'eventive_info_section',
 			array(
 				'label_for' => 'eventive_public_key',
-				'label'     => esc_html__( 'The public key used to authenticate with Eventive.', 'eventive' ),
+				'label'     => esc_html__( 'The public key used to authenticate with Eventive.', 'eventive-integration' ),
 				'default'   => '',
 			)
 		);
@@ -128,13 +128,13 @@ class Eventive_Settings {
 		// Fields to be added to the Navbar section.
 		add_settings_field(
 			'eventive_secret_key',
-			esc_html__( 'Event Secret Key', 'eventive' ),
+			esc_html__( 'Event Secret Key', 'eventive-integration' ),
 			array( $this, 'eventive_text_field_callback' ),
 			'eventive_options',
 			'eventive_info_section',
 			array(
 				'label_for' => 'eventive_secret_key',
-				'label'     => esc_html__( 'The secret key used to authenticate with Eventive.', 'eventive' ),
+				'label'     => esc_html__( 'The secret key used to authenticate with Eventive.', 'eventive-integration' ),
 				'default'   => '',
 			)
 		);
@@ -151,13 +151,13 @@ class Eventive_Settings {
 		// add the settings field.
 		add_settings_field(
 			'eventive_default_bucket_id',
-			esc_html__( 'Event Default Bucket ID', 'eventive' ),
+			esc_html__( 'Event Default Bucket ID', 'eventive-integration' ),
 			array( $this, 'eventive_dropdown_callback' ),
 			'eventive_options',
 			'eventive_info_section',
 			array(
 				'label_for' => 'eventive_default_bucket_id',
-				'label'     => esc_html__( 'Default bucket to use inside eventive. This can be overridden on a page by page basis.', 'eventive' ),
+				'label'     => esc_html__( 'Default bucket to use inside eventive. This can be overridden on a page by page basis.', 'eventive-integration' ),
 				'class'     => 'eventive-bucket-dropdown',
 				'default'   => '',
 				'values'    => array(), // This will be populated via JS on the front.
@@ -173,7 +173,7 @@ class Eventive_Settings {
 	public function eventive_options_page() {
 		?>
 		<div class="wrap">
-			<h1><?php esc_html_e( 'Eventive Settings', 'eventive' ); ?></h1>
+			<h1><?php esc_html_e( 'Eventive Settings', 'eventive-integration' ); ?></h1>
 			<form method="post" action="options.php" accept-charset="utf-8">
 				<?php
 				settings_fields( 'eventive_options' );
@@ -184,18 +184,18 @@ class Eventive_Settings {
 				?>
 			</form>
 
-			<h2><?php esc_html_e( 'Sync with Eventive', 'eventive' ); ?></h2>
-			<p><?php esc_html_e( 'Click the buttons below to sync the events with Eventive. This will also refresh the buckets list.', 'eventive' ); ?></p>
+			<h2><?php esc_html_e( 'Sync with Eventive', 'eventive-integration' ); ?></h2>
+			<p><?php esc_html_e( 'Click the buttons below to sync the events with Eventive. This will also refresh the buckets list.', 'eventive-integration' ); ?></p>
 
 			<!-- Eventive Events Button -->
 			<form method="post" action="">
 				<?php wp_nonce_field( 'eventive_sync_events', 'eventive_sync_events_nonce' ); ?>
 				<button type="submit" name="eventive_sync_events" class="button button-secondary">
-					<?php esc_html_e( 'Sync with Eventive', 'eventive' ); ?>
+					<?php esc_html_e( 'Sync with Eventive', 'eventive-integration' ); ?>
 				</button>
 				<br>
 				<div class='eventive-sync-progress' id='eventive-sync-events-progress' style='margin-top:10px; display:none;'>
-					<?php esc_html_e( 'Syncing events, please wait...', 'eventive' ); ?>
+					<?php esc_html_e( 'Syncing events, please wait...', 'eventive-integration' ); ?>
 				</div>
 			</form>
 		</div>
@@ -208,7 +208,7 @@ class Eventive_Settings {
 	 * @return void
 	 */
 	public function eventive_admin_options_section_info() {
-		echo esc_html__( 'Welcome organizers! Use this page to configure the Eventive plugin options below.', 'eventive' );
+		echo esc_html__( 'Welcome organizers! Use this page to configure the Eventive plugin options below.', 'eventive-integration' );
 	}
 
 	/**
@@ -270,7 +270,7 @@ class Eventive_Settings {
 
 		$value = get_option( $field, $default );
 
-		echo '<input type="text" name="' . esc_attr( $field ) . '" id="' . esc_attr( $field ) . '-field" value="' . esc_attr( $value ) . '"> <button type="button" class="button button-secondary upload-button" id="' . esc_attr( $field ) . '-button" name="' . esc_attr( $field ) . '">' . esc_html__( 'Choose File', 'eventive' ) . '</button>';
+		echo '<input type="text" name="' . esc_attr( $field ) . '" id="' . esc_attr( $field ) . '-field" value="' . esc_attr( $value ) . '"> <button type="button" class="button button-secondary upload-button" id="' . esc_attr( $field ) . '-button" name="' . esc_attr( $field ) . '">' . esc_html__( 'Choose File', 'eventive-integration' ) . '</button>';
 	}
 
 	/**
@@ -330,7 +330,7 @@ class Eventive_Settings {
 
 		// Start the dropdown.
 		echo '<select name="' . esc_attr( $field ) . '" id="' . esc_attr( $field ) . '" data-selected-value="' . esc_attr( $value ) . '" class="' . esc_attr( $classes ) . '" style="width: 100%;">';
-		echo '<option value="">' . esc_html__( 'Select an Option', 'eventive' ) . '</option>';
+		echo '<option value="">' . esc_html__( 'Select an Option', 'eventive-integration' ) . '</option>';
 
 		// Loop through the pages and add them as options.
 		foreach ( $values as $key => $label ) {

@@ -92,7 +92,7 @@ class Eventive_Blocks {
 		if ( empty( $eventive_category ) ) {
 			$categories[] = array(
 				'slug'  => 'eventive',
-				'title' => __( 'Eventive', 'eventive' ),
+				'title' => __( 'Eventive', 'eventive-integration' ),
 				'icon'  => 'tickets-alt',
 			);
 		}
@@ -109,7 +109,7 @@ class Eventive_Blocks {
 		if ( empty( $film_category ) ) {
 			$categories[] = array(
 				'slug'  => 'eventive-films',
-				'title' => __( 'Eventive Film Data', 'eventive' ),
+				'title' => __( 'Eventive Film Data', 'eventive-integration' ),
 				'icon'  => 'video-alt3',
 			);
 		}
