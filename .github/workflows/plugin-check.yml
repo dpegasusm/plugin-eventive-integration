@@ -40,10 +40,8 @@ jobs:
       with:
         build-dir: build/${{ env.BUILD_NAME }}
         ignore-codes: |
-          plugin_header_text_domain
-          textdomain_mismatch
-          trademarked_term
           plugin_header_no_license
+          plugin_header_invalid_license
           no_license
           no_stable_tag
           missing_readme_header_tested
