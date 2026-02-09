@@ -12,6 +12,11 @@ jQuery( document ).ready( function ( $ ) {
 	// ====================
 	const $apiKeyField = $( '#eventive_secret_key' );
 
+	let cachedBuckets = null;
+	let isFetchingBuckets = false;
+	let lastApiKey = '';
+	let initScheduled = false;
+
 	/**
 	 * Fetch event buckets from WordPress REST API
 	 * @param apiKey
@@ -21,6 +26,12 @@ jQuery( document ).ready( function ( $ ) {
 			disableBucketDropdowns( 'Enter API Key to choose a bucket' );
 			return;
 		}
+
+		if ( isFetchingBuckets ) {
+			return;
+		}
+
+		isFetchingBuckets = true;
 
 		// Show loading state
 		setBucketLoadingState( 'Loading buckets...' );
@@ -39,16 +50,23 @@ jQuery( document ).ready( function ( $ ) {
 					response.event_buckets &&
 					response.event_buckets.length > 0
 				) {
+					cachedBuckets = response.event_buckets;
+					lastApiKey = apiKey;
 					populateBucketDropdowns( response.event_buckets );
 				} else {
+					cachedBuckets = null;
 					disableBucketDropdowns( 'No buckets found' );
 				}
 			} )
 			.catch( function ( error ) {
 				console.error( 'Error fetching event buckets:', error );
+				cachedBuckets = null;
 				disableBucketDropdowns(
 					'Error loading buckets. Check API key.'
 				);
+			} )
+			.finally( function () {
+				isFetchingBuckets = false;
 			} );
 	}
 
@@ -80,7 +98,10 @@ jQuery( document ).ready( function ( $ ) {
 			} );
 
 			// Update dropdown
-			$bucketDropdown.html( optionsHtml ).prop( 'disabled', false );
+			$bucketDropdown
+				.html( optionsHtml )
+				.prop( 'disabled', false )
+				.attr( 'data-eventive-buckets-initialized', '1' );
 		} );
 	}
 
@@ -92,7 +113,8 @@ jQuery( document ).ready( function ( $ ) {
 		const $bucketDropdowns = getBucketDropdowns();
 		$bucketDropdowns
 			.html( '<option value="">' + message + '</option>' )
-			.prop( 'disabled', true );
+			.prop( 'disabled', true )
+			.attr( 'data-eventive-buckets-initialized', '1' );
 	}
 
 	function setBucketLoadingState( message ) {
@@ -110,6 +132,20 @@ jQuery( document ).ready( function ( $ ) {
 	 * Initialize bucket dropdown on page load
 	 */
 	function initBucketDropdowns() {
+		const $bucketDropdowns = getBucketDropdowns();
+		if ( ! $bucketDropdowns.length ) {
+			return;
+		}
+
+		const hasUninitialized =
+			$bucketDropdowns.filter( function () {
+				return ! $( this ).attr( 'data-eventive-buckets-initialized' );
+			} ).length > 0;
+
+		if ( ! hasUninitialized ) {
+			return;
+		}
+
 		// Check if API key is available from localization
 		if (
 			typeof EventiveData !== 'undefined' &&
@@ -117,6 +153,10 @@ jQuery( document ).ready( function ( $ ) {
 			EventiveData.apiKey.trim() !== ''
 		) {
 			// API key exists in saved settings, fetch buckets
+			if ( cachedBuckets && lastApiKey === EventiveData.apiKey ) {
+				populateBucketDropdowns( cachedBuckets );
+				return;
+			}
 			fetchEventBuckets( EventiveData.apiKey );
 		} else {
 			// No API key, disable dropdown
@@ -135,8 +175,13 @@ jQuery( document ).ready( function ( $ ) {
 		$apiKeyField.on( 'input change', function () {
 			const apiKey = $( this ).val();
 			if ( apiKey && apiKey.trim() !== '' ) {
+				if ( apiKey !== lastApiKey ) {
+					cachedBuckets = null;
+				}
 				fetchEventBuckets( apiKey );
 			} else {
+				cachedBuckets = null;
+				lastApiKey = '';
 				disableBucketDropdowns( 'Enter API Key to choose a bucket' );
 			}
 		} );
@@ -144,7 +189,14 @@ jQuery( document ).ready( function ( $ ) {
 
 	// Watch for dynamically added bucket dropdowns.
 	const bucketObserver = new MutationObserver( function () {
-		initBucketDropdowns();
+		if ( initScheduled ) {
+			return;
+		}
+		initScheduled = true;
+		window.requestAnimationFrame( function () {
+			initScheduled = false;
+			initBucketDropdowns();
+		} );
 	} );
 
 	if ( document.body ) {
