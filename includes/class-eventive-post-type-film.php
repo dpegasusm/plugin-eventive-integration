@@ -54,7 +54,7 @@ class Eventive_Post_Type_Film {
 			'not_found'          => _x( 'No films found', 'eventive' ),
 			'not_found_in_trash' => _x( 'No films found in trash', 'eventive' ),
 			'parent_item_colon'  => _x( 'Parent:', 'eventive' ),
-			'menu_name'          => _x( 'Films', 'eventive' ),
+			'menu_name'          => _x( 'Eventive Films', 'eventive' ),
 		);
 
 		$args = array(
