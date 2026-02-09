@@ -47,8 +47,8 @@ class Eventive_Taxonomy_Film_Tags {
 	 */
 	public function register_eventive_taxonomy_tags() {
 		$labels = array(
-			'name'                       => _x( 'Film Tags', 'taxonomy general name', 'eventive' ),
-			'singular_name'              => _x( 'Film Tag', 'taxonomy singular name', 'eventive' ),
+			'name'                       => __( 'Film Tags', 'eventive' ),
+			'singular_name'              => __( 'Film Tag', 'eventive' ),
 			'search_items'               => __( 'Search Film Tags', 'eventive' ),
 			'popular_items'              => __( 'Popular Film Tags', 'eventive' ),
 			'all_items'                  => __( 'All Film Tags', 'eventive' ),

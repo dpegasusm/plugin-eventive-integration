@@ -43,18 +43,18 @@ class Eventive_Post_Type_Film {
 	 */
 	public function register_eventive_post_type() {
 		$labels = array(
-			'name'               => _x( 'Films', 'eventive' ),
-			'singular_name'      => _x( 'Film', 'eventive' ),
-			'add_new'            => _x( 'Add New', 'eventive' ),
-			'add_new_item'       => _x( 'Add New Film', 'eventive' ),
-			'edit_item'          => _x( 'Edit Film', 'eventive' ),
-			'new_item'           => _x( 'New Film', 'eventive' ),
-			'view_item'          => _x( 'View Film', 'eventive' ),
-			'search_items'       => _x( 'Search Films', 'eventive' ),
-			'not_found'          => _x( 'No films found', 'eventive' ),
-			'not_found_in_trash' => _x( 'No films found in trash', 'eventive' ),
-			'parent_item_colon'  => _x( 'Parent:', 'eventive' ),
-			'menu_name'          => _x( 'Eventive Films', 'eventive' ),
+			'name'               => __( 'Films', 'eventive' ),
+			'singular_name'      => __( 'Film', 'eventive' ),
+			'add_new'            => __( 'Add New', 'eventive' ),
+			'add_new_item'       => __( 'Add New Film', 'eventive' ),
+			'edit_item'          => __( 'Edit Film', 'eventive' ),
+			'new_item'           => __( 'New Film', 'eventive' ),
+			'view_item'          => __( 'View Film', 'eventive' ),
+			'search_items'       => __( 'Search Films', 'eventive' ),
+			'not_found'          => __( 'No films found', 'eventive' ),
+			'not_found_in_trash' => __( 'No films found in trash', 'eventive' ),
+			'parent_item_colon'  => __( 'Parent:', 'eventive' ),
+			'menu_name'          => __( 'Eventive Films', 'eventive' ),
 		);
 
 		$args = array(
