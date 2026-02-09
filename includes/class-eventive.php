@@ -96,12 +96,17 @@ class Eventive {
 	 * @return void
 	 */
 	public function enqueue_eventive_loader_scripts( $loader_url ) {
+		if ( is_admin() ) {
+			return;
+		}
+
 		// Load our Global Eventive Stylesheet.
 		wp_enqueue_style(
 			'eventive-style',
 			EVENTIVE_PLUGIN . 'assets/css/eventive-style.css',
 			array(),
-			EVENTIVE_CURRENT_VERSION
+			EVENTIVE_CURRENT_VERSION, 
+			'all'
 		);
 
 		// Enqueue Stripe v3 script.
