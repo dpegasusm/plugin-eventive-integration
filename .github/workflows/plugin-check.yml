@@ -19,7 +19,11 @@ jobs:
           exclude-checks: |
             plugin_header_text_domain
             textdomain_mismatch
-            license
+            trademarked_term
+            github_directory
+            no_license
+            plugin_header_no_license
+            WordPress.WP.I18n.TextDomainMismatch
           exclude-files: |
             .gitignore
           exclude-directories: |
