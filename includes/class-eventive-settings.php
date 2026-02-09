@@ -158,6 +158,7 @@ class Eventive_Settings {
 			array(
 				'label_for' => 'eventive_default_bucket_id',
 				'label'     => esc_html__( 'Default bucket to use inside eventive. This can be overridden on a page by page basis.', 'eventive' ),
+				'class'     => 'eventive-bucket-dropdown',
 				'default'   => '',
 				'values'    => array(), // This will be populated via JS on the front.
 			)
@@ -316,11 +317,19 @@ class Eventive_Settings {
 		$default = esc_attr( $args['default'] );
 		$values  = (array) ( isset( $args['values'] ) && is_array( $args['values'] ) ? $args['values'] : array() );
 
+		// Get the classes for the field, including any custom classes passed in the args.
+		$classes = esc_attr( $args['class'] );
+
+		// Check if classes an array and convert to string if necessary.
+		if ( is_array( $classes ) ) {
+			$classes = implode( ' ', $classes );
+		}
+
 		// Get the current value of the setting.
 		$value = get_option( $field, $default );
 
 		// Start the dropdown.
-		echo '<select name="' . esc_attr( $field ) . '" id="' . esc_attr( $field ) . '" data-selected-value="' . esc_attr( $value ) . '" style="width: 100%;">';
+		echo '<select name="' . esc_attr( $field ) . '" id="' . esc_attr( $field ) . '" data-selected-value="' . esc_attr( $value ) . '" class="' . esc_attr( $classes ) . '" style="width: 100%;">';
 		echo '<option value="">' . esc_html__( 'Select an Option', 'eventive' ) . '</option>';
 
 		// Loop through the pages and add them as options.

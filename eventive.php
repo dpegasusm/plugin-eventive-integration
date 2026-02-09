@@ -11,7 +11,7 @@
  * Plugin Name: Eventive
  * Plugin URI: https://eventive.org/
  * Description: Seamlessly integrate Eventive's Event and Ticketing Services into your WordPress site. Includes dynamic event loaders, shortcode support, event bucket overrides, and Gutenberg blocks.
- * Version:           0.0.1
+ * Version:           1.0.1
  * Requires at least: 6.7
  * Requires PHP:      7.4
  * Author:            David Marshall
