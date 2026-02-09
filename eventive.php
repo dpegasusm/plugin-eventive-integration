@@ -15,9 +15,7 @@
  * Requires at least: 6.7
  * Requires PHP:      7.4
  * Author:            David Marshall
- * License:           MIT
- * License URI:       https://opensource.org/licenses/MIT
- * Author URI:        https://eventive.org/
+ * Author URI:        https://github.com/dpegasusm
  * Text Domain:       eventive
  */
 
