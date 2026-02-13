@@ -188,7 +188,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			const tagsHTML = ( film.tags || [] )
 				.map( ( tag ) => {
 					const text = getContrastYIQ( tag.color || '#ccc' );
-					return `<span class="film-tag-pill" style="background-color:${
+					return `<span class="eventive-tag-pill" style="background-color:${
 						tag.color || '#ccc'
 					};color:${ text };">${ htmlEscape( tag.name ) }</span>`;
 				} )
@@ -261,7 +261,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 					<div class="film-description">${
 						film.description || 'No description available.'
 					}</div>
-					${ showTags ? `<div class="film-tags">${ tagsHTML }</div>` : '' }
+					${ showTags ? `<div class="eventive-tag-pills">${ tagsHTML }</div>` : '' }
 					${
 						showDetails
 							? `<div class="film-credits"><h3>Credits</h3>${ creditsHTML }</div>`
@@ -494,14 +494,26 @@ document.addEventListener( 'DOMContentLoaded', () => {
 					const listEl = block.querySelector( '.film-events' );
 					if ( listEl ) {
 						listEl.innerHTML =
-							'<div>Error loading events for this film.</div>';
+							'<div class="eventive-error">Error loading events for this film.</div>';
 					}
 				} );
 		};
 
 		// Main fetch and render
 		const init = () => {
+			let hasRun = false;
+
 			const fetchFilm = () => {
+				if ( hasRun ) {
+					return;
+				}
+				hasRun = true;
+
+				// Clean up listener
+				if ( window.Eventive && window.Eventive.off ) {
+					window.Eventive.off( 'ready', fetchFilm );
+				}
+
 				window.Eventive.request( {
 					method: 'GET',
 					path: `films/${ filmId }`,
@@ -511,13 +523,9 @@ document.addEventListener( 'DOMContentLoaded', () => {
 						renderFilm( film );
 						return fetchEvents();
 					} )
-					.catch( ( error ) => {
-						console.error(
-							'[eventive-film-details] Error fetching film:',
-							error
-						);
+					.catch( () => {
 						block.innerHTML =
-							'<div>Error loading film details.</div>';
+							'<div class="eventive-error">Error loading film details.</div>';
 					} );
 			};
 
@@ -536,11 +544,8 @@ document.addEventListener( 'DOMContentLoaded', () => {
 					) {
 						fetchFilm();
 					} else {
-						console.error(
-							'[eventive-film-details] Eventive API not available'
-						);
 						block.innerHTML =
-							'<div>Error loading film details.</div>';
+								'<div class="eventive-error">Error loading film details.</div>';
 					}
 				}, 1000 );
 			}

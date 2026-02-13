@@ -44,4 +44,5 @@ jobs:
           plugin_header_invalid_license
           no_license
           no_stable_tag
+          invalid_license
           missing_readme_header_tested

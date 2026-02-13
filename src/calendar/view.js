@@ -5,7 +5,7 @@
  * @since 1.0.0
  */
 
-import { createRoot, useState, useEffect } from '@wordpress/element';
+import { createRoot, useState, useEffect, useRef } from '@wordpress/element';
 
 /**
  * Get text color based on background brightness
@@ -48,6 +48,7 @@ function EventiveCalendar() {
 	const [ modalEvent, setModalEvent ] = useState( null );
 	const [ isLoading, setIsLoading ] = useState( true );
 
+	const hasFetchedRef = useRef( false );
 	const eventBucket = window.EventiveBlockData?.eventBucket || '';
 
 	useEffect( () => {
@@ -56,18 +57,23 @@ function EventiveCalendar() {
 			return;
 		}
 
+		let cancelled = false;
+
 		const fetchEvents = () => {
+			if ( cancelled || hasFetchedRef.current ) {
+				return;
+			}
+
 			// Check if Eventive API is available
 			if (
 				! window.Eventive ||
 				typeof window.Eventive.request !== 'function'
 			) {
-				console.error(
-					'[eventive-calendar] Eventive API is not available'
-				);
 				setIsLoading( false );
 				return;
 			}
+
+			hasFetchedRef.current = true;
 
 			// Use Eventive.request() to fetch events
 			window.Eventive.request( {
@@ -76,15 +82,16 @@ function EventiveCalendar() {
 				authenticatePerson: false,
 			} )
 				.then( ( response ) => {
-					setEvents( response.events || [] );
-					setIsLoading( false );
+					if ( ! cancelled ) {
+						setEvents( response.events || [] );
+						setIsLoading( false );
+					}
 				} )
-				.catch( ( error ) => {
-					console.error(
-						'[eventive-calendar] Error fetching events:',
-						error
-					);
-					setIsLoading( false );
+				.catch( () => {
+					if ( ! cancelled ) {
+						hasFetchedRef.current = false;
+						setIsLoading( false );
+					}
 				} );
 		};
 
@@ -98,20 +105,29 @@ function EventiveCalendar() {
 			window.Eventive.on( 'ready', fetchEvents );
 		} else {
 			// Fallback: try after delay
-			setTimeout( () => {
+			const fallbackTimer = setTimeout( () => {
 				if (
 					window.Eventive &&
 					typeof window.Eventive.request === 'function'
 				) {
 					fetchEvents();
 				} else {
-					console.error(
-						'[eventive-calendar] Eventive API not found'
-					);
 					setIsLoading( false );
 				}
 			}, 1000 );
+
+			return () => {
+				cancelled = true;
+				clearTimeout( fallbackTimer );
+			};
 		}
+
+		return () => {
+			cancelled = true;
+			if ( window.Eventive && window.Eventive.off ) {
+				window.Eventive.off( 'ready', fetchEvents );
+			}
+		};
 	}, [ eventBucket ] );
 
 	const generateCalendar = () => {
@@ -274,7 +290,7 @@ function EventiveCalendar() {
 	}, [ modalEvent ] );
 
 	if ( isLoading ) {
-		return <div className="eventive-calendar-loading">Loading...</div>;
+		return <div className="eventive-loading">Loading...</div>;
 	}
 
 	return (
@@ -282,14 +298,15 @@ function EventiveCalendar() {
 			{ generateCalendar() }
 
 			{ modalEvent && (
-				<div className="modal" style={ { display: 'block' } }>
-					<div className="modal-content">
-						<span
-							className="close"
+				<div className="eventive-modal-overlay">
+					<div className="eventive-modal-panel">
+						<button
+							className="eventive-modal-close-btn"
 							onClick={ () => setModalEvent( null ) }
+							aria-label="Close"
 						>
 							&times;
-						</span>
+						</button>
 						<div className="event-details">
 							<div className="details-left">
 								<h2>{ modalEvent.name }</h2>
@@ -308,7 +325,7 @@ function EventiveCalendar() {
 								<p>
 									Location:{ ' ' }
 									<span
-										className="venue-tag"
+										className="eventive-venue-tag"
 										style={ {
 											background:
 												getVenueDetails( modalEvent )
@@ -324,11 +341,11 @@ function EventiveCalendar() {
 								</p>
 								{ modalEvent.tags &&
 									modalEvent.tags.length > 0 && (
-										<div className="tags">
+										<div className="eventive-tag-pills">
 											{ modalEvent.tags.map( ( tag ) => (
 												<button
 													key={ tag.id }
-													className="tag-button film-tag"
+													className="eventive-tag-pill"
 													style={ {
 														background:
 															tag.color || '#ccc',

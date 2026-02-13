@@ -101,128 +101,6 @@
 	}
 
 	/* ==========================================================================
-	   FILM CARD
-	   ========================================================================== */
-
-	.catalog-film-box {
-		width: 275px;
-		border-radius: 8px;
-		overflow: hidden;
-		background-color: var(--background-color, #fff);
-		border: 1px solid var(--border-color, #ddd);
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-		transition: transform 0.2s, box-shadow 0.2s;
-
-		&:hover {
-			transform: translateY(-2px);
-			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-		}
-	}
-
-	.catalog-film-image {
-		width: 100%;
-		height: auto;
-		display: block;
-		border-bottom: 2px solid rgba(255, 255, 255, 0.2);
-	}
-
-	/* ==========================================================================
-	   FILM DETAILS
-	   ========================================================================== */
-
-	.catalog-film-details {
-		padding: 15px;
-		color: var(--text-color, #333);
-		text-align: left;
-		line-height: 1.5;
-	}
-
-	.catalog-film-title {
-		font-size: 1.5em;
-		margin-bottom: 10px;
-		font-weight: 700;
-		color: var(--heading-color, #333);
-	}
-
-	.catalog-film-description {
-		font-size: 0.9em;
-		margin-bottom: 10px;
-		color: var(--text-color, #666);
-		line-height: 1.6;
-	}
-
-	/* ==========================================================================
-	   FILM TAGS
-	   ========================================================================== */
-
-	.catalog-film-tags {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 5px;
-		margin-top: 10px;
-	}
-
-	.catalog-film-tag-pill {
-		display: inline-block;
-		padding: 5px 10px;
-		background-color: var(--tag-color, #e0e0e0);
-		color: var(--text-color, #333);
-		border-radius: 4px;
-		font-size: 0.8em;
-		text-align: center;
-		transition: all 0.2s ease;
-
-		&:hover {
-			filter: brightness(0.85);
-		}
-	}
-
-	/* ==========================================================================
-	   FILM LINK
-	   ========================================================================== */
-
-	.catalog-film-details-link {
-
-		a {
-			display: inline-block;
-			margin-top: 10px;
-			color: var(--link-color, #0073aa);
-			text-decoration: none;
-			font-weight: 700;
-			transition: color 0.2s;
-
-			&:hover {
-				color: var(--link-hover-color, #005177);
-				text-decoration: underline;
-			}
-		}
-	}
-
-	/* ==========================================================================
-	   STATES (EMPTY, ERROR, LOADING)
-	   ========================================================================== */
-
-	.catalog-no-films,
-	.catalog-error {
-		color: var(--text-color, #666);
-		font-size: 1.2em;
-		text-align: center;
-		margin: 20px;
-		padding: 20px;
-		border-radius: 8px;
-		background-color: var(--background-color-muted, #f9f9f9);
-		border: 1px solid var(--border-color, #ddd);
-	}
-
-	.catalog-no-films {
-		font-style: italic;
-	}
-
-	.catalog-error {
-		color: #d32f2f;
-	}
-
-	/* ==========================================================================
 	   ACCESSIBILITY
 	   ========================================================================== */
 
@@ -284,7 +162,7 @@
 			}
 		}
 
-		.catalog-film-box {
+		.eventive-card {
 			width: 100%;
 			max-width: 275px;
 			margin: 0 auto;
@@ -296,14 +174,6 @@
 		.catalog-film-container.grid,
 		#catalog-film-container.grid {
 			grid-template-columns: 1fr;
-		}
-
-		.catalog-film-title {
-			font-size: 1.3em;
-		}
-
-		.catalog-film-description {
-			font-size: 0.85em;
 		}
 	}
 }

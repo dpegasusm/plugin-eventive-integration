@@ -590,7 +590,7 @@ function initInstance( block ) {
 		}
 		if ( ! filtered.length ) {
 			target.innerHTML =
-				'<div class="catalog-no-films">No films found for the selected criteria.</div>';
+				'<p class="no-events">No films found for the selected criteria.</p>';
 			return;
 		}
 
@@ -615,8 +615,11 @@ function initInstance( block ) {
 					? ( f.details && f.details.language ) || 'N/A'
 					: null;
 				const imgKey = normalizeImageType( imageType );
+				const placeholderUrl =
+					( window.EventiveBlockData?.pluginUrl || '' ) +
+					'assets/images/default-placeholder.svg';
 				const imageSrc =
-					f[ imgKey ] || f[ imageType ] || 'default-placeholder.jpg';
+					f[ imgKey ] || f[ imageType ] || placeholderUrl;
 				const shortDesc = f.short_description || '';
 				const slug = slugify( f.name );
 				let filmLink = '';
@@ -649,12 +652,12 @@ function initInstance( block ) {
 						tagMap.set( id || name, t );
 					} );
 					tagsHTML =
-						'<div class="catalog-film-tags">' +
+						'<div class="eventive-tag-pills">' +
 						Array.from( tagMap.values() )
 							.map( function ( t ) {
 								const fg = textColor( t.color || '#e0e0e0' );
 								return (
-									'<span class="catalog-film-tag-pill" style="background-color:' +
+									'<span class="eventive-tag-pill" style="background-color:' +
 									esc( t.color || '#e0e0e0' ) +
 									';color:' +
 									fg +
@@ -671,21 +674,21 @@ function initInstance( block ) {
 
 				const el = document.createElement( 'div' );
 				if ( view === 'list' ) {
-					el.className = 'catalog-film-list-item';
+					el.className = 'eventive-card eventive-card--horizontal';
 					el.innerHTML =
 						'<a href="' +
 						filmLink +
-						'"><img class="catalog-film-image" loading="lazy" decoding="async" src="' +
+						'"><img class="eventive-card-image" loading="lazy" decoding="async" src="' +
 						imageSrc +
 						'" alt="' +
 						( f.name || 'Film' ) +
 						'"/></a>' +
-						'<div class="catalog-film-details">' +
-						'<h2 class="catalog-film-title">' +
+						'<div class="eventive-card-content">' +
+						'<h2 class="eventive-card-title">' +
 						( f.name || '' ) +
 						'</h2>' +
 						tagsHTML +
-						'<span class="catalog-film-description">' +
+						'<span class="eventive-card-description">' +
 						( showDetails
 							? 'Directed by: ' +
 							  director +
@@ -694,34 +697,34 @@ function initInstance( block ) {
 							: '' ) +
 						'</span>' +
 						( showDescription && shortDesc
-							? '<div class="catalog-film-short">' +
+							? '<div class="eventive-card-description">' +
 							  shortDesc +
 							  '</div>'
 							: '' ) +
 						( showEvents
-							? '<div class="catalog-film-details-link"><a href="' +
+							? '<div class="eventive-card-link"><a href="' +
 							  filmLink +
 							  '">Details & Showtimes</a></div>'
 							: '' ) +
 						'</div>';
 				} else {
-					el.className = 'catalog-film-box';
+					el.className = 'eventive-card';
 					el.setAttribute( 'role', 'article' );
 					el.innerHTML =
 						'<a href="' +
 						filmLink +
-						'"><img class="catalog-film-image" loading="lazy" decoding="async" src="' +
+						'"><img class="eventive-card-image" loading="lazy" decoding="async" src="' +
 						imageSrc +
 						'" alt="' +
 						( f.name || 'Film' ) +
 						'"/></a>' +
-						'<div class="catalog-film-details">' +
-						'<h3 class="catalog-film-title">' +
+						'<div class="eventive-card-content">' +
+						'<h3 class="eventive-card-title">' +
 						( f.name || '' ) +
 						'</h3>' +
 						tagsHTML +
 						( showDetails
-							? '<span class="catalog-film-description">' +
+							? '<span class="eventive-card-description">' +
 							  director +
 							  '<br />' +
 							  ( runtime +
@@ -732,12 +735,12 @@ function initInstance( block ) {
 							  '</span>'
 							: '' ) +
 						( showDescription && shortDesc
-							? '<div class="catalog-film-short">' +
+							? '<div class="eventive-card-description">' +
 							  shortDesc +
 							  '</div>'
 							: '' ) +
 						( showEvents
-							? '<div class="catalog-film-details-link"><a href="' +
+							? '<div class="eventive-card-link"><a href="' +
 							  filmLink +
 							  '">Details & Showtimes</a></div>'
 							: '' ) +
@@ -758,7 +761,7 @@ function initInstance( block ) {
 			const t = view === 'list' ? list : grid;
 			if ( t ) {
 				t.innerHTML =
-					'<div class="catalog-error">Eventive API is not available.</div>';
+					'<p class="error-message">Eventive API is not available.</p>';
 			}
 			return;
 		}
@@ -773,9 +776,24 @@ function initInstance( block ) {
 					const t = view === 'list' ? list : grid;
 					if ( t ) {
 						t.innerHTML =
-							'<div class="catalog-error">Failed to load films.</div>';
+							'<p class="error-message">Failed to load films.</p>';
 					}
 				} );
+		};
+
+		let hasRun = false;
+		const guardedRun = function () {
+			if ( hasRun ) {
+				return;
+			}
+			hasRun = true;
+
+			// Clean up listener
+			if ( window.Eventive && window.Eventive.off ) {
+				window.Eventive.off( 'ready', guardedRun );
+			}
+
+			run();
 		};
 
 		let attached = false;
@@ -784,7 +802,7 @@ function initInstance( block ) {
 				window.Eventive &&
 				typeof window.Eventive.ready === 'function'
 			) {
-				window.Eventive.ready( run );
+				window.Eventive.ready( guardedRun );
 				attached = true;
 			}
 		} catch ( _ ) {}
@@ -795,7 +813,7 @@ function initInstance( block ) {
 					window.Eventive.on &&
 					typeof window.Eventive.on === 'function'
 				) {
-					window.Eventive.on( 'ready', run );
+					window.Eventive.on( 'ready', guardedRun );
 					attached = true;
 				}
 			} catch ( _ ) {}
@@ -807,11 +825,11 @@ function initInstance( block ) {
 					window.Eventive &&
 					typeof window.Eventive.request === 'function'
 				) {
-					run();
+					guardedRun();
 					return;
 				}
 				if ( ++tries > 60 ) {
-					run();
+					guardedRun();
 					return;
 				}
 				setTimeout( poll, 50 );

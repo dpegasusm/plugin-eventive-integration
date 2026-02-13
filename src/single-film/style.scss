@@ -67,22 +67,6 @@
 			}
 		}
 
-		.film-tags {
-			display: flex;
-			flex-wrap: wrap;
-			gap: 0.5rem;
-			margin-top: 1rem;
-
-			.film-tag {
-				display: inline-block;
-				padding: 0.25rem 0.75rem;
-				background: #007cba;
-				color: white;
-				border-radius: 4px;
-				font-size: 0.875rem;
-			}
-		}
-
 		.event-item {
 			border: 1px solid #ddd;
 			padding: 1rem;

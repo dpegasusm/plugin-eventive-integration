@@ -109,15 +109,6 @@ class Eventive {
 			'all'
 		);
 
-		// Enqueue Stripe v3 script.
-		wp_enqueue_script(
-			'stripe-v3',
-			'https://js.stripe.com/v3/',
-			array(),
-			EVENTIVE_CURRENT_VERSION,
-			true
-		);
-
 		// Enqueue Eventive loader script from the option eventive_default_bucket_root_url.
 		$eventive_default_bucket_root_url = get_option( 'eventive_default_bucket_root_url', '' );
 
@@ -126,7 +117,7 @@ class Eventive {
 			wp_enqueue_script(
 				'eventive-loader',
 				esc_url_raw( $eventive_default_bucket_root_url ),
-				array( 'stripe-v3' ),
+				array(),
 				EVENTIVE_CURRENT_VERSION,
 				true
 			);

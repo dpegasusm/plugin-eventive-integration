@@ -8,21 +8,12 @@
 
 	.event-schedule-container {
 		margin: 8px auto;
-		padding: 8px 12px;
 		width: 100%;
-		max-width: 100%;
-		box-sizing: border-box;
-		font-family: var(--font-family-base);
 	}
 
 	/* Groups */
 	.event-group {
 		margin-bottom: 12px;
-		padding: 12px;
-		border: 1px solid var(--border-color, #ddd);
-		border-radius: 6px;
-		background-color: var(--background-color-muted, #f9f9f9);
-		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 	}
 
 	.event-group-header {
@@ -49,89 +40,6 @@
 		&.events-count-2 {
 			grid-template-columns: repeat(2, minmax(0, 1fr));
 		}
-	}
-
-	/* Event item */
-	.event-item {
-		display: flex;
-		flex-direction: column;
-		gap: 12px;
-		padding: 16px;
-		border: 1px solid var(--border-color, #e0e0e0);
-		border-radius: 6px;
-		background: #fff;
-		transition: box-shadow 0.3s ease;
-
-		&:hover {
-			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-		}
-
-		.event-image {
-			width: 100%;
-
-			img {
-				width: 100%;
-				height: auto;
-				border-radius: 4px;
-				object-fit: cover;
-			}
-		}
-
-		.event-content {
-			display: flex;
-			flex-direction: column;
-			gap: 8px;
-
-			.event-title {
-				font-size: 1.2rem;
-				font-weight: 700;
-				margin: 0;
-				color: var(--theme-primary-text-color, #111);
-			}
-
-			.event-time {
-				font-size: 1rem;
-				font-weight: 500;
-				color: var(--theme-secondary-text-color, #333);
-				margin: 0;
-			}
-
-			.event-venue {
-				font-size: 0.9rem;
-				color: #666;
-				margin: 0;
-			}
-
-			.event-description {
-				font-size: 0.9rem;
-				color: #555;
-				line-height: 1.5;
-				margin: 0;
-			}
-		}
-
-		.eventive-button {
-			padding: 10px 16px;
-			background-color: var(--button-bg, #0073aa);
-			color: var(--button-text, #fff);
-			border: none;
-			border-radius: 4px;
-			cursor: pointer;
-			font-weight: 600;
-			transition: background-color 0.3s ease;
-
-			&:hover {
-				background-color: var(--hover-color, #005a87);
-			}
-		}
-	}
-
-	.no-events,
-	.error-message {
-		text-align: center;
-		padding: 20px;
-		color: #666;
-		font-style: italic;
 	}
 
 	/* Responsive adjustments */

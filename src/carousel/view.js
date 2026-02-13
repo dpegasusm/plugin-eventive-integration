@@ -90,6 +90,7 @@ function EventiveCarousel( { limit, showDescription } ) {
 	const [ isPaused, setIsPaused ] = useState( false );
 	const containerRef = useRef( null );
 	const autoplayRef = useRef( null );
+	const hasFetchedRef = useRef( false );
 
 	const eventBucket = window.EventiveBlockData?.eventBucket || '';
 
@@ -99,22 +100,32 @@ function EventiveCarousel( { limit, showDescription } ) {
 			return;
 		}
 
+		let cancelled = false;
+
 		const fetchEvents = () => {
+			if ( hasFetchedRef.current || cancelled ) {
+				return;
+			}
+			hasFetchedRef.current = true;
+
 			window.Eventive.request( {
 				method: 'GET',
 				path: `event_buckets/${ eventBucket }/events`,
 				authenticatePerson: false,
 			} )
 				.then( ( response ) => {
+					if ( cancelled ) {
+						return;
+					}
 					const eventList = response.events || [];
 					setEvents( eventList.slice( 0, limit ) );
 					setIsLoading( false );
 				} )
-				.catch( ( error ) => {
-					console.error(
-						'[eventive-carousel] Error fetching events:',
-						error
-					);
+				.catch( () => {
+					if ( cancelled ) {
+						return;
+					}
+					hasFetchedRef.current = false;
 					setIsLoading( false );
 				} );
 		};
@@ -134,13 +145,20 @@ function EventiveCarousel( { limit, showDescription } ) {
 				) {
 					fetchEvents();
 				} else {
-					console.error(
-						'[eventive-carousel] Eventive API not available'
-					);
 					setIsLoading( false );
 				}
 			}, 1000 );
 		}
+
+		return () => {
+			cancelled = true;
+			if (
+				window.Eventive &&
+				typeof window.Eventive.off === 'function'
+			) {
+				window.Eventive.off( 'ready', fetchEvents );
+			}
+		};
 	}, [ eventBucket, limit ] );
 
 	// Auto-advance slides
@@ -169,16 +187,17 @@ function EventiveCarousel( { limit, showDescription } ) {
 		};
 	}, [ events.length, isPaused ] );
 
-	// Rebuild Eventive buttons when slide changes
+	// Rebuild Eventive buttons once after events load
 	useEffect( () => {
 		if ( events.length > 0 && containerRef.current ) {
-			setTimeout( () => {
+			const timer = setTimeout( () => {
 				if ( window.Eventive && window.Eventive.rebuild ) {
 					window.Eventive.rebuild( containerRef.current );
 				}
 			}, 100 );
+			return () => clearTimeout( timer );
 		}
-	}, [ currentSlide, events ] );
+	}, [ events.length ] );
 
 	const goToSlide = ( index ) => {
 		setCurrentSlide( index );
@@ -195,11 +214,11 @@ function EventiveCarousel( { limit, showDescription } ) {
 	};
 
 	if ( isLoading ) {
-		return <div className="carousel-loading">Loading events...</div>;
+		return <div className="eventive-loading">Loading events...</div>;
 	}
 
 	if ( events.length === 0 ) {
-		return <div className="carousel-error">No upcoming events found.</div>;
+		return <div className="no-events">No upcoming events found.</div>;
 	}
 
 	return (

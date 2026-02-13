@@ -152,10 +152,7 @@ const VenuesContainer = () => {
 
 	if ( loading ) {
 		return (
-			<div
-				className="eventive-venues-loading"
-				style={ { padding: '20px', textAlign: 'center' } }
-			>
+			<div className="eventive-loading">
 				<p>Loading venues...</p>
 			</div>
 		);
@@ -163,15 +160,7 @@ const VenuesContainer = () => {
 
 	if ( error ) {
 		return (
-			<div
-				className="eventive-venues-error"
-				style={ {
-					padding: '15px',
-					backgroundColor: '#fef7f1',
-					borderLeft: '4px solid #d63638',
-					color: '#d63638',
-				} }
-			>
+			<div className="eventive-error">
 				<p>{ error }</p>
 			</div>
 		);
@@ -179,10 +168,7 @@ const VenuesContainer = () => {
 
 	if ( venues.length === 0 ) {
 		return (
-			<div
-				className="eventive-venues-empty"
-				style={ { padding: '20px', textAlign: 'center' } }
-			>
+			<div className="no-events">
 				<p>No venues found.</p>
 			</div>
 		);

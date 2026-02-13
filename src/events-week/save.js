@@ -36,9 +36,9 @@ export default function Save() {
 						Loading events...
 					</p>
 				</div>
-				<div id="event-modal" className="event-modal">
-					<div className="modal-content">
-						<span className="close-modal">&times;</span>
+				<div id="event-modal" className="eventive-modal-overlay" style={ { display: 'none' } }>
+					<div className="eventive-modal-panel">
+						<button className="eventive-modal-close-btn" aria-label="Close">&times;</button>
 						<div id="modal-details"></div>
 					</div>
 				</div>

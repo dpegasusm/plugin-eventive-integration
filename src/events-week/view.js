@@ -17,11 +17,26 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 	// Ensure Eventive API is loaded
 	if ( window.Eventive && window.Eventive.on ) {
-		window.Eventive.on( 'ready', async function () {
+		let hasRun = false;
+		const onReady = async function () {
+			if ( hasRun ) {
+				return;
+			}
+			hasRun = true;
+
+			// Clean up listener
+			if ( window.Eventive && window.Eventive.off ) {
+				window.Eventive.off( 'ready', onReady );
+			}
+
 			blocks.forEach( initializeWeeklyCalendar );
-		} );
-	} else {
-		console.error( 'Eventive API is not loaded or not ready.' );
+		};
+
+		if ( window.Eventive._ready || window.Eventive.ready ) {
+			onReady();
+		} else {
+			window.Eventive.on( 'ready', onReady );
+		}
 	}
 
 	async function initializeWeeklyCalendar( block ) {
@@ -206,8 +221,8 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	}
 
 	function setupEventModal( block ) {
-		const modal = block.querySelector( '.event-modal' );
-		const closeBtn = block.querySelector( '.close-modal' );
+		const modal = block.querySelector( '.eventive-modal-overlay' );
+		const closeBtn = block.querySelector( '.eventive-modal-close-btn' );
 
 		if ( closeBtn ) {
 			closeBtn.addEventListener( 'click', () => {
@@ -225,7 +240,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	}
 
 	function showEventModal( block, event ) {
-		const modal = block.querySelector( '.event-modal' );
+		const modal = block.querySelector( '.eventive-modal-overlay' );
 		const modalDetails = block.querySelector( '#modal-details' );
 
 		if ( ! modal || ! modalDetails ) {
@@ -250,7 +265,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			}">Buy Tickets</button>
 		`;
 
-		modal.style.display = 'block';
+		modal.style.display = 'flex';
 
 		// Rebuild Eventive buttons
 		if ( window.Eventive.rebuild ) {

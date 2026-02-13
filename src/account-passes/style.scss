@@ -4,41 +4,7 @@
 
 .wp-block-eventive-account-passes {
 
-	.eventive-login-container {
-		min-height: 100px;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
 
-	.loader {
-		border: 4px solid #f3f3f3;
-		border-top: 4px solid var(--primary-color);
-		border-radius: 50%;
-		width: 36px;
-		height: 36px;
-		animation: spin 1s linear infinite;
-	}
-
-	@keyframes spin {
-
-		0% {
-			transform: rotate(0deg);
-		}
-
-		100% {
-			transform: rotate(360deg);
-		}
-	}
-
-	.eventive-notice {
-		background: #f8fafc;
-		border: 1px solid var(--border-color);
-		color: var(--text-color);
-		padding: 12px 16px;
-		border-radius: 8px;
-		text-align: center;
-	}
 
 	.eventive-pass-card__benefits {
 		font-size: 0.85rem;
@@ -62,16 +28,6 @@
 	}
 
 	.eventive-pass-card {
-		background: var(--card-bg);
-		border: 1px solid var(--border-color);
-		border-radius: 8px;
-		padding: 16px;
-		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-		transition: box-shadow 0.2s;
-
-		&:hover {
-			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-		}
 
 		&__body {
 			margin-bottom: 12px;
@@ -122,36 +78,9 @@
 		}
 	}
 
-	.eventive-edit-pass-modal,
-	.eventive-show-pass-barcode-modal {
-		display: flex;
-		position: fixed;
-		inset: 0;
-		align-items: center;
-		justify-content: center;
-		z-index: 9999;
-
-		&.is-open {
-			display: flex;
-		}
-	}
-
-	.eventive-edit-pass-modal {
-		background: rgba(0, 0, 0, 0.4);
-	}
-
-	.eventive-show-pass-barcode-modal {
-		background: rgba(0, 0, 0, 0.85);
-	}
-
+	/* Modal content-specific styles */
 	.edit-pass-modal-content,
 	.show-pass-barcode-modal-content {
-		background: #fff;
-		max-width: 640px;
-		width: 95%;
-		padding: 20px;
-		border-radius: 8px;
-		position: relative;
 
 		h3 {
 			margin-top: 0;
@@ -161,17 +90,6 @@
 				font-size: 1.1em;
 				text-decoration: underline;
 			}
-		}
-
-		.modal-close-btn {
-			position: absolute;
-			right: 12px;
-			top: 10px;
-			font-size: 22px;
-			line-height: 1;
-			background: none;
-			border: none;
-			cursor: pointer;
 		}
 
 		.form-group {

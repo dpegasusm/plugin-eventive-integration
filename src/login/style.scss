@@ -48,18 +48,6 @@
 		}
 	}
 
-	.eventive-login-modal {
-		position: fixed;
-		inset: 0;
-		background: rgba(0, 0, 0, 0.5);
-		z-index: 1000;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		padding: 20px;
-		animation: fadeInBackdrop 0.3s ease-out;
-	}
-
 	@keyframes fadeInBackdrop {
 
 		from {
@@ -72,31 +60,15 @@
 	}
 
 	.eventive-login-form {
-		background: #fff;
 		padding: 24px;
 		padding-bottom: 0;
-		border-radius: 8px;
-		width: 100%;
 		max-width: 400px;
-		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 		display: flex;
 		flex-direction: column;
 		gap: 16px;
 		overflow: hidden;
-		position: relative;
 		font-family: inherit;
 		border: 2px solid #444;
-
-		.eventive-modal-close {
-			position: absolute;
-			top: 8px;
-			right: 8px;
-			background: none;
-			border: none;
-			font-size: 20px;
-			line-height: 1;
-			cursor: pointer;
-		}
 
 		.eventive-modal-title {
 			margin: 0;

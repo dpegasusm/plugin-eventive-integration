@@ -6,7 +6,7 @@
  */
 
 import { createRoot } from '@wordpress/element';
-import { useState, useEffect } from '@wordpress/element';
+import { useState, useEffect, useRef } from '@wordpress/element';
 
 // Helper functions
 function pickFirst( ...args ) {
@@ -60,10 +60,25 @@ function AccountPassesApp( { bucket } ) {
 	const [ barcodePass, setBarcodePass ] = useState( null );
 	const [ editFormData, setEditFormData ] = useState( {} );
 
+	const hasFetchedRef = useRef( false );
+
 	useEffect( () => {
+		let cancelled = false;
+		let tries = 0;
+		const maxTries = 60; // ~6 seconds at 100ms intervals
+
 		const checkLoginAndFetch = () => {
+			if ( cancelled ) {
+				return;
+			}
+
 			if ( ! window.Eventive || ! window.Eventive.isLoggedIn ) {
-				setTimeout( checkLoginAndFetch, 100 );
+				tries++;
+				if ( tries < maxTries ) {
+					setTimeout( checkLoginAndFetch, 100 );
+				} else {
+					setIsLoading( false );
+				}
 				return;
 			}
 
@@ -71,11 +86,12 @@ function AccountPassesApp( { bucket } ) {
 				const loggedIn = window.Eventive.isLoggedIn();
 				setIsLoggedIn( loggedIn );
 
-				if ( loggedIn ) {
-					fetchPasses();
+				if ( loggedIn && ! hasFetchedRef.current ) {
+					hasFetchedRef.current = true;
+					fetchPasses( cancelled );
 				}
 			} catch ( error ) {
-				console.error( 'Error checking login:', error );
+				// Silently handle check errors
 			} finally {
 				setIsLoading( false );
 			}
@@ -83,12 +99,30 @@ function AccountPassesApp( { bucket } ) {
 
 		if ( window.Eventive && window.Eventive.on ) {
 			window.Eventive.on( 'ready', checkLoginAndFetch );
-		} else {
-			checkLoginAndFetch();
 		}
+		checkLoginAndFetch();
+
+		return () => {
+			cancelled = true;
+			if ( window.Eventive && window.Eventive.off ) {
+				window.Eventive.off( 'ready', checkLoginAndFetch );
+			}
+		};
 	}, [] );
 
-	const fetchPasses = () => {
+	const fetchPasses = ( cancelled ) => {
+		// Double-check login before making any authenticated request
+		if (
+			! window.Eventive ||
+			! window.Eventive.isLoggedIn ||
+			! window.Eventive.isLoggedIn()
+		) {
+			setIsLoggedIn( false );
+			setIsLoading( false );
+			hasFetchedRef.current = false;
+			return;
+		}
+
 		const qs = {};
 		if ( bucket ) {
 			try {
@@ -104,26 +138,64 @@ function AccountPassesApp( { bucket } ) {
 			authenticatePerson: true,
 		} )
 			.then( ( res ) => {
+				if ( cancelled ) {
+					return;
+				}
 				const list = ( res && ( res.passes || res ) ) || [];
 				setPasses( list );
 			} )
-			.catch( () => {
-				// Fallback: people/self/passes_including_global
+			.catch( ( err ) => {
+				if ( cancelled ) {
+					return;
+				}
+				// If the error is auth-related, mark as not logged in
+				const errMsg =
+					( err && ( err.message || err.error || '' ) ) + '';
+				if (
+					errMsg.includes( 'InvalidCredentials' ) ||
+					errMsg.includes( '401' ) ||
+					errMsg.includes( 'Unauthorized' ) ||
+					errMsg.includes( 'not logged in' )
+				) {
+					setIsLoggedIn( false );
+					setIsLoading( false );
+					hasFetchedRef.current = false;
+					return;
+				}
+
+				// Fallback for non-auth errors: people/self/passes_including_global
 				window.Eventive.request( {
 					method: 'GET',
 					path: 'people/self/passes_including_global',
 					qs,
 					authenticatePerson: true,
 				} )
-					.then( ( res ) => {
-						const list = ( res && ( res.passes || res ) ) || [];
+					.then( ( res2 ) => {
+						if ( cancelled ) {
+							return;
+						}
+						const list =
+							( res2 && ( res2.passes || res2 ) ) || [];
 						setPasses( list );
 					} )
-					.catch( ( err ) => {
-						console.error(
-							'[eventive-account-passes] Error fetching passes:',
-							err
-						);
+					.catch( ( fallbackErr ) => {
+						if ( cancelled ) {
+							return;
+						}
+						const fbMsg =
+							( fallbackErr &&
+								( fallbackErr.message ||
+									fallbackErr.error ||
+									'' ) ) + '';
+						if (
+							fbMsg.includes( 'InvalidCredentials' ) ||
+							fbMsg.includes( '401' ) ||
+							fbMsg.includes( 'Unauthorized' ) ||
+							fbMsg.includes( 'not logged in' )
+						) {
+							setIsLoggedIn( false );
+							hasFetchedRef.current = false;
+						}
 					} );
 			} );
 	};
@@ -306,16 +378,16 @@ function AccountPassesApp( { bucket } ) {
 			{ /* Barcode Modal */ }
 			{ showBarcodeModal && barcodePass && (
 				<div
-					className="eventive-show-pass-barcode-modal is-open"
+					className="eventive-modal-overlay eventive-modal-overlay--dark"
 					onClick={ ( e ) =>
 						e.target.classList.contains(
-							'eventive-show-pass-barcode-modal'
+							'eventive-modal-overlay'
 						) && closeModals()
 					}
 				>
-					<div className="show-pass-barcode-modal-content">
+					<div className="eventive-modal-panel eventive-modal-panel--small show-pass-barcode-modal-content">
 						<button
-							className="modal-close-btn"
+							className="eventive-modal-close-btn"
 							onClick={ closeModals }
 							aria-label="Close"
 						>
@@ -361,16 +433,16 @@ function AccountPassesApp( { bucket } ) {
 			{ /* Edit Modal */ }
 			{ showEditModal && editingPass && (
 				<div
-					className="eventive-edit-pass-modal is-open"
+					className="eventive-modal-overlay"
 					onClick={ ( e ) =>
 						e.target.classList.contains(
-							'eventive-edit-pass-modal'
+							'eventive-modal-overlay'
 						) && closeModals()
 					}
 				>
-					<div className="edit-pass-modal-content">
+					<div className="eventive-modal-panel edit-pass-modal-content">
 						<button
-							className="modal-close-btn"
+							className="eventive-modal-close-btn"
 							onClick={ closeModals }
 							aria-label="Close"
 						>

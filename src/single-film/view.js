@@ -57,7 +57,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 						const tagsHTML = ( film.tags || [] )
 							.map(
 								( tag ) =>
-									`<span class="film-tag">${ tag.name }</span>`
+									`<span class="eventive-tag-pill">${ tag.name }</span>`
 							)
 							.join( '' );
 
@@ -72,7 +72,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 										<div><strong>Year:</strong> ${ film.details?.year || 'N/A' }</div>
 										<div><strong>Language:</strong> ${ film.details?.language || 'N/A' }</div>
 									</div>
-									<div class="film-tags">${ tagsHTML }</div>
+									<div class="eventive-tag-pills">${ tagsHTML }</div>
 								</div>
 								<div id="film-events-container">
 									<h2>Upcoming Screenings</h2>
@@ -237,24 +237,37 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			}
 		};
 
-		if ( window.Eventive && window.Eventive._ready ) {
+		let hasRun = false;
+
+		const guardedFetchAndRender = () => {
+			if ( hasRun ) {
+				return;
+			}
+			hasRun = true;
+
+			// Clean up listener
+			if ( window.Eventive && window.Eventive.off ) {
+				window.Eventive.off( 'ready', guardedFetchAndRender );
+			}
+
 			fetchAndRenderFilm();
+		};
+
+		if ( window.Eventive && window.Eventive._ready ) {
+			guardedFetchAndRender();
 		} else if (
 			window.Eventive &&
 			typeof window.Eventive.on === 'function'
 		) {
-			window.Eventive.on( 'ready', fetchAndRenderFilm );
+			window.Eventive.on( 'ready', guardedFetchAndRender );
 		} else {
 			setTimeout( () => {
 				if (
 					window.Eventive &&
 					typeof window.Eventive.request === 'function'
 				) {
-					fetchAndRenderFilm();
+					guardedFetchAndRender();
 				} else {
-					console.error(
-						'[eventive-single-film] Eventive API not available'
-					);
 					const container = block.querySelector(
 						'#single-film-or-event-container'
 					);

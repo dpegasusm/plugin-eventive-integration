@@ -720,7 +720,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 					.map( ( tag ) => {
 						const fg = getTextColor( tag.color || '#e0e0e0' );
 						return (
-							'<span class="tag-label" style="background-color:' +
+							'<span class="eventive-tag-pill" style="background-color:' +
 							tag.color +
 							';color:' +
 							fg +
@@ -761,7 +761,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 				}
 				if ( tagLabels ) {
 					itemHtml +=
-						'<div class="event-tags tag-container eventive-tags">' +
+						'<div class="eventive-tag-pills">' +
 						tagLabels +
 						'</div>';
 				}
@@ -824,20 +824,20 @@ document.addEventListener( 'DOMContentLoaded', () => {
 					  ( event.id || '' ) +
 					  '"></div>';
 
-				let cardHtml = '<div class="event-card">';
+				let cardHtml = '<div class="eventive-card">';
 				if ( imageUrl ) {
 					cardHtml +=
-						'<div class="event-card-image"><img src="' +
+						'<img class="eventive-card-image" src="' +
 						imageUrl +
 						'" alt="' +
 						name +
-						'" /></div>';
+						'" />';
 				}
-				cardHtml += '<div class="event-card-body">';
-				cardHtml += '<h4 class="event-card-title">' + name + '</h4>';
+				cardHtml += '<div class="eventive-card-content">';
+				cardHtml += '<h4 class="eventive-card-title">' + name + '</h4>';
 				if ( startHtml ) {
 					cardHtml +=
-						'<p class="event-card-date">' + startHtml + '</p>';
+						'<p class="eventive-card-meta">' + startHtml + '</p>';
 				}
 				cardHtml += ticketBtn;
 				cardHtml += '</div></div>';
@@ -896,7 +896,18 @@ document.addEventListener( 'DOMContentLoaded', () => {
 				return;
 			}
 
+			let hasRun = false;
 			const run = () => {
+				if ( hasRun ) {
+					return;
+				}
+				hasRun = true;
+
+				// Clean up listener
+				if ( window.Eventive && window.Eventive.off ) {
+					window.Eventive.off( 'ready', run );
+				}
+
 				const urlTag =
 					new URLSearchParams( window.location.search ).get(
 						'tag-id'

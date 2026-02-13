@@ -889,6 +889,14 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			// Ensure Eventive is ready before fetching
 			const ensureEventiveReady = () => {
 				return new Promise( ( resolve ) => {
+					const onReady = () => {
+						// Clean up listener
+						if ( window.Eventive && window.Eventive.off ) {
+							window.Eventive.off( 'ready', onReady );
+						}
+						resolve();
+					};
+
 					if (
 						window.Eventive &&
 						typeof window.Eventive.on === 'function'
@@ -896,16 +904,13 @@ document.addEventListener( 'DOMContentLoaded', () => {
 						if ( window.Eventive._ready ) {
 							resolve();
 						} else {
-							window.Eventive.on( 'ready', resolve );
+							window.Eventive.on( 'ready', onReady );
 						}
 					} else {
 						// Retry with timeout
 						let tries = 0;
 						const wait = () => {
 							if ( ++tries > 40 ) {
-								console.error(
-									'[eventive-native-year-round] Eventive loader timeout'
-								);
 								resolve();
 								return;
 							}
@@ -913,7 +918,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 								if ( window.Eventive._ready ) {
 									resolve();
 								} else {
-									window.Eventive.on( 'ready', resolve );
+									window.Eventive.on( 'ready', onReady );
 								}
 							} else {
 								setTimeout( wait, 125 );

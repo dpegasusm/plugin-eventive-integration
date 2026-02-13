@@ -86,119 +86,59 @@
 			}
 		}
 
-		.modal {
-			display: none;
-			position: fixed;
-			z-index: 1000;
-			left: 0;
-			top: 0;
-			width: 100%;
-			height: 100%;
-			overflow: auto;
-			background-color: rgba(0, 0, 0, 0.4);
+		.eventive-modal-panel {
 
-			.modal-content {
-				background-color: #fff;
-				margin: 5% auto;
-				padding: 20px;
-				border: 1px solid #888;
-				width: 80%;
-				max-width: 800px;
-				border-radius: 8px;
-				position: relative;
+			.event-details {
+				display: grid;
+				grid-template-columns: 1fr auto;
+				gap: 20px;
 
-				.close {
-					color: #aaa;
-					float: right;
-					font-size: 28px;
-					font-weight: 700;
-					cursor: pointer;
+				.details-left {
 
-					&:hover,
-					&:focus {
-						color: #000;
+					h2 {
+						margin-top: 0;
 					}
 				}
 
-				.event-details {
-					display: grid;
-					grid-template-columns: 1fr auto;
-					gap: 20px;
+				.details-right {
+					display: flex;
+					flex-direction: column;
+					gap: 12px;
+					padding-top: 20px;
+				}
 
-					.details-left {
+				.films-container {
+					grid-column: 1 / -1;
+					margin-top: 20px;
 
-						h2 {
-							margin-top: 0;
+					.film-card {
+						display: grid;
+						grid-template-columns: 1fr auto;
+						gap: 20px;
+						padding: 20px;
+						background: #f9f9f9;
+						border-radius: 8px;
+						margin-bottom: 16px;
+
+						&-content {
+							flex: 1;
 						}
 
-						.venue-tag {
-							display: inline-block;
-							padding: 4px 8px;
-							border-radius: 4px;
-							font-weight: 600;
-						}
+						.film-poster {
 
-						.tags {
-							display: flex;
-							flex-wrap: wrap;
-							gap: 8px;
-							margin-top: 12px;
-
-							.tag-button {
-								padding: 4px 12px;
-								border: none;
+							img {
+								max-width: 200px;
+								height: auto;
 								border-radius: 4px;
-								font-size: 12px;
-								cursor: pointer;
 							}
 						}
-					}
 
-					.details-right {
-						display: flex;
-						flex-direction: column;
-						gap: 12px;
-					}
-
-					.films-container {
-						grid-column: 1 / -1;
-						margin-top: 20px;
-
-						.film-card {
-							display: grid;
-							grid-template-columns: 1fr auto;
-							gap: 20px;
-							padding: 20px;
-							background: #f9f9f9;
-							border-radius: 8px;
-							margin-bottom: 16px;
-
-							&-content {
-								flex: 1;
-							}
-
-							.film-poster {
-
-								img {
-									max-width: 200px;
-									height: auto;
-									border-radius: 4px;
-								}
-							}
-
-							h3 {
-								margin-top: 0;
-							}
+						h3 {
+							margin-top: 0;
 						}
 					}
 				}
 			}
 		}
-	}
-
-	.eventive-calendar-loading {
-		text-align: center;
-		padding: 40px;
-		color: #666;
 	}
 }
