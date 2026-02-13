@@ -206,6 +206,7 @@
 	font-family: Lato, sans-serif !important;
 	font-size: 1em;
 	color: rgb(33, 33, 33) !important;
+	border-color: transparent !important;
 }
 
 .Eventive--OrderQuantitySelect thead {
@@ -332,6 +333,57 @@
 	color: var(--button-text, #fff);
 	border: none;
 	font-weight: 600;
+}
+
+/* ==========================================================================
+   SHARED SECTION BOX
+   Muted background container for grouping content (date groups, nav bars, etc.)
+   Used in: events, events-list, events-week, film-showtimes, native-year-round
+   ========================================================================== */
+
+.eventive-section-box,
+.eventive-notice,
+.wp-block-eventive-events .event-group,
+.wp-block-eventive-events-list .event-group,
+.wp-block-eventive-native-year-round .yr-no-events,
+.wp-block-eventive-native-year-round .event-day-group,
+.wp-block-eventive-events-week .weekly-calendar-controls,
+.wp-block-eventive-native-year-round .weekly-calendar-container,
+.wp-block-eventive-native-year-round .eventive-calendar-buttons,
+.wp-block-eventive-film-showtimes .eventive-showtime-date-group,
+.wp-block-eventive-film-details .film-events .event-item,
+.wp-block-eventive-film-details .film-events .event-box,
+.wp-block-eventive-film-details #film-details-container,
+.wp-block-eventive-film-details .eventive-film-details,
+.wp-block-eventive-film-details .film-events {
+	background-color: var(--background-color-muted, #f9f9f9);
+	border: 1px solid var(--border-color, #ddd);
+	border-radius: 8px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	padding: 16px;
+}
+
+/* ==========================================================================
+   SHARED ITEM BOX
+   White interactive card for individual items (tickets, passes, venues, etc.)
+   Used in: account-passes, account-tickets, events-list, film-details,
+            native-year-round, venues
+   ========================================================================== */
+
+.eventive-item-box,
+.wp-block-eventive-account-passes .eventive-pass-card,
+.wp-block-eventive-account-tickets .eventive-ticket-card,
+.wp-block-eventive-venues .eventive-venue-card,
+.wp-block-eventive-events-list .event-list-item,
+.wp-block-eventive-events-list .event-item,
+.wp-block-eventive-native-year-round .event-item,
+.wp-block-eventive-native-year-round .yr-card,
+.wp-block-eventive-film-details {
+	background: var(--card-bg, #fff);
+	border: 1px solid var(--border-color, #ddd);
+	border-radius: 8px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	padding: 16px;
 }
 
 /* ==========================================================================
