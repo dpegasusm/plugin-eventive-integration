@@ -28,12 +28,19 @@ function EventiveAccount( { childNodes } ) {
 					const loggedIn = window.Eventive.isLoggedIn();
 					setIsLoggedIn( loggedIn );
 				} catch ( e ) {
-					console.error( '[eventive-account] login check error', e );
 					setIsLoggedIn( false );
 				} finally {
 					setIsLoading( false );
 				}
 			}
+		};
+
+		const handleLogin = () => {
+			setIsLoggedIn( true );
+		};
+
+		const handleLogoutEvent = () => {
+			setIsLoggedIn( false );
 		};
 
 		if ( ! window.Eventive || ! window.Eventive.on ) {
@@ -52,13 +59,19 @@ function EventiveAccount( { childNodes } ) {
 
 		// Also listen for auth state changes
 		try {
-			window.Eventive.on( 'login', () => {
-				setIsLoggedIn( true );
-			} );
-			window.Eventive.on( 'logout', () => {
-				setIsLoggedIn( false );
-			} );
+			window.Eventive.on( 'login', handleLogin );
+			window.Eventive.on( 'logout', handleLogoutEvent );
 		} catch ( _ ) {}
+
+		return () => {
+			if ( window.Eventive && window.Eventive.off ) {
+				try {
+					window.Eventive.off( 'ready', checkLogin );
+					window.Eventive.off( 'login', handleLogin );
+					window.Eventive.off( 'logout', handleLogoutEvent );
+				} catch ( _ ) {}
+			}
+		};
 	}, [] );
 
 	// Move child nodes into the ref container after render

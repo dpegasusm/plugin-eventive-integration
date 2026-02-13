@@ -17,11 +17,26 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 	// Ensure Eventive API is loaded
 	if ( window.Eventive && window.Eventive.on ) {
-		window.Eventive.on( 'ready', async function () {
+		let hasRun = false;
+		const onReady = async function () {
+			if ( hasRun ) {
+				return;
+			}
+			hasRun = true;
+
+			// Clean up listener
+			if ( window.Eventive && window.Eventive.off ) {
+				window.Eventive.off( 'ready', onReady );
+			}
+
 			blocks.forEach( initializeWeeklyCalendar );
-		} );
-	} else {
-		console.error( 'Eventive API is not loaded or not ready.' );
+		};
+
+		if ( window.Eventive._ready || window.Eventive.ready ) {
+			onReady();
+		} else {
+			window.Eventive.on( 'ready', onReady );
+		}
 	}
 
 	async function initializeWeeklyCalendar( block ) {

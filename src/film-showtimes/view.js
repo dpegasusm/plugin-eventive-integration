@@ -134,24 +134,37 @@ document.addEventListener( 'DOMContentLoaded', () => {
 				} );
 		};
 
-		if ( window.Eventive && window.Eventive._ready ) {
+		let hasRun = false;
+
+		const guardedFetchAndRender = () => {
+			if ( hasRun ) {
+				return;
+			}
+			hasRun = true;
+
+			// Clean up listener
+			if ( window.Eventive && window.Eventive.off ) {
+				window.Eventive.off( 'ready', guardedFetchAndRender );
+			}
+
 			fetchAndRenderShowtimes();
+		};
+
+		if ( window.Eventive && window.Eventive._ready ) {
+			guardedFetchAndRender();
 		} else if (
 			window.Eventive &&
 			typeof window.Eventive.on === 'function'
 		) {
-			window.Eventive.on( 'ready', fetchAndRenderShowtimes );
+			window.Eventive.on( 'ready', guardedFetchAndRender );
 		} else {
 			setTimeout( () => {
 				if (
 					window.Eventive &&
 					typeof window.Eventive.request === 'function'
 				) {
-					fetchAndRenderShowtimes();
+					guardedFetchAndRender();
 				} else {
-					console.error(
-						'[eventive-film-showtimes] Eventive API not available'
-					);
 					block.innerHTML =
 						'<div class="eventive-error">Eventive API not available</div>';
 				}

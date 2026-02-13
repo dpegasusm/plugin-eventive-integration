@@ -6,7 +6,7 @@
  */
 
 import { createRoot } from '@wordpress/element';
-import { useState, useEffect } from '@wordpress/element';
+import { useState, useEffect, useRef } from '@wordpress/element';
 
 // Helper functions
 function pickFirst( ...args ) {
@@ -189,10 +189,25 @@ function AccountTicketsApp( { bucket } ) {
 	const [ showBarcodeModal, setShowBarcodeModal ] = useState( false );
 	const [ selectedTicket, setSelectedTicket ] = useState( null );
 
+	const hasFetchedRef = useRef( false );
+
 	useEffect( () => {
+		let cancelled = false;
+		let tries = 0;
+		const maxTries = 60;
+
 		const checkLoginAndFetch = () => {
+			if ( cancelled ) {
+				return;
+			}
+
 			if ( ! window.Eventive || ! window.Eventive.isLoggedIn ) {
-				setTimeout( checkLoginAndFetch, 100 );
+				tries++;
+				if ( tries < maxTries ) {
+					setTimeout( checkLoginAndFetch, 100 );
+				} else {
+					setIsLoading( false );
+				}
 				return;
 			}
 
@@ -200,11 +215,12 @@ function AccountTicketsApp( { bucket } ) {
 				const loggedIn = window.Eventive.isLoggedIn();
 				setIsLoggedIn( loggedIn );
 
-				if ( loggedIn ) {
-					fetchTickets();
+				if ( loggedIn && ! hasFetchedRef.current ) {
+					hasFetchedRef.current = true;
+					fetchTickets( cancelled );
 				}
 			} catch ( error ) {
-				console.error( 'Error checking login:', error );
+				// Silently handle check errors
 			} finally {
 				setIsLoading( false );
 			}
@@ -212,12 +228,30 @@ function AccountTicketsApp( { bucket } ) {
 
 		if ( window.Eventive && window.Eventive.on ) {
 			window.Eventive.on( 'ready', checkLoginAndFetch );
-		} else {
-			checkLoginAndFetch();
 		}
+		checkLoginAndFetch();
+
+		return () => {
+			cancelled = true;
+			if ( window.Eventive && window.Eventive.off ) {
+				window.Eventive.off( 'ready', checkLoginAndFetch );
+			}
+		};
 	}, [] );
 
-	const fetchTickets = () => {
+	const fetchTickets = ( cancelled ) => {
+		// Double-check login before making any authenticated request
+		if (
+			! window.Eventive ||
+			! window.Eventive.isLoggedIn ||
+			! window.Eventive.isLoggedIn()
+		) {
+			setIsLoggedIn( false );
+			setIsLoading( false );
+			hasFetchedRef.current = false;
+			return;
+		}
+
 		const qs = {};
 		if ( bucket ) {
 			try {
@@ -233,26 +267,64 @@ function AccountTicketsApp( { bucket } ) {
 			authenticatePerson: true,
 		} )
 			.then( ( res ) => {
+				if ( cancelled ) {
+					return;
+				}
 				const list = ( res && ( res.tickets || res ) ) || [];
 				setTickets( list );
 			} )
-			.catch( () => {
-				// Fallback: people/self/tickets_including_global
+			.catch( ( err ) => {
+				if ( cancelled ) {
+					return;
+				}
+				// If the error is auth-related, mark as not logged in
+				const errMsg =
+					( err && ( err.message || err.error || '' ) ) + '';
+				if (
+					errMsg.includes( 'InvalidCredentials' ) ||
+					errMsg.includes( '401' ) ||
+					errMsg.includes( 'Unauthorized' ) ||
+					errMsg.includes( 'not logged in' )
+				) {
+					setIsLoggedIn( false );
+					setIsLoading( false );
+					hasFetchedRef.current = false;
+					return;
+				}
+
+				// Fallback for non-auth errors: people/self/tickets_including_global
 				window.Eventive.request( {
 					method: 'GET',
 					path: 'people/self/tickets_including_global',
 					qs,
 					authenticatePerson: true,
 				} )
-					.then( ( res ) => {
-						const list = ( res && ( res.tickets || res ) ) || [];
+					.then( ( res2 ) => {
+						if ( cancelled ) {
+							return;
+						}
+						const list =
+							( res2 && ( res2.tickets || res2 ) ) || [];
 						setTickets( list );
 					} )
-					.catch( ( err ) => {
-						console.error(
-							'[eventive-account-tickets] Error fetching tickets:',
-							err
-						);
+					.catch( ( fallbackErr ) => {
+						if ( cancelled ) {
+							return;
+						}
+						const fbMsg =
+							( fallbackErr &&
+								( fallbackErr.message ||
+									fallbackErr.error ||
+									'' ) ) + '';
+						if (
+							fbMsg.includes( 'InvalidCredentials' ) ||
+							fbMsg.includes( '401' ) ||
+							fbMsg.includes( 'Unauthorized' ) ||
+							fbMsg.includes( 'not logged in' )
+						) {
+							setIsLoggedIn( false );
+							hasFetchedRef.current = false;
+						}
 					} );
 			} );
 	};

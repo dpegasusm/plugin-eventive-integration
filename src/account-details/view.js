@@ -6,7 +6,7 @@
  */
 
 import { createRoot } from '@wordpress/element';
-import { useState, useEffect } from '@wordpress/element';
+import { useState, useEffect, useRef } from '@wordpress/element';
 
 /**
  * Helper: detect if this instance is inside the parent [eventive-account]
@@ -134,10 +134,25 @@ function AccountDetailsApp() {
 	const [ editingKey, setEditingKey ] = useState( null );
 	const [ editValue, setEditValue ] = useState( '' );
 
+	const hasFetchedRef = useRef( false );
+
 	useEffect( () => {
+		let cancelled = false;
+		let tries = 0;
+		const maxTries = 60;
+
 		const checkLoginAndFetch = async () => {
+			if ( cancelled ) {
+				return;
+			}
+
 			if ( ! window.Eventive || ! window.Eventive.isLoggedIn ) {
-				setTimeout( checkLoginAndFetch, 100 );
+				tries++;
+				if ( tries < maxTries ) {
+					setTimeout( checkLoginAndFetch, 100 );
+				} else {
+					setIsLoading( false );
+				}
 				return;
 			}
 
@@ -145,32 +160,23 @@ function AccountDetailsApp() {
 				const loggedIn = window.Eventive.isLoggedIn();
 				setIsLoggedIn( loggedIn );
 
-				if ( loggedIn ) {
+				if ( loggedIn && ! hasFetchedRef.current ) {
+					hasFetchedRef.current = true;
+
 					// Use people/self endpoint
 					const resp = await window.Eventive.request( {
 						method: 'GET',
 						path: 'people/self',
 						authenticatePerson: true,
 					} );
+
+					if ( cancelled ) {
+						return;
+					}
+
 					const person = resp && ( resp.person || resp );
 					window.eventivePersonId = person && person.id;
 					const normalized = normalizePerson( person || {} );
-
-					if (
-						! normalized ||
-						Object.keys( normalized ).length === 0
-					) {
-						console.warn(
-							'[account-details] Empty/unknown person payload from people/self',
-							resp
-						);
-					} else {
-						console.debug(
-							'[account-details] normalized person',
-							normalized
-						);
-					}
-
 					setDetails( normalized );
 
 					// Render Eventive buttons if available
@@ -186,32 +192,38 @@ function AccountDetailsApp() {
 					}, 100 );
 				}
 			} catch ( error ) {
-				console.error(
-					'[eventive-account-details] Error fetching account details:',
-					error
-				);
+				if ( cancelled ) {
+					return;
+				}
 
 				if (
 					error &&
 					( error.code === 'InvalidCredentials' ||
-						error.message === 'InvalidCredentials' )
+						error.message === 'InvalidCredentials' ||
+						( error.message && error.message.includes( '401' ) ) ||
+						( error.message && error.message.includes( 'Unauthorized' ) ) )
 				) {
 					setIsLoggedIn( false );
+					hasFetchedRef.current = false;
 				}
 			} finally {
-				setIsLoading( false );
+				if ( ! cancelled ) {
+					setIsLoading( false );
+				}
 			}
 		};
 
-		if ( ! window.Eventive || ! window.Eventive.on ) {
-			// If Eventive not available, show error after timeout
-			const fallbackTimer = setTimeout( () => {
-				setIsLoading( false );
-			}, 2500 );
-			return () => clearTimeout( fallbackTimer );
+		if ( window.Eventive && window.Eventive.on ) {
+			window.Eventive.on( 'ready', checkLoginAndFetch );
 		}
+		checkLoginAndFetch();
 
-		window.Eventive.on( 'ready', checkLoginAndFetch );
+		return () => {
+			cancelled = true;
+			if ( window.Eventive && window.Eventive.off ) {
+				window.Eventive.off( 'ready', checkLoginAndFetch );
+			}
+		};
 	}, [] );
 
 	const handleEdit = ( key, currentValue ) => {

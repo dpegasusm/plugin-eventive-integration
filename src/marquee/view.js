@@ -325,17 +325,33 @@ function initOneWrapper( wrapper ) {
 			} );
 	}
 
+	let hasRun = false;
+
+	const guardedRun = function () {
+		if ( hasRun ) {
+			return;
+		}
+		hasRun = true;
+
+		// Clean up listener
+		if ( window.Eventive && window.Eventive.off ) {
+			window.Eventive.off( 'ready', guardedRun );
+		}
+
+		run();
+	};
+
 	if ( window.Eventive && typeof window.Eventive.ready === 'function' ) {
-		window.Eventive.ready( run );
+		window.Eventive.ready( guardedRun );
 	} else if (
 		window.Eventive &&
 		window.Eventive.on &&
 		typeof window.Eventive.on === 'function'
 	) {
 		try {
-			window.Eventive.on( 'ready', run );
+			window.Eventive.on( 'ready', guardedRun );
 		} catch ( _ ) {
-			run();
+			guardedRun();
 		}
 	} else {
 		// Poll until Eventive.request exists
@@ -345,11 +361,11 @@ function initOneWrapper( wrapper ) {
 				window.Eventive &&
 				typeof window.Eventive.request === 'function'
 			) {
-				run();
+				guardedRun();
 				return;
 			}
 			if ( ++tries > 60 ) {
-				run();
+				guardedRun();
 				return;
 			}
 			setTimeout( poll, 50 );

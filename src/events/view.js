@@ -625,7 +625,18 @@ document.addEventListener( 'DOMContentLoaded', () => {
 				return;
 			}
 
+			let hasRun = false;
 			const run = () => {
+				if ( hasRun ) {
+					return;
+				}
+				hasRun = true;
+
+				// Clean up listener
+				if ( window.Eventive && window.Eventive.off ) {
+					window.Eventive.off( 'ready', run );
+				}
+
 				fetchEventsOnce( eventBucket, {
 					includePast: false,
 					includeVirtual: true,
@@ -634,11 +645,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 						allEvents = events;
 						renderEvents( events );
 					} )
-					.catch( ( error ) => {
-						console.error(
-							'[eventive-events] Error fetching events:',
-							error
-						);
+					.catch( () => {
 						block.innerHTML =
 							'<p class="error-message">Failed to load events.</p>';
 					} );

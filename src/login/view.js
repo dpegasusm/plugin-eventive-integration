@@ -6,7 +6,7 @@
  */
 
 import { createRoot } from '@wordpress/element';
-import { useState, useEffect } from '@wordpress/element';
+import { useState, useEffect, useRef } from '@wordpress/element';
 
 // Safari/ITP: request first-party storage access
 async function requestStorageAccessIfNeeded() {
@@ -78,10 +78,29 @@ function LoginApp( { loginLinkText, bucket } ) {
 	const [ userName, setUserName ] = useState( '' );
 	const [ isSubmitting, setIsSubmitting ] = useState( false );
 
+	const hasFetchedRef = useRef( false );
+
 	useEffect( () => {
+		let cancelled = false;
+		let tries = 0;
+		const maxTries = 60;
+
 		const checkLogin = async () => {
+			if ( cancelled ) {
+				return;
+			}
+
 			if ( ! window.Eventive || ! window.Eventive.isLoggedIn ) {
-				setTimeout( checkLogin, 100 );
+				tries++;
+				if ( tries < maxTries ) {
+					setTimeout( checkLogin, 100 );
+				} else {
+					setIsLoading( false );
+				}
+				return;
+			}
+
+			if ( hasFetchedRef.current ) {
 				return;
 			}
 
@@ -90,6 +109,7 @@ function LoginApp( { loginLinkText, bucket } ) {
 				setIsLoggedIn( loggedIn );
 
 				if ( loggedIn ) {
+					hasFetchedRef.current = true;
 					// Fetch user name - prefer first_name
 					try {
 						const resp = await window.Eventive.request( {
@@ -97,6 +117,9 @@ function LoginApp( { loginLinkText, bucket } ) {
 							path: 'people/self',
 							authenticatePerson: true,
 						} );
+						if ( cancelled ) {
+							return;
+						}
 						const person = resp && ( resp.person || resp );
 						const name =
 							person?.first_name ||
@@ -106,8 +129,9 @@ function LoginApp( { loginLinkText, bucket } ) {
 							'Friend';
 						setUserName( name );
 					} catch ( e ) {
-						console.error( 'Error fetching user info:', e );
-						setUserName( 'Friend' );
+						if ( ! cancelled ) {
+							setUserName( 'Friend' );
+						}
 					}
 				} else {
 					// Check if we have a stored token and try to hydrate
@@ -115,14 +139,21 @@ function LoginApp( { loginLinkText, bucket } ) {
 					if ( token ) {
 						try {
 							await loginWithEventiveTokenCompat( token );
+							if ( cancelled ) {
+								return;
+							}
 							const stillLoggedIn = window.Eventive.isLoggedIn();
 							if ( stillLoggedIn ) {
+								hasFetchedRef.current = true;
 								setIsLoggedIn( true );
 								const resp = await window.Eventive.request( {
 									method: 'GET',
 									path: 'people/self',
 									authenticatePerson: true,
 								} );
+								if ( cancelled ) {
+									return;
+								}
 								const person = resp && ( resp.person || resp );
 								const name =
 									person?.first_name ||
@@ -135,18 +166,26 @@ function LoginApp( { loginLinkText, bucket } ) {
 						} catch ( _ ) {}
 					}
 				}
-			} catch ( error ) {
-				console.error( 'Error checking login:', error );
+			} catch ( loginError ) {
+				// Silently handle check errors
 			} finally {
-				setIsLoading( false );
+				if ( ! cancelled ) {
+					setIsLoading( false );
+				}
 			}
 		};
 
 		if ( window.Eventive && window.Eventive.on ) {
 			window.Eventive.on( 'ready', checkLogin );
 		}
-
 		checkLogin();
+
+		return () => {
+			cancelled = true;
+			if ( window.Eventive && window.Eventive.off ) {
+				window.Eventive.off( 'ready', checkLogin );
+			}
+		};
 	}, [] );
 
 	const handleLogin = async ( e ) => {

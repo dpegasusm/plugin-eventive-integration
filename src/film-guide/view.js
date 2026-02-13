@@ -781,13 +781,28 @@ function initInstance( block ) {
 				} );
 		};
 
+		let hasRun = false;
+		const guardedRun = function () {
+			if ( hasRun ) {
+				return;
+			}
+			hasRun = true;
+
+			// Clean up listener
+			if ( window.Eventive && window.Eventive.off ) {
+				window.Eventive.off( 'ready', guardedRun );
+			}
+
+			run();
+		};
+
 		let attached = false;
 		try {
 			if (
 				window.Eventive &&
 				typeof window.Eventive.ready === 'function'
 			) {
-				window.Eventive.ready( run );
+				window.Eventive.ready( guardedRun );
 				attached = true;
 			}
 		} catch ( _ ) {}
@@ -798,7 +813,7 @@ function initInstance( block ) {
 					window.Eventive.on &&
 					typeof window.Eventive.on === 'function'
 				) {
-					window.Eventive.on( 'ready', run );
+					window.Eventive.on( 'ready', guardedRun );
 					attached = true;
 				}
 			} catch ( _ ) {}
@@ -810,11 +825,11 @@ function initInstance( block ) {
 					window.Eventive &&
 					typeof window.Eventive.request === 'function'
 				) {
-					run();
+					guardedRun();
 					return;
 				}
 				if ( ++tries > 60 ) {
-					run();
+					guardedRun();
 					return;
 				}
 				setTimeout( poll, 50 );

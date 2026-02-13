@@ -896,7 +896,18 @@ document.addEventListener( 'DOMContentLoaded', () => {
 				return;
 			}
 
+			let hasRun = false;
 			const run = () => {
+				if ( hasRun ) {
+					return;
+				}
+				hasRun = true;
+
+				// Clean up listener
+				if ( window.Eventive && window.Eventive.off ) {
+					window.Eventive.off( 'ready', run );
+				}
+
 				const urlTag =
 					new URLSearchParams( window.location.search ).get(
 						'tag-id'

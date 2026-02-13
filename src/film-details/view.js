@@ -501,7 +501,19 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 		// Main fetch and render
 		const init = () => {
+			let hasRun = false;
+
 			const fetchFilm = () => {
+				if ( hasRun ) {
+					return;
+				}
+				hasRun = true;
+
+				// Clean up listener
+				if ( window.Eventive && window.Eventive.off ) {
+					window.Eventive.off( 'ready', fetchFilm );
+				}
+
 				window.Eventive.request( {
 					method: 'GET',
 					path: `films/${ filmId }`,
@@ -511,11 +523,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 						renderFilm( film );
 						return fetchEvents();
 					} )
-					.catch( ( error ) => {
-						console.error(
-							'[eventive-film-details] Error fetching film:',
-							error
-						);
+					.catch( () => {
 						block.innerHTML =
 							'<div class="eventive-error">Error loading film details.</div>';
 					} );
@@ -536,9 +544,6 @@ document.addEventListener( 'DOMContentLoaded', () => {
 					) {
 						fetchFilm();
 					} else {
-						console.error(
-							'[eventive-film-details] Eventive API not available'
-						);
 						block.innerHTML =
 								'<div class="eventive-error">Error loading film details.</div>';
 					}

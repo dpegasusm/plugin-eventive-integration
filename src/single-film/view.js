@@ -237,24 +237,37 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			}
 		};
 
-		if ( window.Eventive && window.Eventive._ready ) {
+		let hasRun = false;
+
+		const guardedFetchAndRender = () => {
+			if ( hasRun ) {
+				return;
+			}
+			hasRun = true;
+
+			// Clean up listener
+			if ( window.Eventive && window.Eventive.off ) {
+				window.Eventive.off( 'ready', guardedFetchAndRender );
+			}
+
 			fetchAndRenderFilm();
+		};
+
+		if ( window.Eventive && window.Eventive._ready ) {
+			guardedFetchAndRender();
 		} else if (
 			window.Eventive &&
 			typeof window.Eventive.on === 'function'
 		) {
-			window.Eventive.on( 'ready', fetchAndRenderFilm );
+			window.Eventive.on( 'ready', guardedFetchAndRender );
 		} else {
 			setTimeout( () => {
 				if (
 					window.Eventive &&
 					typeof window.Eventive.request === 'function'
 				) {
-					fetchAndRenderFilm();
+					guardedFetchAndRender();
 				} else {
-					console.error(
-						'[eventive-single-film] Eventive API not available'
-					);
 					const container = block.querySelector(
 						'#single-film-or-event-container'
 					);
