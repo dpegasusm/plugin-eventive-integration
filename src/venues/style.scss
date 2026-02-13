@@ -58,27 +58,6 @@
 			object-fit: cover;
 		}
 	}
-
-	.eventive-venues-loading,
-	.eventive-venues-empty {
-		padding: 20px;
-		text-align: center;
-		color: #666;
-		font-style: italic;
-	}
-
-	.eventive-venues-error {
-		padding: 15px;
-		background-color: #fef7f1;
-		border-left: 4px solid #d63638;
-		color: #d63638;
-		border-radius: 2px;
-		margin: 15px 0;
-
-		p {
-			margin: 0;
-		}
-	}
 }
 
 // Responsive design

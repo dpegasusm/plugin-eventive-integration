@@ -538,23 +538,23 @@ document.addEventListener( 'DOMContentLoaded', () => {
 					let imageHTML = '';
 					if ( imageUrl ) {
 						imageHTML =
-							'<div class="event-image"><img src="' +
+							'<img class="eventive-card-image" src="' +
 							imageUrl +
 							'" alt="' +
 							name +
-							'" loading="lazy" decoding="async" /></div>';
+							'" loading="lazy" decoding="async" />';
 					}
 
 					let descriptionHTML = '';
 					if ( showDescription && desc ) {
 						descriptionHTML =
-							'<p class="event-description">' + desc + '</p>';
+							'<p class="eventive-card-description">' + desc + '</p>';
 					}
 
 					let venueHTML = '';
 					if ( venueName ) {
 						venueHTML =
-							'<p class="event-venue">' + venueName + '</p>';
+							'<p class="eventive-card-meta">' + venueName + '</p>';
 					}
 
 					// Film link
@@ -569,7 +569,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 							const filmName =
 								film.name || film.title || 'Film Details';
 							filmLinkHTML =
-								'<p class="event-film-link"><a href="' +
+								'<p class="eventive-card-link"><a href="' +
 								filmUrl +
 								'">' +
 								filmName +
@@ -577,13 +577,13 @@ document.addEventListener( 'DOMContentLoaded', () => {
 						}
 					}
 
-					html += '<div class="event-item">';
+					html += '<div class="eventive-card">';
 					if ( imageHTML ) {
 						html += imageHTML;
 					}
-					html += '<div class="event-content">';
-					html += '<h4 class="event-title">' + name + '</h4>';
-					html += '<p class="event-time">' + time + '</p>';
+					html += '<div class="eventive-card-content">';
+					html += '<h4 class="eventive-card-title">' + name + '</h4>';
+					html += '<p class="eventive-card-meta">' + time + '</p>';
 					if ( venueHTML ) {
 						html += venueHTML;
 					}

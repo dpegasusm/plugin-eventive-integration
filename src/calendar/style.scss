@@ -104,6 +104,7 @@
 					display: flex;
 					flex-direction: column;
 					gap: 12px;
+					padding-top: 20px;
 				}
 
 				.films-container {
@@ -139,11 +140,5 @@
 				}
 			}
 		}
-	}
-
-	.eventive-calendar-loading {
-		text-align: center;
-		padding: 40px;
-		color: #666;
 	}
 }

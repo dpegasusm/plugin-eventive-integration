@@ -277,6 +277,7 @@ class Eventive_API {
 			'eventBucket'   => $this->get_api_default_bucket_id(),
 			'restUrl'       => esc_url_raw( rest_url( 'eventive/v1' ) ),
 			'eventNonce'    => wp_create_nonce( 'eventive_api_nonce' ),
+			'pluginUrl'     => EVENTIVE_PLUGIN,
 		);
 	}
 

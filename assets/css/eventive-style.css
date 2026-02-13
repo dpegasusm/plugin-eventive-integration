@@ -86,6 +86,113 @@
 	color: #000;
 }
 
+.eventive-modal-panel h2 {
+	margin-top: 0;
+	color: var(--heading-color, #333);
+}
+
+.eventive-modal-panel p {
+	margin: 10px 0;
+	color: var(--text-color, #555);
+}
+
+/* ==========================================================================
+   SHARED CARD SYSTEM
+   Used in: film-guide, events, events-list
+   ========================================================================== */
+
+.eventive-card {
+	border-radius: 8px;
+	overflow: hidden;
+	background: #fff;
+	border: 1px solid var(--border-color, #e0e0e0);
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	transition: box-shadow 0.3s ease;
+}
+
+.eventive-card:hover {
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.eventive-card-image {
+	width: 100%;
+	height: auto;
+	display: block;
+	object-fit: cover;
+}
+
+.eventive-card-content {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	padding: 15px;
+	color: var(--text-color, #333);
+	line-height: 1.5;
+}
+
+.eventive-card-title {
+	font-size: 1.2em;
+	font-weight: 700;
+	margin: 0;
+	color: var(--heading-color, #111);
+}
+
+.eventive-card-meta {
+	font-size: 0.9em;
+	color: #666;
+	margin: 0;
+}
+
+.eventive-card-description {
+	font-size: 0.9em;
+	color: var(--text-color, #555);
+	line-height: 1.6;
+	margin: 0;
+}
+
+.eventive-card-link a {
+	display: inline-block;
+	margin-top: 8px;
+	color: var(--link-color, #0073aa);
+	text-decoration: none;
+	font-weight: 700;
+	transition: color 0.2s;
+}
+
+.eventive-card-link a:hover {
+	color: var(--link-hover-color, #005177);
+	text-decoration: underline;
+}
+
+/* Horizontal card variant (used in list views) */
+.eventive-card--horizontal {
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+}
+
+.eventive-card--horizontal .eventive-card-image {
+	width: 180px;
+	min-width: 180px;
+	height: auto;
+	object-fit: cover;
+}
+
+.eventive-card--horizontal .eventive-card-content {
+	flex: 1;
+}
+
+@media (max-width: 600px) {
+	.eventive-card--horizontal {
+		flex-direction: column;
+	}
+
+	.eventive-card--horizontal .eventive-card-image {
+		width: 100%;
+		min-width: unset;
+	}
+}
+
 /* ==========================================================================
    EVENTIVE CHECKOUT TABLE WIDGET
    ========================================================================== */
@@ -220,19 +327,11 @@
    ========================================================================== */
 
 .eventive-button {
-	display: inline-block;
-	padding: 10px 16px;
-	background-color: var(--button-bg, #0073aa);
+	display: block;
+	margin: 10px auto;
 	color: var(--button-text, #fff);
 	border: none;
-	border-radius: 4px;
-	cursor: pointer;
 	font-weight: 600;
-	transition: background-color 0.3s ease;
-}
-
-.eventive-button:hover {
-	background-color: var(--hover-color, #005a87);
 }
 
 /* ==========================================================================
@@ -295,10 +394,13 @@
    Used in: account, film-meta, film-showtimes
    ========================================================================== */
 
-.eventive-loading {
+.eventive-loading,
+.eventive-no-showtimes {
 	text-align: center;
 	padding: 1.5em;
 	font-style: italic;
+	border-radius: 4px;
+	background-color: #f5f5f5;
 }
 
 .eventive-error {
@@ -306,6 +408,8 @@
 	padding: 1.5em;
 	font-style: italic;
 	color: #c00;
+	border-radius: 4px;
+	background-color: #fee;
 }
 
 /* ==========================================================================

@@ -824,20 +824,20 @@ document.addEventListener( 'DOMContentLoaded', () => {
 					  ( event.id || '' ) +
 					  '"></div>';
 
-				let cardHtml = '<div class="event-card">';
+				let cardHtml = '<div class="eventive-card">';
 				if ( imageUrl ) {
 					cardHtml +=
-						'<div class="event-card-image"><img src="' +
+						'<img class="eventive-card-image" src="' +
 						imageUrl +
 						'" alt="' +
 						name +
-						'" /></div>';
+						'" />';
 				}
-				cardHtml += '<div class="event-card-body">';
-				cardHtml += '<h4 class="event-card-title">' + name + '</h4>';
+				cardHtml += '<div class="eventive-card-content">';
+				cardHtml += '<h4 class="eventive-card-title">' + name + '</h4>';
 				if ( startHtml ) {
 					cardHtml +=
-						'<p class="event-card-date">' + startHtml + '</p>';
+						'<p class="eventive-card-meta">' + startHtml + '</p>';
 				}
 				cardHtml += ticketBtn;
 				cardHtml += '</div></div>';

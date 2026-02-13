@@ -494,7 +494,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 					const listEl = block.querySelector( '.film-events' );
 					if ( listEl ) {
 						listEl.innerHTML =
-							'<div>Error loading events for this film.</div>';
+							'<div class="eventive-error">Error loading events for this film.</div>';
 					}
 				} );
 		};
@@ -517,7 +517,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 							error
 						);
 						block.innerHTML =
-							'<div>Error loading film details.</div>';
+							'<div class="eventive-error">Error loading film details.</div>';
 					} );
 			};
 
@@ -540,7 +540,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 							'[eventive-film-details] Eventive API not available'
 						);
 						block.innerHTML =
-							'<div>Error loading film details.</div>';
+								'<div class="eventive-error">Error loading film details.</div>';
 					}
 				}, 1000 );
 			}

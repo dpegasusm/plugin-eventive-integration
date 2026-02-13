@@ -1,0 +1,148 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="900" viewBox="0 0 600 900">
+  <defs>
+    <!-- Background gradient -->
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1a1a2e"/>
+      <stop offset="50%" stop-color="#16213e"/>
+      <stop offset="100%" stop-color="#0f3460"/>
+    </linearGradient>
+    <!-- Accent glow -->
+    <radialGradient id="glow" cx="50%" cy="45%" r="40%">
+      <stop offset="0%" stop-color="#e94560" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#e94560" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Film strip perforation pattern -->
+    <pattern id="perfs" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+      <rect width="40" height="40" fill="none"/>
+      <rect x="12" y="12" width="16" height="16" rx="3" fill="#0d1b2a" opacity="0.5"/>
+    </pattern>
+    <!-- Subtle grain texture -->
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise"/>
+      <feColorMatrix type="saturate" values="0" in="noise" result="mono"/>
+      <feBlend in="SourceGraphic" in2="mono" mode="multiply" result="blend"/>
+      <feComponentTransfer in="blend">
+        <feFuncA type="linear" slope="0.08"/>
+      </feComponentTransfer>
+      <feComposite in="SourceGraphic" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="600" height="900" fill="url(#bg)"/>
+
+  <!-- Ambient glow -->
+  <rect width="600" height="900" fill="url(#glow)"/>
+
+  <!-- Film strip - left edge -->
+  <rect x="0" y="0" width="48" height="900" fill="#111827" opacity="0.7"/>
+  <g opacity="0.5">
+    <rect x="8" y="16" width="28" height="20" rx="3" fill="#0a0f1a"/>
+    <rect x="8" y="56" width="28" height="20" rx="3" fill="#0a0f1a"/>
+    <rect x="8" y="96" width="28" height="20" rx="3" fill="#0a0f1a"/>
+    <rect x="8" y="136" width="28" height="20" rx="3" fill="#0a0f1a"/>
+    <rect x="8" y="176" width="28" height="20" rx="3" fill="#0a0f1a"/>
+    <rect x="8" y="216" width="28" height="20" rx="3" fill="#0a0f1a"/>
+    <rect x="8" y="256" width="28" height="20" rx="3" fill="#0a0f1a"/>
+    <rect x="8" y="296" width="28" height="20" rx="3" fill="#0a0f1a"/>
+    <rect x="8" y="336" width="28" height="20" rx="3" fill="#0a0f1a"/>
+    <rect x="8" y="376" width="28" height="20" rx="3" fill="#0a0f1a"/>
+    <rect x="8" y="416" width="28" height="20" rx="3" fill="#0a0f1a"/>
+    <rect x="8" y="456" width="28" height="20" rx="3" fill="#0a0f1a"/>
+    <rect x="8" y="496" width="28" height="20" rx="3" fill="#0a0f1a"/>
+    <rect x="8" y="536" width="28" height="20" rx="3" fill="#0a0f1a"/>
+    <rect x="8" y="576" width="28" height="20" rx="3" fill="#0a0f1a"/>
+    <rect x="8" y="616" width="28" height="20" rx="3" fill="#0a0f1a"/>
+    <rect x="8" y="656" width="28" height="20" rx="3" fill="#0a0f1a"/>
+    <rect x="8" y="696" width="28" height="20" rx="3" fill="#0a0f1a"/>
+    <rect x="8" y="736" width="28" height="20" rx="3" fill="#0a0f1a"/>
+    <rect x="8" y="776" width="28" height="20" rx="3" fill="#0a0f1a"/>
+    <rect x="8" y="816" width="28" height="20" rx="3" fill="#0a0f1a"/>
+    <rect x="8" y="856" width="28" height="20" rx="3" fill="#0a0f1a"/>
+  </g>
+
+  <!-- Film strip - right edge -->
+  <rect x="552" y="0" width="48" height="900" fill="#111827" opacity="0.7"/>
+  <g opacity="0.5">
+    <rect x="564" y="16" width="28" height="20" rx="3" fill="#0a0f1a"/>
+    <rect x="564" y="56" width="28" height="20" rx="3" fill="#0a0f1a"/>
+    <rect x="564" y="96" width="28" height="20" rx="3" fill="#0a0f1a"/>
+    <rect x="564" y="136" width="28" height="20" rx="3" fill="#0a0f1a"/>
+    <rect x="564" y="176" width="28" height="20" rx="3" fill="#0a0f1a"/>
+    <rect x="564" y="216" width="28" height="20" rx="3" fill="#0a0f1a"/>
+    <rect x="564" y="256" width="28" height="20" rx="3" fill="#0a0f1a"/>
+    <rect x="564" y="296" width="28" height="20" rx="3" fill="#0a0f1a"/>
+    <rect x="564" y="336" width="28" height="20" rx="3" fill="#0a0f1a"/>
+    <rect x="564" y="376" width="28" height="20" rx="3" fill="#0a0f1a"/>
+    <rect x="564" y="416" width="28" height="20" rx="3" fill="#0a0f1a"/>
+    <rect x="564" y="456" width="28" height="20" rx="3" fill="#0a0f1a"/>
+    <rect x="564" y="496" width="28" height="20" rx="3" fill="#0a0f1a"/>
+    <rect x="564" y="536" width="28" height="20" rx="3" fill="#0a0f1a"/>
+    <rect x="564" y="576" width="28" height="20" rx="3" fill="#0a0f1a"/>
+    <rect x="564" y="616" width="28" height="20" rx="3" fill="#0a0f1a"/>
+    <rect x="564" y="656" width="28" height="20" rx="3" fill="#0a0f1a"/>
+    <rect x="564" y="696" width="28" height="20" rx="3" fill="#0a0f1a"/>
+    <rect x="564" y="736" width="28" height="20" rx="3" fill="#0a0f1a"/>
+    <rect x="564" y="776" width="28" height="20" rx="3" fill="#0a0f1a"/>
+    <rect x="564" y="816" width="28" height="20" rx="3" fill="#0a0f1a"/>
+    <rect x="564" y="856" width="28" height="20" rx="3" fill="#0a0f1a"/>
+  </g>
+
+  <!-- Abstract film reel - large circle -->
+  <circle cx="300" cy="380" r="160" fill="none" stroke="#e94560" stroke-width="2" opacity="0.2"/>
+  <circle cx="300" cy="380" r="120" fill="none" stroke="#e94560" stroke-width="1.5" opacity="0.15"/>
+  <circle cx="300" cy="380" r="80" fill="none" stroke="#e94560" stroke-width="1" opacity="0.12"/>
+  <circle cx="300" cy="380" r="40" fill="none" stroke="#e94560" stroke-width="1" opacity="0.1"/>
+  <!-- Reel hub -->
+  <circle cx="300" cy="380" r="16" fill="#e94560" opacity="0.15"/>
+  <circle cx="300" cy="380" r="6" fill="#e94560" opacity="0.25"/>
+
+  <!-- Reel spokes -->
+  <g stroke="#e94560" stroke-width="1" opacity="0.12">
+    <line x1="300" y1="220" x2="300" y2="540"/>
+    <line x1="161" y1="300" x2="439" y2="460"/>
+    <line x1="161" y1="460" x2="439" y2="300"/>
+  </g>
+
+  <!-- Abstract light rays from projector -->
+  <g opacity="0.06">
+    <polygon points="80,120 300,350 520,120" fill="#e9e9ff"/>
+    <polygon points="100,100 300,380 500,100" fill="#ffffff"/>
+  </g>
+
+  <!-- Scattered abstract dots (bokeh / film grain feel) -->
+  <g opacity="0.15">
+    <circle cx="120" cy="200" r="3" fill="#e94560"/>
+    <circle cx="480" cy="280" r="2" fill="#e94560"/>
+    <circle cx="200" cy="650" r="4" fill="#537ec5"/>
+    <circle cx="400" cy="700" r="2.5" fill="#537ec5"/>
+    <circle cx="150" cy="500" r="2" fill="#e94560"/>
+    <circle cx="450" cy="550" r="3" fill="#537ec5"/>
+    <circle cx="350" cy="180" r="2" fill="#e9e9ff"/>
+    <circle cx="250" cy="750" r="3" fill="#e94560"/>
+    <circle cx="380" cy="620" r="2" fill="#e9e9ff"/>
+    <circle cx="170" cy="340" r="1.5" fill="#537ec5"/>
+    <circle cx="430" cy="420" r="2" fill="#e9e9ff"/>
+  </g>
+
+  <!-- Abstract diagonal lines (projector light beams) -->
+  <g stroke="#e9e9ff" stroke-width="0.5" opacity="0.06">
+    <line x1="80" y1="0" x2="520" y2="900"/>
+    <line x1="120" y1="0" x2="560" y2="900"/>
+    <line x1="40" y1="0" x2="480" y2="900"/>
+  </g>
+
+  <!-- Camera/play icon (abstract) -->
+  <g transform="translate(300,380)" opacity="0.18">
+    <polygon points="-20,-28 -20,28 28,0" fill="#e9e9ff"/>
+  </g>
+
+  <!-- "No Image" text area -->
+  <g text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+    <text x="300" y="610" font-size="22" font-weight="700" fill="#e9e9ff" opacity="0.5" letter-spacing="4">NO IMAGE</text>
+    <text x="300" y="640" font-size="13" font-weight="400" fill="#e9e9ff" opacity="0.3" letter-spacing="2">AVAILABLE</text>
+  </g>
+
+  <!-- Bottom vignette -->
+  <rect width="600" height="200" y="700" fill="url(#bg)" opacity="0.5"/>
+</svg>

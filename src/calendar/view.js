@@ -274,7 +274,7 @@ function EventiveCalendar() {
 	}, [ modalEvent ] );
 
 	if ( isLoading ) {
-		return <div className="eventive-calendar-loading">Loading...</div>;
+		return <div className="eventive-loading">Loading...</div>;
 	}
 
 	return (
